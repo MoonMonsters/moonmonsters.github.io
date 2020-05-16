@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
+title: MoonMonsters
+subtitle: 'Do not Repeat Yourself'
+description: '想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想'
 keywords:
-author: John Doe
-language: en
+author: _Tao
+language: zh-Hans
 timezone: ''
 
 # URL
@@ -93,7 +93,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: melody
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
