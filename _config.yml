@@ -48,7 +48,7 @@ highlight:
   enable: true
   line_number: true
   auto_detect: false
-  tab_replace: ''
+  tab_replace: '    '
   wrap: true
   hljs: false
 
@@ -93,7 +93,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: melody
+theme: ayer
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -101,3 +101,8 @@ deploy:
   type: git
   repo: https://github.com/MoonMonsters/MoonMonsters.github.io
   branch: master
+
+search:
+  path: search.xml
+  field: post
+  format: html
