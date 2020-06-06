@@ -1,7 +1,8 @@
 title: golang - 使用函数自定义排序
 author: _Tao
 tags: []
-categories: []
+categories:
+  - golang
 date: 2020-06-06 16:48:00
 ---
 # golang - 使用函数自定义排序

@@ -1,7 +1,8 @@
 title: '[转]golang - web - 中间件介绍'
 author: _Tao
 tags: []
-categories: []
+categories:
+  - golang
 date: 2020-06-06 12:13:00
 ---
 
