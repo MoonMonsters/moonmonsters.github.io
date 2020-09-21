@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    django-rest-framework --- JWTAuthentication |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="MoonMonsters" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-django-rest-framework-JWTAuthentication"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  django-rest-framework --- JWTAuthentication
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-rest-framework-JWTAuthentication/" class="article-date">
+  <time datetime="2020-05-23T11:31:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">3.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">13 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>  JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含的用于通信双方之间以 JSON 对象的形式安全传递信息的方法。JWT 可以使用 HMAC 算法或者是 RSA 的公钥密钥对进行签名。它具备两个特点：</p>
+<ul>
+<li>简洁(Compact)<br>可以通过URL, POST 参数或者在 HTTP header 发送，因为数据量小，传输速度快</li>
+</ul>
+<ul>
+<li>自包含(Self-contained)<br>负载中包含了所有用户所需要的信息，避免了多次查询数据库</li>
+</ul>
+<a id="more"></a>
+
+<h4 id="JWT-组成"><a href="#JWT-组成" class="headerlink" title="JWT 组成"></a>JWT 组成</h4><ul>
+<li><p>Header 头部<br>头部包含了两部分，token 类型和采用的加密算法,它会使用 Base64 编码组成 JWT 结构的第一部分.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"alg"</span>: <span class="string">"HS256"</span>,</span><br><span class="line">  <span class="string">"typ"</span>: <span class="string">"JWT"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Payload 负载<br>这部分就是我们存放信息的地方了，你可以把用户 ID 等信息放在这里，JWT 规范里面对这部分有进行了比较详细的介绍，常用的由 iss（签发者），exp（过期时间），sub（面向的用户），aud（接收方），iat（签发时间）。<br>同样的，它会使用 Base64 编码组成 JWT 结构的第二部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"iss"</span>: <span class="string">"lion1ou JWT"</span>,</span><br><span class="line">    <span class="string">"iat"</span>: <span class="number">1441593502</span>,</span><br><span class="line">    <span class="string">"exp"</span>: <span class="number">1441594722</span>,</span><br><span class="line">    <span class="string">"aud"</span>: <span class="string">"qxinhai.cn"</span>,</span><br><span class="line">    <span class="string">"sub"</span>: <span class="string">"qxinhai@yeah.net"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Signature 签名<br>前面两部分都是使用 Base64 进行编码的，即前端可以解开知道里面的信息。Signature 需要使用编码后的 header 和 payload 以及我们提供的一个密钥，然后使用 header 中指定的签名算法（HS256）进行签名。签名的作用是保证 JWT 没有被篡改过。<br>三个部分通过.连接在一起就是我们的 JWT 了，它可能长这个样子，长度貌似和你的加密算法和私钥有关系。<br><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU3ZmVmMTY0ZTU0YWY2NGZmYzUzZGJkNSIsInhzcmYiOiI0ZWE1YzUwOGE2NTY2ZTc2MjQwNTQzZjhmZWIwNmZkNDU3Nzc3YmUzOTU0OWM0MDE2NDM2YWZkYTY1ZDIzMzBlIiwiaWF0IjoxNDc2NDI3OTMzfQ.PA3QjeyZSUh7H0GfE0vJaKW4LjKJuC3dVLQiY4hii8s</code><br>其实到这一步可能就有人会想了，HTTP 请求总会带上 token，这样这个 token 传来传去占用不必要的带宽啊。如果你这么想了，那你可以去了解下 HTTP2，HTTP2 对头部进行了压缩，相信也解决了这个问题。</p>
+</li>
+<li><p>签名的目的<br>最后一步签名的过程，实际上是对头部以及负载内容进行签名，防止内容被窜改。如果有人对头部以及负载的内容解码之后进行修改，再进行编码，最后加上之前的签名组合形成新的JWT的话，那么服务器端会判断出新的头部和负载形成的签名和JWT附带上的签名是不一样的。如果要对新的头部和负载进行签名，在不知道服务器加密时用的密钥的话，得出来的签名也是不一样的。</p>
+</li>
+<li><p>信息暴露<br>在这里大家一定会问一个问题：Base64是一种编码，是可逆的，那么我的信息不就被暴露了吗？<br>是的。所以，在JWT中，不应该在负载里面加入任何敏感的数据。在上面的例子中，我们传输的是用户的User ID。这个值实际上不是什么敏感内容，一般情况下被知道也是安全的。但是像密码这样的内容就不能被放在JWT中了。如果将用户的密码放在了JWT中，那么怀有恶意的第三方通过Base64解码就能很快地知道你的密码了。<br>因此JWT适合用于向Web应用传递一些非敏感信息。JWT还经常用于设计用户认证和授权系统，甚至实现Web应用的单点登录。</p>
+</li>
+</ul>
+<h4 id="JWT-使用"><a href="#JWT-使用" class="headerlink" title="JWT 使用"></a>JWT 使用</h4><ol>
+<li>首先，前端通过Web表单将自己的用户名和密码发送到后端的接口。这一过程一般是一个HTTP POST请求。建议的方式是通过SSL加密的传输（https协议），从而避免敏感信息被嗅探。</li>
+<li>后端核对用户名和密码成功后，将用户的id等其他信息作为JWT Payload（负载），将其与头部分别进行Base64编码拼接后签名，形成一个JWT。形成的JWT就是一个形同lll.zzz.xxx的字符串。</li>
+<li>后端将JWT字符串作为登录成功的返回结果返回给前端。前端可以将返回的结果保存在localStorage或sessionStorage上，退出登录时前端删除保存的JWT即可。</li>
+<li>前端在每次请求时将JWT放入HTTP Header中的Authorization位。(解决XSS和XSRF问题)</li>
+<li>后端检查是否存在，如存在验证JWT的有效性。例如，检查签名是否正确；检查Token是否过期；检查Token的接收方是否是自己（可选）。</li>
+<li>验证通过后后端使用JWT中包含的用户信息进行其他逻辑操作，返回相应结果。</li>
+</ol>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>｀pip install djangorestframework-jwt｀</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在settings.py中添加以下app</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'rest_framework'</span>,</span><br><span class="line"><span class="string">'rest_framework_jwt'</span>,</span><br></pre></td></tr></table></figure>
+
+<h4 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.authentication <span class="keyword">import</span> JSONWebTokenAuthentication</span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.settings <span class="keyword">import</span> api_settings</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> status</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将用户数据添加进载荷</span></span><br><span class="line">jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER</span><br><span class="line"><span class="comment"># 加密</span></span><br><span class="line">jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    登录功能</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        username = request.data.get(<span class="string">'username'</span>)</span><br><span class="line">        password = request.data.get(<span class="string">'password'</span>)</span><br><span class="line">        user = User.objects.filter(username=username).first()</span><br><span class="line">        <span class="keyword">if</span> user <span class="keyword">and</span> user.check_password(password):</span><br><span class="line">            payload = jwt_payload_handler(user)</span><br><span class="line">            token = jwt_encode_handler(payload)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Response(&#123;<span class="string">'token'</span>: token&#125;, status=status.HTTP_200_OK)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">'message'</span>: <span class="string">'登录失败'</span>&#125;, status=status.HTTP_401_UNAUTHORIZED)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BooksView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    获取测试数据</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    authentication_classes = [JSONWebTokenAuthentication, ]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        data = [</span><br><span class="line">            &#123;<span class="string">'name'</span>: <span class="string">'java'</span>, <span class="string">'price'</span>: <span class="number">57</span>&#125;,</span><br><span class="line">            &#123;<span class="string">'name'</span>: <span class="string">'python'</span>, <span class="string">'price'</span>: <span class="number">93</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">'books'</span>: data&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>如果用户登录成功，将返回token值。<br>主要靠以下两个函数来生成token值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将用户数据添加进载荷</span></span><br><span class="line">jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER</span><br><span class="line"><span class="comment"># 加密</span></span><br><span class="line">jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER</span><br><span class="line"></span><br><span class="line">payload = jwt_payload_handler(user)</span><br><span class="line">token = jwt_encode_handler(payload)</span><br></pre></td></tr></table></figure>
+<p>下次访问时，需要使用token值来验证身份。<br>不管是前端访问，还是requests访问，都要严格按照以下格式要求:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'Authorization'</span>: <span class="string">'JWT '</span> + token</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>JWT和token之间有空格。</p>
+<p>从源码看，继承顺序是这样的:<br><code>JSONWebTokenAuthentication -&gt; BaseJSONWebTokenAuthentication -&gt; BaseAuthentication</code>，最终也是继承自<code>BaseAuthentication</code>，也同样有个跟<code>TokenAuthentication</code>和<code>BasicAuthentication</code>的问题，那就是没有对<code>如果不传入Authorization数据</code>这种情况抛异常处理。详细讲就是，一个视图类使用了<code>JSONWebTokenAuthentication</code>认证，如果你不传入<code>Authorization</code>数据，它不会抛异常，但如果你传入了这个数据，数据却错了，就会抛异常。<br>看了认证相关的源码，都是在<code>authenticate()</code>函数中返回了<code>None</code>之后，就没有做任何判断了。不太清楚官方的正确做法应该是什么，但在解决<code>不传入Authorization数据却能正常访问</code>问题时，会使用以下两种方式。</p>
+<ol>
+<li><p>重写dispath和handle_exception函数<br>在调用get或者post函数之前，都会先调用dispatch函数，在此时判断用户是否验证成功.<br>验证成功时,<code>request.user</code>会返回登录的User对象，否则是<code>AnonymousUser</code>, <code>request.auth</code>也会打返回token值。在此时可以通过这两个数据，判断是否需要继续执行接下来实际的视图函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasicApiView</span><span class="params">(APIView)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    并不一定要继承APIView，可以按照需求继承</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        重写dispatch函数，在post和get之前调用</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        response = super(BasicApiView, self).dispatch(request, *args, **kwargs)</span><br><span class="line">        <span class="comment"># 登录的用户</span></span><br><span class="line">        <span class="comment"># request.user</span></span><br><span class="line">        <span class="comment"># token值</span></span><br><span class="line">        <span class="comment"># request.auth</span></span><br><span class="line">        <span class="comment"># 如果用户认证失败</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> request.user <span class="keyword">or</span> isinstance(request.user, AnonymousUser):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 抛出异常</span></span><br><span class="line">                <span class="keyword">raise</span> exceptions.AuthenticationFailed(<span class="string">'认证失败'</span>)</span><br><span class="line">            <span class="keyword">except</span> exceptions.AuthenticationFailed <span class="keyword">as</span> exc:</span><br><span class="line">                <span class="comment"># 捕获处理后的异常</span></span><br><span class="line">                response = self.handle_exception(exc)</span><br><span class="line">                <span class="comment"># 一定要加上这一行，否则报错</span></span><br><span class="line">                response = self.finalize_response(request, response, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> response</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_exception</span><span class="params">(self, exc)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        异常处理</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 如果是验证失败的异常，返回401</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(exc, (exceptions.AuthenticationFailed, exceptions.NotAuthenticated)):</span><br><span class="line">            <span class="keyword">return</span> Response(&#123;<span class="string">'message'</span>: str(exc)&#125;, status=status.HTTP_401_UNAUTHORIZED)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 其他的错误统一归为内部错误，如果有需要单独处理，放在之前用if判断处理</span></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">'message'</span>: str(exc)&#125;, status=status.HTTP_500_INTERNAL_SERVER_ERROR)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BooksView</span><span class="params">(BasicApiView)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    获取测试数据</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    authentication_classes = [JSONWebTokenAuthentication, ]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        data = [</span><br><span class="line">            &#123;<span class="string">'name'</span>: <span class="string">'java'</span>, <span class="string">'price'</span>: <span class="number">57</span>&#125;,</span><br><span class="line">            &#123;<span class="string">'name'</span>: <span class="string">'python'</span>, <span class="string">'price'</span>: <span class="number">93</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">'books'</span>: data&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>继承认证类，重写authenticate()函数</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JWTAuthentication</span><span class="params">(JSONWebTokenAuthentication)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">authenticate</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        <span class="comment"># 获取返回值(user, token)</span></span><br><span class="line">        user_auth_tuple = super().authenticate(request)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果返回值为空，则说明验证失败</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> user_auth_tuple <span class="keyword">or</span> <span class="keyword">not</span> user_auth_tuple[<span class="number">0</span>] <span class="keyword">or</span> <span class="keyword">not</span> user_auth_tuple[<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">raise</span> exceptions.AuthenticationFailed(<span class="string">'帐号或密码错误'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 否则继续往下执行</span></span><br><span class="line">        <span class="keyword">return</span> user_auth_tuple</span><br></pre></td></tr></table></figure>
+<p>然后在视图类中配置即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">authentication_classes = [JWTAuthentication, ]</span><br></pre></td></tr></table></figure>
+
+<p>以上是最基本的用法，如果有定制要求，也不会差的太远。</p>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h4 id="JSONWebTokenAuthentication"><a href="#JSONWebTokenAuthentication" class="headerlink" title="JSONWebTokenAuthentication"></a>JSONWebTokenAuthentication</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">get_jwt_value</span><span class="params">(self, request)</span>:</span></span><br><span class="line">  	<span class="comment"># 获取请求头中Authoriztion数据</span></span><br><span class="line">      auth = get_authorization_header(request).split()</span><br><span class="line">      <span class="comment"># 获取标志位，如果没有自定义，就是 JWT</span></span><br><span class="line">      auth_header_prefix = api_settings.JWT_AUTH_HEADER_PREFIX.lower()</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> <span class="keyword">not</span> auth:</span><br><span class="line">          <span class="keyword">if</span> api_settings.JWT_AUTH_COOKIE:</span><br><span class="line">              <span class="keyword">return</span> request.COOKIES.get(api_settings.JWT_AUTH_COOKIE)</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> smart_text(auth[<span class="number">0</span>].lower()) != auth_header_prefix:</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> len(auth) == <span class="number">1</span>:</span><br><span class="line">          msg = _(<span class="string">'Invalid Authorization header. No credentials provided.'</span>)</span><br><span class="line">          <span class="keyword">raise</span> exceptions.AuthenticationFailed(msg)</span><br><span class="line">      <span class="keyword">elif</span> len(auth) &gt; <span class="number">2</span>:</span><br><span class="line">          msg = _(<span class="string">'Invalid Authorization header. Credentials string '</span></span><br><span class="line">                  <span class="string">'should not contain spaces.'</span>)</span><br><span class="line">          <span class="keyword">raise</span> exceptions.AuthenticationFailed(msg)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 返回token数据</span></span><br><span class="line">      <span class="keyword">return</span> auth[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">authenticate</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    <span class="comment"># token数据</span></span><br><span class="line">       jwt_value = self.get_jwt_value(request)</span><br><span class="line">       <span class="keyword">if</span> jwt_value <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">           <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">       <span class="keyword">try</span>:</span><br><span class="line">       	<span class="comment"># 解析token值</span></span><br><span class="line">       	<span class="comment"># jwt_decode_handler = api_settings.JWT_DECODE_HANDLER</span></span><br><span class="line">       	<span class="comment"># 具体代码见源码分析</span></span><br><span class="line">           payload = jwt_decode_handler(jwt_value)</span><br><span class="line">       <span class="keyword">except</span> jwt.ExpiredSignature:</span><br><span class="line">           msg = _(<span class="string">'Signature has expired.'</span>)</span><br><span class="line">           <span class="keyword">raise</span> exceptions.AuthenticationFailed(msg)</span><br><span class="line">       <span class="keyword">except</span> jwt.DecodeError:</span><br><span class="line">           msg = _(<span class="string">'Error decoding signature.'</span>)</span><br><span class="line">           <span class="keyword">raise</span> exceptions.AuthenticationFailed(msg)</span><br><span class="line">       <span class="keyword">except</span> jwt.InvalidTokenError:</span><br><span class="line">           <span class="keyword">raise</span> exceptions.AuthenticationFailed()</span><br><span class="line"></span><br><span class="line">       user = self.authenticate_credentials(payload)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 认证成功后，返回登录的User对象和token数据</span></span><br><span class="line">       <span class="keyword">return</span> (user, jwt_value)</span><br></pre></td></tr></table></figure>
+
+<h4 id="rest-framework-jwt-settings"><a href="#rest-framework-jwt-settings" class="headerlink" title="rest_framework_jwt.settings"></a>rest_framework_jwt.settings</h4><p>路径:<code>rest_framework_jwt.settings.py</code></p>
+<p>我们一般都可以用CTRL + 左键查看函数\属性的具体信息，但我在下面使用下面两行代码时却发现无法点击，所以好奇就看了下相关的代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将用户数据添加进载荷</span></span><br><span class="line">jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER</span><br><span class="line"><span class="comment"># 加密</span></span><br><span class="line">jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER</span><br></pre></td></tr></table></figure>
+
+<p>api_settings是APISettings的对象实例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">api_settings = APISettings(USER_SETTINGS, DEFAULTS, IMPORT_STRINGS)</span><br></pre></td></tr></table></figure>
+
+<p>settings实际上就是django运行时使用的配置文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br></pre></td></tr></table></figure>
+
+<p>用户可以在配置文件中配置JWT_AUTH数据，所以在创建apt_settings对象时就从配置文件中将所有的用户自定义的数据读取出来，存放到USER_SETTINGS中，并传入ApiSettings中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USER_SETTINGS = getattr(settings, <span class="string">'JWT_AUTH'</span>, <span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>DEFAULTS中的数据是最齐全的，用户能自定义的数据都在该字典中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">DEFAULTS = &#123;</span><br><span class="line">    <span class="string">'JWT_ENCODE_HANDLER'</span>:</span><br><span class="line">    <span class="string">'rest_framework_jwt.utils.jwt_encode_handler'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_DECODE_HANDLER'</span>:</span><br><span class="line">    <span class="string">'rest_framework_jwt.utils.jwt_decode_handler'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_PAYLOAD_HANDLER'</span>:</span><br><span class="line">    <span class="string">'rest_framework_jwt.utils.jwt_payload_handler'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_PAYLOAD_GET_USER_ID_HANDLER'</span>:</span><br><span class="line">    <span class="string">'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_PRIVATE_KEY'</span>:</span><br><span class="line">    <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_PUBLIC_KEY'</span>:</span><br><span class="line">    <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_PAYLOAD_GET_USERNAME_HANDLER'</span>:</span><br><span class="line">    <span class="string">'rest_framework_jwt.utils.jwt_get_username_from_payload_handler'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_RESPONSE_PAYLOAD_HANDLER'</span>:</span><br><span class="line">    <span class="string">'rest_framework_jwt.utils.jwt_response_payload_handler'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_SECRET_KEY'</span>: settings.SECRET_KEY,</span><br><span class="line">    <span class="string">'JWT_GET_USER_SECRET_KEY'</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">'JWT_ALGORITHM'</span>: <span class="string">'HS256'</span>,</span><br><span class="line">    <span class="string">'JWT_VERIFY'</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">'JWT_VERIFY_EXPIRATION'</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">'JWT_LEEWAY'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'JWT_EXPIRATION_DELTA'</span>: datetime.timedelta(seconds=<span class="number">300</span>),</span><br><span class="line">    <span class="string">'JWT_AUDIENCE'</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">'JWT_ISSUER'</span>: <span class="literal">None</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_ALLOW_REFRESH'</span>: <span class="literal">False</span>,</span><br><span class="line">    <span class="string">'JWT_REFRESH_EXPIRATION_DELTA'</span>: datetime.timedelta(days=<span class="number">7</span>),</span><br><span class="line"></span><br><span class="line">    <span class="string">'JWT_AUTH_HEADER_PREFIX'</span>: <span class="string">'JWT'</span>,</span><br><span class="line">    <span class="string">'JWT_AUTH_COOKIE'</span>: <span class="literal">None</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用户可导入（调用）的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">IMPORT_STRINGS = (</span><br><span class="line">    <span class="string">'JWT_ENCODE_HANDLER'</span>,</span><br><span class="line">    <span class="string">'JWT_DECODE_HANDLER'</span>,</span><br><span class="line">    <span class="string">'JWT_PAYLOAD_HANDLER'</span>,</span><br><span class="line">    <span class="string">'JWT_PAYLOAD_GET_USER_ID_HANDLER'</span>,</span><br><span class="line">    <span class="string">'JWT_PAYLOAD_GET_USERNAME_HANDLER'</span>,</span><br><span class="line">    <span class="string">'JWT_RESPONSE_PAYLOAD_HANDLER'</span>,</span><br><span class="line">    <span class="string">'JWT_GET_USER_SECRET_KEY'</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="APISettings"><a href="#APISettings" class="headerlink" title="APISettings"></a>APISettings</h4><p>APISettings的路径：<code>rest-framework.settings</code><br><code>__getattr__</code>魔法方法的作用是，对象实例在调用方法或者属性时都将调用<code>__getattr__</code>。那么此处的作用，就相当于如果你想要调用<code>rest_framework_jwt.utils.jwt_payload_handler</code>函数，你就只需要使用<code>api_settings.JWT_PAYLOAD_HANDLER</code>即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, attr)</span>:</span></span><br><span class="line">    <span class="comment"># defautls配置文件数据是最齐全的，如果defaults没有，就说明对象调用错了。</span></span><br><span class="line">    <span class="comment"># attr是属性名，或者方法名</span></span><br><span class="line">    <span class="keyword">if</span> attr <span class="keyword">not</span> <span class="keyword">in</span> self.defaults:</span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">"Invalid API setting: '%s'"</span> % attr)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 判断用户是否自定义了attr属性</span></span><br><span class="line">        val = self.user_settings[attr]</span><br><span class="line">    <span class="keyword">except</span> KeyError:</span><br><span class="line">        <span class="comment"># 如果用户没有自定义，那么就从配置文件中读取</span></span><br><span class="line">        val = self.defaults[attr]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果attr在import_strings中，就说明其实是一个函数</span></span><br><span class="line">    <span class="comment"># 现在存入的是一个有具体路径的字符串，需要将其转换成可调用的函数</span></span><br><span class="line">    <span class="keyword">if</span> attr <span class="keyword">in</span> self.import_strings:</span><br><span class="line">        val = perform_import(val, attr)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 加入缓存</span></span><br><span class="line">    <span class="comment"># 再次调用attr时，不会再触发__getattr__魔法方法</span></span><br><span class="line">    self._cached_attrs.add(attr)</span><br><span class="line">    <span class="comment"># 这行代码，类似于这种效果</span></span><br><span class="line">    <span class="comment"># a = A() setattr(a, 'a', 10)</span></span><br><span class="line">    <span class="comment"># 打印 a.a 将返回10</span></span><br><span class="line">    setattr(self, attr, val)</span><br><span class="line">    <span class="keyword">return</span> val</span><br></pre></td></tr></table></figure>
+
+<p><code>rest_framework.settings</code>下也有个api_settings,<br><code>api_settings = APISettings(None, DEFAULTS, IMPORT_STRINGS)</code>，与<code>rest_framework_jwt.settings</code>下的api_settings不是同一个，不要混用了。</p>
+<h4 id="jwt-payload-handler"><a href="#jwt-payload-handler" class="headerlink" title="jwt_payload_handler"></a>jwt_payload_handler</h4><p>路径：<code>rest_framework_jwt.utils.jwt_payload_handler</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jwt_payload_handler</span><span class="params">(user)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment"># 将用户id，用户名，token的有效时间，邮箱都写入载荷中</span></span><br><span class="line">    payload = &#123;</span><br><span class="line">        <span class="string">'user_id'</span>: user.pk,</span><br><span class="line">        <span class="string">'username'</span>: username,</span><br><span class="line">        <span class="string">'exp'</span>: datetime.utcnow() + api_settings.JWT_EXPIRATION_DELTA</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> hasattr(user, <span class="string">'email'</span>):</span><br><span class="line">        payload[<span class="string">'email'</span>] = user.email</span><br><span class="line">    <span class="keyword">if</span> isinstance(user.pk, uuid.UUID):</span><br><span class="line">        payload[<span class="string">'user_id'</span>] = str(user.pk)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<h4 id="加密与解密"><a href="#加密与解密" class="headerlink" title="加密与解密"></a>加密与解密</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jwt_encode_handler</span><span class="params">(payload)</span>:</span></span><br><span class="line">    key = api_settings.JWT_PRIVATE_KEY <span class="keyword">or</span> jwt_get_secret_key(payload)</span><br><span class="line">    <span class="keyword">return</span> jwt.encode(</span><br><span class="line">        payload,</span><br><span class="line">        key,</span><br><span class="line">        api_settings.JWT_ALGORITHM</span><br><span class="line">    ).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jwt_decode_handler</span><span class="params">(token)</span>:</span></span><br><span class="line">    options = &#123;</span><br><span class="line">        <span class="string">'verify_exp'</span>: api_settings.JWT_VERIFY_EXPIRATION,</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># get user from token, BEFORE verification, to get user secret key</span></span><br><span class="line">    unverified_payload = jwt.decode(token, <span class="literal">None</span>, <span class="literal">False</span>)</span><br><span class="line">    secret_key = jwt_get_secret_key(unverified_payload)</span><br><span class="line">    <span class="keyword">return</span> jwt.decode(</span><br><span class="line">        token,</span><br><span class="line">        api_settings.JWT_PUBLIC_KEY <span class="keyword">or</span> secret_key,</span><br><span class="line">        api_settings.JWT_VERIFY,</span><br><span class="line">        options=options,</span><br><span class="line">        leeway=api_settings.JWT_LEEWAY,</span><br><span class="line">        audience=api_settings.JWT_AUDIENCE,</span><br><span class="line">        issuer=api_settings.JWT_ISSUER,</span><br><span class="line">        algorithms=[api_settings.JWT_ALGORITHM]</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h4 id="用户自定义数据"><a href="#用户自定义数据" class="headerlink" title="用户自定义数据"></a>用户自定义数据</h4><p>以下是常用的几个，如果需要更多的，查看官方文档。</p>
+<h5 id="JWT-SECRET-KEY"><a href="#JWT-SECRET-KEY" class="headerlink" title="JWT_SECRET_KEY"></a>JWT_SECRET_KEY</h5><p>用来给token加密的，默认是<code>settings.SECRET_KEY</code></p>
+<h5 id="JWT-ALGORITHM"><a href="#JWT-ALGORITHM" class="headerlink" title="JWT_ALGORITHM"></a>JWT_ALGORITHM</h5><p>加密算法，默认是HS256</p>
+<h5 id="JWT-VERIFY"><a href="#JWT-VERIFY" class="headerlink" title="JWT_VERIFY"></a>JWT_VERIFY</h5><p>解密失败时将抛出一个DecodeError错误，默认是True，改为False时，仍可以获取载荷</p>
+<h5 id="JWT-VERIFY-EXPIRATION"><a href="#JWT-VERIFY-EXPIRATION" class="headerlink" title="JWT_VERIFY_EXPIRATION"></a>JWT_VERIFY_EXPIRATION</h5><p>是否设置有效时间，默认是True</p>
+<h5 id="JWT-LEEWAY"><a href="#JWT-LEEWAY" class="headerlink" title="JWT_LEEWAY"></a>JWT_LEEWAY</h5><p>token过期时间的缓冲期，默认为0.就是说，如果设置了一个token的过期时间是10分钟，但如果你设置了这个值为1分钟，那么在10～11分钟内，该token仍有效。</p>
+<h5 id="JWT-EXPIRATION-DELTA"><a href="#JWT-EXPIRATION-DELTA" class="headerlink" title="JWT_EXPIRATION_DELTA"></a>JWT_EXPIRATION_DELTA</h5><p>token的有效时间，默认是5分钟。<code>datetime.timedelta</code>数据类型。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;getblimp.github.io&#x2F;django-rest-framework-jwt&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;www.django-rest-framework.org&#x2F;api-guide&#x2F;settings&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;180a870a308a</span><br><span class="line">https:&#x2F;&#x2F;blog.csdn.net&#x2F;chengqiang20152015&#x2F;article&#x2F;details&#x2F;81146545</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/23/django-rest-framework-JWTAuthentication/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2020/05/23/django-rest-framework-%E5%88%86%E9%A1%B5/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            django-rest-framework --- 分页
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/23/django-rest-framework-%E8%AE%A4%E8%AF%81/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">django-rest-framework --- 认证</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "WsTe7qzqb4a2pxJVBdPy6FI5-gzGzoHsz",
+    app_key: "EACB4Omi8LuM9N2KVXA81Am0",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2020
+        <i class="ri-heart-fill heart_icon"></i> _Tao
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="MoonMonsters"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

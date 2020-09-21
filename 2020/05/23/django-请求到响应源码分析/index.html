@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    django --- 请求到响应源码分析 |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="MoonMonsters" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-django-请求到响应源码分析"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  django --- 请求到响应源码分析
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-%E8%AF%B7%E6%B1%82%E5%88%B0%E5%93%8D%E5%BA%94%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2020-05-23T11:12:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">1.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">8 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>web应用或者网站本质上都是围绕着请求-响应的方式来运作的。当你通过浏览器访问网站时，浏览器会向web服务器发送请求。当web服务器收到请求后，服务器会对请求进行相应的处理，然后返回相应的响应给浏览器，最后浏览器呈现给你。</p>
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>这是web服务器转发请求到django应用的地方，也是返回响应的地方。</p>
+<p>路径: <code>xxx.wsgi.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.core.wsgi <span class="keyword">import</span> get_wsgi_application</span><br><span class="line"><span class="comment"># 设置django要使用的配置文件</span></span><br><span class="line">os.environ.setdefault(<span class="string">'DJANGO_SETTINGS_MODULE'</span>, <span class="string">'JwtDemo.settings'</span>)</span><br><span class="line"></span><br><span class="line">application = get_wsgi_application()</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="WSGIHandler"><a href="#WSGIHandler" class="headerlink" title="WSGIHandler"></a>WSGIHandler</h3><p>初始化请求，并返回响应数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WSGIHandler</span><span class="params">(base.BaseHandler)</span>:</span></span><br><span class="line">    request_class = WSGIRequest</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        super().__init__(*args, **kwargs)</span><br><span class="line">        <span class="comment"># 加载django应用中配置的中间件，该方法是父类BaseHandler中的</span></span><br><span class="line">        self.load_middleware()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        set_script_prefix(get_script_name(environ))</span><br><span class="line">        signals.request_started.send(sender=self.__class__, environ=environ)</span><br><span class="line">        <span class="comment"># 初始化request请求</span></span><br><span class="line">        request = self.request_class(environ)</span><br><span class="line">        <span class="comment"># 开始处理请求，并生成响应</span></span><br><span class="line">        response = self.get_response(request)</span><br><span class="line"></span><br><span class="line">        response._handler_class = self.__class__</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 状态码，状态描述</span></span><br><span class="line">        status = <span class="string">'%d %s'</span> % (response.status_code, response.reason_phrase)</span><br><span class="line">        <span class="comment"># 响应头信息</span></span><br><span class="line">        response_headers = list(response.items())</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> response.cookies.values():</span><br><span class="line">            response_headers.append((<span class="string">'Set-Cookie'</span>, c.output(header=<span class="string">''</span>)))</span><br><span class="line">        start_response(status, response_headers)</span><br><span class="line">        <span class="keyword">if</span> getattr(response, <span class="string">'file_to_stream'</span>, <span class="literal">None</span>) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> environ.get(<span class="string">'wsgi.file_wrapper'</span>):</span><br><span class="line">            response = environ[<span class="string">'wsgi.file_wrapper'</span>](response.file_to_stream)</span><br><span class="line">        <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<h3 id="加载中间件"><a href="#加载中间件" class="headerlink" title="加载中间件"></a>加载中间件</h3><h4 id="load-middleware"><a href="#load-middleware" class="headerlink" title="load_middleware"></a>load_middleware</h4><p>路径:<code>django.core.handlers.base.BaseHandler.load_middleware</code><br>WSGIHandler中调用的load_middleware函数是父类BaseHandler中的，在这个函数中，会按顺序加载所有配置的中间件。<br>主循环会对所有的中间件逆序遍历，而将中间件函数加入列表的顺序也跟实际的执行顺序一致。<br><code>process_view</code>会按照中间件的先后顺序执行，所以采用了insert(0,xx),而<code>process_template_response</code>和<code>process_exception</code>则采用了append操作。<br>这个看着有点绕..<br>以下面的中间件配置为例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    <span class="string">'django.middleware.security.SecurityMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.contrib.sessions.middleware.SessionMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.middleware.common.CommonMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.middleware.csrf.CsrfViewMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.contrib.auth.middleware.AuthenticationMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.contrib.messages.middleware.MessageMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.middleware.clickjacking.XFrameOptionsMiddleware'</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>因为采用了逆序遍历，那么执行顺序就是<code>XFrameOptionsMiddleware -&gt; MessageMiddleware -&gt; ... -&gt;SecurityMiddleware</code>，而<code>process_view</code>采用了insert(0,xx)的方法，所以<code>_view_middleware</code>中<code>process_view</code>函数的顺序就是<code>SecurityMiddleware.process_view -&gt; ... -&gt; SecurityMiddleware.process_view</code>了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_middleware</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 加载中间件</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 中间件中的process_view函数列表</span></span><br><span class="line">    self._view_middleware = []</span><br><span class="line">    <span class="comment"># 中间件中的process_template_response函数列表</span></span><br><span class="line">    self._template_response_middleware = []</span><br><span class="line">    <span class="comment"># 中间件中的process_exception函数列表</span></span><br><span class="line">    self._exception_middleware = []</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 这是一个装饰器，装饰器内返回了response，只不过包裹了exception数据</span></span><br><span class="line">    handler = convert_exception_to_response(self._get_response)</span><br><span class="line">    <span class="comment"># middleware_path是字符串</span></span><br><span class="line">    <span class="keyword">for</span> middleware_path <span class="keyword">in</span> reversed(settings.MIDDLEWARE):</span><br><span class="line">        <span class="comment"># 转换成具体的类</span></span><br><span class="line">        middleware = import_string(middleware_path)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            mw_instance = middleware(handler)</span><br><span class="line">        <span class="keyword">except</span> MiddlewareNotUsed <span class="keyword">as</span> exc:</span><br><span class="line">            <span class="keyword">if</span> settings.DEBUG:</span><br><span class="line">                <span class="keyword">if</span> str(exc):</span><br><span class="line">                    logger.debug(<span class="string">'MiddlewareNotUsed(%r): %s'</span>, middleware_path, exc)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    logger.debug(<span class="string">'MiddlewareNotUsed: %r'</span>, middleware_path)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> mw_instance <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> ImproperlyConfigured(</span><br><span class="line">                <span class="string">'Middleware factory %s returned None.'</span> % middleware_path</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 对不同的中间件函数，使用不同的插入顺序，随他们的处理顺序</span></span><br><span class="line">        <span class="comment"># process_view正序插入</span></span><br><span class="line">        <span class="keyword">if</span> hasattr(mw_instance, <span class="string">'process_view'</span>):</span><br><span class="line">            self._view_middleware.insert(<span class="number">0</span>, mw_instance.process_view)</span><br><span class="line">        <span class="comment"># process_template_response逆序插入</span></span><br><span class="line">        <span class="keyword">if</span> hasattr(mw_instance, <span class="string">'process_template_response'</span>):</span><br><span class="line">            self._template_response_middleware.append(mw_instance.process_template_response)</span><br><span class="line">        <span class="comment"># process_exception逆序插入</span></span><br><span class="line">        <span class="keyword">if</span> hasattr(mw_instance, <span class="string">'process_exception'</span>):</span><br><span class="line">            self._exception_middleware.append(mw_instance.process_exception)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 重新处理</span></span><br><span class="line">        handler = convert_exception_to_response(mw_instance)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 是一个修饰器函数，最内层是_get_response，外层是中间件</span></span><br><span class="line">    self._middleware_chain = handler</span><br></pre></td></tr></table></figure>
+
+<h4 id="MiddlewareMixin"><a href="#MiddlewareMixin" class="headerlink" title="MiddlewareMixin"></a>MiddlewareMixin</h4><p>使用了mixin模式，当自定义中间件时，需要自己实现<code>process_request</code>和<code>process_response</code>两个函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MiddlewareMixin</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, get_response=None)</span>:</span></span><br><span class="line">        self.get_response = get_response</span><br><span class="line">        super().__init__()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        response = <span class="literal">None</span></span><br><span class="line">        <span class="comment"># 处理proecess_request函数</span></span><br><span class="line">        <span class="keyword">if</span> hasattr(self, <span class="string">'process_request'</span>):</span><br><span class="line">            response = self.process_request(request)</span><br><span class="line">        response = response <span class="keyword">or</span> self.get_response(request)</span><br><span class="line">        <span class="comment"># 处理process_response函数</span></span><br><span class="line">        <span class="keyword">if</span> hasattr(self, <span class="string">'process_response'</span>):</span><br><span class="line">            response = self.process_response(request, response)</span><br><span class="line">        <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<h4 id="get-response"><a href="#get-response" class="headerlink" title="get_response"></a>get_response</h4><p>路径:<code>django.core.handlers.base.get_response</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_response</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    <span class="string">"""Return an HttpResponse object for the given HttpRequest."""</span></span><br><span class="line">    <span class="comment"># 设置开始位置的url</span></span><br><span class="line">    set_urlconf(settings.ROOT_URLCONF)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 包装了self._get_response的装饰器</span></span><br><span class="line">    response = self._middleware_chain(request)</span><br><span class="line"></span><br><span class="line">    response._closable_objects.append(request)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># If the exception handler returns a TemplateResponse that has not</span></span><br><span class="line">    <span class="comment"># been rendered, force it to be rendered.</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> getattr(response, <span class="string">'is_rendered'</span>, <span class="literal">True</span>) <span class="keyword">and</span> callable(getattr(response, <span class="string">'render'</span>, <span class="literal">None</span>)):</span><br><span class="line">        response = response.render()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> response.status_code &gt;= <span class="number">400</span>:</span><br><span class="line">        log_response(</span><br><span class="line">            <span class="string">'%s: %s'</span>, response.reason_phrase, request.path,</span><br><span class="line">            response=response,</span><br><span class="line">            request=request,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<h4 id="get-response-1"><a href="#get-response-1" class="headerlink" title="_get_response"></a>_get_response</h4><p>路径: <code>django.core.handlers.base._get_response</code><br>这个函数是真正的调用视图函数或者视图类的地方</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_response</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Resolve and call the view, then apply view, exception, and</span></span><br><span class="line"><span class="string">    template_response middleware. This method is everything that happens</span></span><br><span class="line"><span class="string">    inside the request/response middleware.</span></span><br><span class="line"><span class="string">    实际上调用视图函数的地方</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    response = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> hasattr(request, <span class="string">'urlconf'</span>):</span><br><span class="line">        urlconf = request.urlconf</span><br><span class="line">        set_urlconf(urlconf)</span><br><span class="line">        resolver = get_resolver(urlconf)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        resolver = get_resolver()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 通过url操作，获取实际的执行函数</span></span><br><span class="line">    resolver_match = resolver.resolve(request.path_info)</span><br><span class="line">    callback, callback_args, callback_kwargs = resolver_match</span><br><span class="line">    request.resolver_match = resolver_match</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 执行proecess_view中间件函数</span></span><br><span class="line">    <span class="keyword">for</span> middleware_method <span class="keyword">in</span> self._view_middleware:</span><br><span class="line">        <span class="comment"># 调用process_view函数</span></span><br><span class="line">        response = middleware_method(request, callback, callback_args, callback_kwargs)</span><br><span class="line">        <span class="comment"># 如果某个中间件的process_view返回了值，那么就停止继续执行</span></span><br><span class="line">        <span class="keyword">if</span> response:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> response <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># callback是实际上要执行的视图函数或者视图类</span></span><br><span class="line">        wrapped_callback = self.make_view_atomic(callback)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 执行实际函数，获取返回的response</span></span><br><span class="line">            response = wrapped_callback(request, *callback_args, **callback_kwargs)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            response = self.process_exception_by_middleware(e, request)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Complain if the view returned None (a common error).</span></span><br><span class="line">    <span class="keyword">if</span> response <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> isinstance(callback, types.FunctionType):    <span class="comment"># FBV</span></span><br><span class="line">            view_name = callback.__name__</span><br><span class="line">        <span class="keyword">else</span>:                                           <span class="comment"># CBV</span></span><br><span class="line">            view_name = callback.__class__.__name__ + <span class="string">'.__call__'</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">raise</span> ValueError(</span><br><span class="line">            <span class="string">"The view %s.%s didn't return an HttpResponse object. It "</span></span><br><span class="line">            <span class="string">"returned None instead."</span> % (callback.__module__, view_name)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># If the response supports deferred rendering, apply template</span></span><br><span class="line">    <span class="comment"># response middleware and then render the response</span></span><br><span class="line">    <span class="comment"># 判断是否需要执行中间件中的process_template_response函数</span></span><br><span class="line">    <span class="keyword">elif</span> hasattr(response, <span class="string">'render'</span>) <span class="keyword">and</span> callable(response.render):</span><br><span class="line">        <span class="comment"># 遍历执行process_template_response函数</span></span><br><span class="line">        <span class="keyword">for</span> middleware_method <span class="keyword">in</span> self._template_response_middleware:</span><br><span class="line">            response = middleware_method(request, response)</span><br><span class="line">            <span class="comment"># 如果某个process_template_response函数返回了None，则抛出异常</span></span><br><span class="line">            <span class="comment"># 自定义process_template_response函数时，需要返回response</span></span><br><span class="line">            <span class="keyword">if</span> response <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">raise</span> ValueError(</span><br><span class="line">                    <span class="string">"%s.process_template_response didn't return an "</span></span><br><span class="line">                    <span class="string">"HttpResponse object. It returned None instead."</span></span><br><span class="line">                    % (middleware_method.__self__.__class__.__name__)</span><br><span class="line">                )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 调用HttpResponse的render()函数，获取真正的返回值</span></span><br><span class="line">            response = response.render()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            response = self.process_exception_by_middleware(e, request)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="HttpResponse-render"><a href="#HttpResponse-render" class="headerlink" title="HttpResponse.render"></a>HttpResponse.render</h4><p>路径:<code>django.template.response.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">render</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Render (thereby finalizing) the content of the response.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If the content has already been rendered, this is a no-op.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Return the baked response instance.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    retval = self</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self._is_rendered:</span><br><span class="line">        self.content = self.rendered_content</span><br><span class="line">        <span class="keyword">for</span> post_callback <span class="keyword">in</span> self._post_render_callbacks:</span><br><span class="line">            newretval = post_callback(retval)</span><br><span class="line">            <span class="keyword">if</span> newretval <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                retval = newretval</span><br><span class="line">    <span class="keyword">return</span> retval</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行流程总结"><a href="#执行流程总结" class="headerlink" title="执行流程总结"></a>执行流程总结</h3><p>→ wsgi.py是一次请求的入口<br>→ get_wsgi_application()，返回WSGI调用对象<br>→ WSGIHandler()，接收请求\返回响应对象的类<br>→ load_middleware()，在创建WSGIHandler()对象时，会调用此函数，加载配置文件中的中间件，在一次服务器启动期间，只执行一次<br>→ 将_get_response函数做参数传入convert_exception_to_response函数，执行函数会返回handler，该handler实际上是一个包裹了exception和_get_response函数的装饰器<br>→ 将handler赋值给_middleware_chain<br>→ 中间件加载完毕<br>→ 一次请求到达django时，会调用django的<strong>call</strong>函数，在该函数中，会调用get_response（定义在父类BaseHandler中）函数<br>→ 在get_response函数中，会执行response = self._middleware_chain(request)这一行代码，从上面的步骤看，也就相当于执行了_get_response函数<br>→ 在_get_response函数中，会执行真正的视图函数(callback和wrapped_callback)，返回的结果response对象<br>→ _get_response执行完毕后，返回response，回到get_response函数中<br>→ get_response函数拿到_get_response返回的response对象继续执行之后的代码，最后将response对象返回<br>→ get_response函数结束后，回到WSGIHandler的<strong>call</strong>函数中，执行后续代码，返回response到前端</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过上面代码分析，我们已经大致了解了Django请求响应的流程。大致如下<br>用户请求首先会到web服务器；<br>web服务器会把请求发到django.core.handlers.wsgi的BaseHandler；<br>生成request，response，view， exception，template_response中间件链表；<br>按中间件配置顺序应用request中间件来处理request，如果这中间生成response，则直接返回；<br>通过urlresolvers.resolve匹配请求的url来找到对应的view；<br>应用view中间件，如果有response，则直接返回；<br>调用对应的view，这个过程和和models进行交互，比如从数据库获取数据等，并渲染模板；<br>接着response中间件会被应用来处理repsonse；<br>这其中忽略了一些其他重要的步骤，比如异常中间件的调用。</p>
+<p>用网上的一张图总结以上：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/pic/django-%E8%AF%B7%E6%B1%82%E5%93%8D%E5%BA%94.png" alt=""></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;1ff05dfb3d0d</span><br><span class="line">http:&#x2F;&#x2F;hongweipeng.com&#x2F;index.php&#x2F;archives&#x2F;1369&#x2F;#menu_index_1</span><br><span class="line">http:&#x2F;&#x2F;www.php.cn&#x2F;python-tutorials-416971.html</span><br><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;time-read&#x2F;p&#x2F;10650988.html</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/23/django-%E8%AF%B7%E6%B1%82%E5%88%B0%E5%93%8D%E5%BA%94%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81/" rel="tag">源码</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2020/05/23/django-rest-framework-%E9%99%90%E6%B5%81/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            django-rest-framework --- 限流
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/23/python-%E5%9B%9B%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E5%86%99%E6%B3%95/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">python 四种单例模式写法</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "WsTe7qzqb4a2pxJVBdPy6FI5-gzGzoHsz",
+    app_key: "EACB4Omi8LuM9N2KVXA81Am0",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2020
+        <i class="ri-heart-fill heart_icon"></i> _Tao
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="MoonMonsters"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

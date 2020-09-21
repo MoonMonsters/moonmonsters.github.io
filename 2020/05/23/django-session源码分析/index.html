@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    django --- session源码分析 |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="MoonMonsters" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-django-session源码分析"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  django --- session源码分析
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2020-05-23T11:29:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">1.8k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">8 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="cookie和seesion的区别"><a href="#cookie和seesion的区别" class="headerlink" title="cookie和seesion的区别"></a>cookie和seesion的区别</h3><p>简单来讲就是都是key-value形式的数据，不同的是，cookie存储在客户端，session存储在服务端。具体的解释可以上网搜，不做叙述。</p>
+<a id="more"></a>
+
+<h3 id="Session模型"><a href="#Session模型" class="headerlink" title="Session模型"></a>Session模型</h3><p>在<code>settings.py</code>中的<code>INSTALLED_APPS</code>增加<code>django.contrib.sessions</code>。</p>
+<p>数据模型:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AbstractBaseSession</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    session_key = models.CharField(_(<span class="string">'session key'</span>), max_length=<span class="number">40</span>, primary_key=<span class="literal">True</span>)</span><br><span class="line">    session_data = models.TextField(_(<span class="string">'session data'</span>))</span><br><span class="line">    expire_date = models.DateTimeField(_(<span class="string">'expire date'</span>), db_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    objects = BaseSessionManager()</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        abstract = <span class="literal">True</span></span><br><span class="line">        verbose_name = _(<span class="string">'session'</span>)</span><br><span class="line">        verbose_name_plural = _(<span class="string">'sessions'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Session</span><span class="params">(AbstractBaseSession)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span><span class="params">(AbstractBaseSession.Meta)</span>:</span></span><br><span class="line">        db_table = <span class="string">'django_session'</span></span><br></pre></td></tr></table></figure>
+<p>综上，那么在执行完<code>python manage.py migrate</code>指令后，将在数据库中生成<code>django_session</code>数据表，表中字段只有三个<br/><br><code>session_key</code>，<code>session_data</code>，<code>expire_date</code>。<br/><br><code>session_key</code>,会在cookie中存储一个唯一性的<code>session_id</code>，在客户端向服务端发送请求中，会从cookie中获取到这个id值，从数据表中获取对应的数据。<br/><br><code>session_data</code>,存储加密后的数据，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">request.session[&#39;hello&#39;] &#x3D; &#39;world&#39;</span><br><span class="line">request.session.save()</span><br></pre></td></tr></table></figure>
+<p>存储的后数据就是<code>NjdjMmY3ZGRlMDNmNTRlM2FlMTNjNmMzODMzYzgyNTgxMjE5NDVkNjp7ImhlbGxvIjoid29ybGQifQ</code>，根据<code>secret_key</code>不同，存储后的数据也肯定会不同。<br/><br><code>expire_date</code>，session的有效期。<br>举例:<br/><br>在cookie中有数据, key=”session_id”, value=”r7bwqr8ba5pypolyq4e502zjxaxcl9v5”, 那么此value就是<code>django_session</code>表的<code>session_key</code>数据。</p>
+<h3 id="session存储方式"><a href="#session存储方式" class="headerlink" title="session存储方式"></a>session存储方式</h3><p>从django的代码路径<code>django.contrib.sessions</code>可以获取到具体分类，具体使用哪种可以在<code>settings.py</code>中配置<code>SESSION_ENGINE</code>属性，例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SESSION_ENGINE = <span class="string">'django.contrib.sessions.backends.signed_cookies'</span></span><br></pre></td></tr></table></figure>
+<h4 id="django-contrib-sessions-file"><a href="#django-contrib-sessions-file" class="headerlink" title="django.contrib.sessions.file"></a>django.contrib.sessions.file</h4><p>将session数据存放在文件中，一般文件都是放在/tmp下，例如windows平台就是在<code>C:\Users\Administrator\AppData\Local\Temp</code>路径下。<br/><br>不推荐。</p>
+<h4 id="django-contrib-sessions-cache"><a href="#django-contrib-sessions-cache" class="headerlink" title="django.contrib.sessions.cache"></a>django.contrib.sessions.cache</h4><p>将session数据放在缓存中。<br/><br>使用redis做缓存配置如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CACHES = &#123;</span><br><span class="line">    <span class="string">"default"</span>: &#123;</span><br><span class="line">        <span class="string">"BACKEND"</span>: <span class="string">"django_redis.cache.RedisCache"</span>,</span><br><span class="line">        <span class="string">"LOCATION"</span>: <span class="string">"redis://127.0.0.1:6379/1"</span>,</span><br><span class="line">        <span class="string">"OPTIONS"</span>: &#123;</span><br><span class="line">            <span class="string">"CLIENT_CLASS"</span>: <span class="string">"django_redis.client.DefaultClient"</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">SESSION_ENGINE = <span class="string">"django.contrib.sessions.backends.cache"</span></span><br><span class="line">SESSION_CACHE_ALIAS = <span class="string">"default"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="django-contrib-sessions-db"><a href="#django-contrib-sessions-db" class="headerlink" title="django.contrib.sessions.db"></a>django.contrib.sessions.db</h4><p>将session放在数据库中，这个是默认方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># The module to store session data</span></span><br><span class="line">SESSION_ENGINE = <span class="string">'django.contrib.sessions.backends.db'</span></span><br></pre></td></tr></table></figure>
+<h4 id="django-contrib-sessions-cache-db"><a href="#django-contrib-sessions-cache-db" class="headerlink" title="django.contrib.sessions.cache_db"></a>django.contrib.sessions.cache_db</h4><p>混合存储，优先从缓存中获取session，如果没有再从数据库中获取，结合了上面两种。</p>
+<h4 id="django-contrib-sessions-signed-cookies"><a href="#django-contrib-sessions-signed-cookies" class="headerlink" title="django.contrib.sessions.signed_cookies"></a>django.contrib.sessions.signed_cookies</h4><p>将session数据加密后放在cookie中。<br/><br>不推荐。</p>
+<h3 id="源码介绍"><a href="#源码介绍" class="headerlink" title="源码介绍"></a>源码介绍</h3><p>看了下代码，发现session的代码比我想象中的简单太多，就稍微拿数据库存储方式说下。</p>
+<h4 id="SessionBase"><a href="#SessionBase" class="headerlink" title="SessionBase"></a>SessionBase</h4><p>session的所有存储方式的类都叫做<code>SessionStore</code>，而所有的类都继承自<code>SessionBase</code>。<br/><br>在使用session时完成就是按照dict使用的，看了下它的代码，虽然说并没有继承自dict或跟dict相关的类，但其实一看就跟dict的用法一致。<br/><br>路径：<code>django.contrib.sessions.backends.base.SessionBase</code></p>
+<h5 id="初始化数据"><a href="#初始化数据" class="headerlink" title="初始化数据"></a>初始化数据</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, session_key=None)</span>:</span></span><br><span class="line">    <span class="comment"># 客户端的session_id的值</span></span><br><span class="line">    self._session_key = session_key</span><br><span class="line">    <span class="comment"># 是否访问</span></span><br><span class="line">    self.accessed = <span class="literal">False</span></span><br><span class="line">    <span class="comment"># 是否修改</span></span><br><span class="line">    self.modified = <span class="literal">False</span></span><br><span class="line">    <span class="comment"># 序列化方式，默认是json</span></span><br><span class="line">    self.serializer = import_string(settings.SESSION_SERIALIZER)</span><br></pre></td></tr></table></figure>
+
+<h5 id="其他常用方法"><a href="#其他常用方法" class="headerlink" title="其他常用方法"></a>其他常用方法</h5><p>具体的可以查看源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__contains__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    判断session是否存在</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> key <span class="keyword">in</span> self._session</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    获取session数据</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> self._session[key]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    设置数据</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    self._session[key] = value</span><br><span class="line">    <span class="comment"># 因为设置了数据，那么就是说已经修改了</span></span><br><span class="line">    self.modified = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__delitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    删除数据</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">del</span> self._session[key]</span><br><span class="line">    self.modified = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, key, default=None)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> self._session.get(key, default)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self, key, default=__not_given)</span>:</span></span><br><span class="line">    self.modified = self.modified <span class="keyword">or</span> key <span class="keyword">in</span> self._session</span><br><span class="line">    <span class="comment"># 在pop数据时，是否有存入默认值</span></span><br><span class="line">    args = () <span class="keyword">if</span> default <span class="keyword">is</span> self.__not_given <span class="keyword">else</span> (default,)</span><br><span class="line">    <span class="keyword">return</span> self._session.pop(key, *args)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setdefault</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> self._session:</span><br><span class="line">        <span class="keyword">return</span> self._session[key]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.modified = <span class="literal">True</span></span><br><span class="line">        self._session[key] = value</span><br><span class="line">        <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
+
+<h5 id="继承时需要实现的方法"><a href="#继承时需要实现的方法" class="headerlink" title="继承时需要实现的方法"></a>继承时需要实现的方法</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exists</span><span class="params">(self, session_key)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Returns True if the given session_key already exists.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(<span class="string">'subclasses of SessionBase must provide an exists() method'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Creates a new session instance. Guaranteed to create a new object with</span></span><br><span class="line"><span class="string">    a unique key and will have saved the result once (with empty data)</span></span><br><span class="line"><span class="string">    before the method returns.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(<span class="string">'subclasses of SessionBase must provide a create() method'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, must_create=False)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Saves the session data. If 'must_create' is True, a new session object</span></span><br><span class="line"><span class="string">    is created (otherwise a CreateError exception is raised). Otherwise,</span></span><br><span class="line"><span class="string">    save() only updates an existing object and does not create one</span></span><br><span class="line"><span class="string">    (an UpdateError is raised).</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(<span class="string">'subclasses of SessionBase must provide a save() method'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(self, session_key=None)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Deletes the session data under this key. If the key is None, the</span></span><br><span class="line"><span class="string">    current session key value is used.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(<span class="string">'subclasses of SessionBase must provide a delete() method'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Loads the session data and returns a dictionary.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(<span class="string">'subclasses of SessionBase must provide a load() method'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">clear_expired</span><span class="params">(cls)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Remove expired sessions from the session store.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If this operation isn't possible on a given backend, it should raise</span></span><br><span class="line"><span class="string">    NotImplementedError. If it isn't necessary, because the backend has</span></span><br><span class="line"><span class="string">    a built-in expiration mechanism, it should be a no-op.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(<span class="string">'This backend does not support clear_expired().'</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="get-session方法"><a href="#get-session方法" class="headerlink" title="_get_session方法"></a>_get_session方法</h5><p>在代码中，获取或设置数据时都是调用的<code>self._session</code>,从代码看</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_session</span><span class="params">(self, no_load=False)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Lazily loads session from storage (unless "no_load" is True, when only</span></span><br><span class="line"><span class="string">    an empty dict is stored) and stores it in the current instance.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    self.accessed = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> self._session_cache</span><br><span class="line">    <span class="keyword">except</span> AttributeError:</span><br><span class="line">        <span class="keyword">if</span> self.session_key <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> no_load:</span><br><span class="line">            self._session_cache = &#123;&#125;</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._session_cache = self.load()</span><br><span class="line">    <span class="keyword">return</span> self._session_cache</span><br><span class="line"></span><br><span class="line">_session = property(_get_session)</span><br></pre></td></tr></table></figure>
+<p><code>_session</code>是通过调用<code>self.load()</code>获取到的，也就是具体逻辑要子类实现了，根据存储的方式不同实现的代码也就不同。</p>
+<h4 id="SessionStore，db方式"><a href="#SessionStore，db方式" class="headerlink" title="SessionStore，db方式"></a>SessionStore，db方式</h4><h5 id="获取db方式数据表模型"><a href="#获取db方式数据表模型" class="headerlink" title="获取db方式数据表模型"></a>获取db方式数据表模型</h5><p>也就是最开始提到的<code>Session</code>模型了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_model_class</span><span class="params">(cls)</span>:</span></span><br><span class="line">    <span class="keyword">from</span> django.contrib.sessions.models <span class="keyword">import</span> Session</span><br><span class="line">    <span class="keyword">return</span> Session</span><br><span class="line"></span><br><span class="line"><span class="meta">@cached_property</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> self.get_model_class()</span><br></pre></td></tr></table></figure>
+
+<h5 id="load"><a href="#load" class="headerlink" title="load"></a>load</h5><p>实现父类的load方法。<br/><br>其实就是一般的orm使用方法，如果存在返回数据的Session对象，不存在则返回空dict，额外做了一个有效期的判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        s = self.model.objects.get(</span><br><span class="line">            session_key=self.session_key,</span><br><span class="line">            expire_date__gt=timezone.now()</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> self.decode(s.session_data)</span><br><span class="line">    <span class="keyword">except</span> (self.model.DoesNotExist, SuspiciousOperation) <span class="keyword">as</span> e:</span><br><span class="line">        self._session_key = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="create"><a href="#create" class="headerlink" title="create"></a>create</h5><p>创建Session对象。<br>_get_new_session_key()方法会生成一个32位的随机字符串，生成后就立即保存了，避免key值出现重复。<br/><br>这儿稍微提了下，因为在工作中好像遇到过这类问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        self._session_key = self._get_new_session_key()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># Save immediately to ensure we have a unique entry in the database.</span></span><br><span class="line">            self.save(must_create=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">except</span> CreateError:</span><br><span class="line">            <span class="comment"># Key wasn't unique. Try again.</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        self.modified = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="中间件SessionMiddleware"><a href="#中间件SessionMiddleware" class="headerlink" title="中间件SessionMiddleware"></a>中间件SessionMiddleware</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SessionMiddleware</span><span class="params">(MiddlewareMixin)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, get_response=None)</span>:</span></span><br><span class="line">        self.get_response = get_response</span><br><span class="line">        <span class="comment"># session的存储方式是可配置的，那么根据settings.py中的配置获取不同的SessionStore类</span></span><br><span class="line">        <span class="comment"># import_module根据路径（字符串）获取模块对象</span></span><br><span class="line">        engine = import_module(settings.SESSION_ENGINE)</span><br><span class="line">        self.SessionStore = engine.SessionStore</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_request</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        <span class="comment"># 存放在cookie中的django_session表的session_key对应的key值，默认是sessionid</span></span><br><span class="line">        session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)</span><br><span class="line">        <span class="comment"># 获取session对象</span></span><br><span class="line">        request.session = self.SessionStore(session_key)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_response</span><span class="params">(self, request, response)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 是否已访问</span></span><br><span class="line">            accessed = request.session.accessed</span><br><span class="line">            <span class="comment"># 是否已修改</span></span><br><span class="line">            modified = request.session.modified</span><br><span class="line">            <span class="comment"># 是否为空</span></span><br><span class="line">            empty = request.session.is_empty()</span><br><span class="line">        <span class="keyword">except</span> AttributeError:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># First check if we need to delete this cookie.</span></span><br><span class="line">            <span class="comment"># The session should be deleted only if the session is entirely empty</span></span><br><span class="line">            <span class="keyword">if</span> settings.SESSION_COOKIE_NAME <span class="keyword">in</span> request.COOKIES <span class="keyword">and</span> empty:</span><br><span class="line">                response.delete_cookie(</span><br><span class="line">                    settings.SESSION_COOKIE_NAME,</span><br><span class="line">                    path=settings.SESSION_COOKIE_PATH,</span><br><span class="line">                    domain=settings.SESSION_COOKIE_DOMAIN,</span><br><span class="line">                )</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> accessed:</span><br><span class="line">                    patch_vary_headers(response, (<span class="string">'Cookie'</span>,))</span><br><span class="line">                <span class="keyword">if</span> (modified <span class="keyword">or</span> settings.SESSION_SAVE_EVERY_REQUEST) <span class="keyword">and</span> <span class="keyword">not</span> empty:</span><br><span class="line">                    <span class="comment"># 确定session的有效期</span></span><br><span class="line">                    <span class="keyword">if</span> request.session.get_expire_at_browser_close():</span><br><span class="line">                        max_age = <span class="literal">None</span></span><br><span class="line">                        expires = <span class="literal">None</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        max_age = request.session.get_expiry_age()</span><br><span class="line">                        expires_time = time.time() + max_age</span><br><span class="line">                        expires = cookie_date(expires_time)</span><br><span class="line">                    <span class="keyword">if</span> response.status_code != <span class="number">500</span>:</span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            <span class="comment"># 服务端保存</span></span><br><span class="line">                            request.session.save()</span><br><span class="line">                        <span class="keyword">except</span> UpdateError:</span><br><span class="line">                            <span class="keyword">return</span> redirect(request.path)</span><br><span class="line">                        <span class="comment"># 客户端保存</span></span><br><span class="line">                        response.set_cookie(</span><br><span class="line">                            settings.SESSION_COOKIE_NAME,</span><br><span class="line">                            request.session.session_key, max_age=max_age,</span><br><span class="line">                            expires=expires, domain=settings.SESSION_COOKIE_DOMAIN,</span><br><span class="line">                            path=settings.SESSION_COOKIE_PATH,</span><br><span class="line">                            secure=settings.SESSION_COOKIE_SECURE <span class="keyword">or</span> <span class="literal">None</span>,</span><br><span class="line">                            httponly=settings.SESSION_COOKIE_HTTPONLY <span class="keyword">or</span> <span class="literal">None</span>,</span><br><span class="line">                        )</span><br><span class="line">        <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>之前一直想把这部分源码过一遍，但拖延症太严重一直放着了。现在花点时间看了下源码，比想象中的简单好多，一下子都不知道笔记该怎么写了，就随便复制了点看起来重要的代码添加点注释了。<br/><br>session模块主要的代码都在<code>django.contrib.session.backends</code>路径下，代码很简单，配合django的注释很容易读懂，就这样了。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81/" rel="tag">源码</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2020/05/23/%E6%95%A3%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            散列表的分离链接法代码实现
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/23/%E8%BD%AC-%E5%87%A0%E4%B8%AAredis%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">(转)几个redis常用问题</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "WsTe7qzqb4a2pxJVBdPy6FI5-gzGzoHsz",
+    app_key: "EACB4Omi8LuM9N2KVXA81Am0",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2020
+        <i class="ri-heart-fill heart_icon"></i> _Tao
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="MoonMonsters"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

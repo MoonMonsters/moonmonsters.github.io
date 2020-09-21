@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    django-rest-framework --- 限流 |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="MoonMonsters" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-django-rest-framework-限流"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  django-rest-framework --- 限流
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-rest-framework-%E9%99%90%E6%B5%81/" class="article-date">
+  <time datetime="2020-05-23T11:13:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">1.7k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">7 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>限流就是限制访问,就是通常一个用户在多次请求一个页面，或者点击一个链接的时候，前几次点击是没有问题的，但是一旦连续几次之后，就会出现访问受限，离下一次访问还有50秒等的字样，在django<br>rest framework 中有一个专门的组件来做限制访问.</p>
+<a id="more"></a>
+
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><h4 id="自定义Throttle类"><a href="#自定义Throttle类" class="headerlink" title="自定义Throttle类"></a>自定义Throttle类</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllUserThrottle</span><span class="params">(throttling.SimpleRateThrottle)</span>:</span></span><br><span class="line">    <span class="comment"># 使用的缓存方式</span></span><br><span class="line">    cache = cache</span><br><span class="line">    <span class="comment"># 必填</span></span><br><span class="line">    scope = <span class="string">'all_user'</span></span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_cache_key</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> request.user.is_authenticated:</span><br><span class="line">            <span class="comment"># 如果是登录用户,则使用scope=user</span></span><br><span class="line">            AllUserThrottle.scope = <span class="string">'user'</span></span><br><span class="line">            ident = request.user.username</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 如果是未登录用户,则使用scope='anonymous'</span></span><br><span class="line">            AllUserThrottle.scope = <span class="string">'anonymous'</span></span><br><span class="line">            ident = self.get_ident(request)</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> self.cache_format % &#123;</span><br><span class="line">            <span class="string">'scope'</span>: self.scope,</span><br><span class="line">            <span class="string">'ident'</span>: ident</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="string">'DEFAULT_THROTTLE_RATES'</span>: &#123;</span><br><span class="line">        <span class="string">'anonymous'</span>: <span class="string">'5/m'</span>,</span><br><span class="line">        <span class="string">'user'</span>: <span class="string">'10/m'</span>,</span><br><span class="line">        <span class="string">'all_user'</span>: <span class="string">'15/m'</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThrottleApiView</span><span class="params">(generics.ListAPIView)</span>:</span></span><br><span class="line">    queryset = UserInfo.objects.all()</span><br><span class="line">    <span class="comment"># 使用限流的方式</span></span><br><span class="line">    throttle_classes = [AllUserThrottle]</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">list</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">        userinfo = [qs.user.username <span class="keyword">for</span> qs <span class="keyword">in</span> self.get_queryset()]</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> JsonResponse(json.dumps(userinfo), safe=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>当用户登录状态访问ThrottleApiView时,只能每分钟访问10次,如果是未登录状态访问,只能每分钟访问5次.<br>上面的代码写法没太大必要,可以仿照drf的AnonRateThrottle和UserRateThrottle,根据不同的状态来调用不同的限流类,而不是用一个限流类根据不同的状态来使用不同的scope,太低级了.</p>
+<h3 id="AnonRateThrottle-和-UserRateThrottle"><a href="#AnonRateThrottle-和-UserRateThrottle" class="headerlink" title="AnonRateThrottle 和 UserRateThrottle"></a>AnonRateThrottle 和 UserRateThrottle</h3><p>对于根据用户是否登录来限制访问次数,drf提供了AnonRateThrottle 和<br>UserRateThrottle两个类,只需要在配置文件中配置下即可限制登录用户访问10次/分钟,未登录用户限制5次/分钟了.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK &#x3D; &#123;</span><br><span class="line">    &#39;DEFAULT_THROTTLE_CLASSES&#39;:[</span><br><span class="line">      &#39;rest_framework.throttling.AnonRateThrottle&#39;,</span><br><span class="line">      &#39;rest_framework.throttling.UserRateThrottle&#39;,</span><br><span class="line">    ],</span><br><span class="line">    &#39;DEFAULT_THROTTLE_RATES&#39;: &#123;</span><br><span class="line">        &#39;anon&#39;: &#39;5&#x2F;m&#39;,</span><br><span class="line">        &#39;user&#39;: &#39;10&#x2F;m&#39;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然,不推荐上述写法,最好把限流类写入视图类中,不要全局定义.</p>
+<h3 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h3><h4 id="initial"><a href="#initial" class="headerlink" title="initial"></a>initial</h4><p>rest_framework.views.APIView:<br>会在初始化时,检查限流</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initial</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    self.check_throttles(request)</span><br></pre></td></tr></table></figure>
+<h4 id="check-throttles"><a href="#check-throttles" class="headerlink" title="check_throttles"></a>check_throttles</h4><p>rest_framework.views.APIView:<br>会获取自定义的throttle_classes列表(如果没有则使用默认的),调用allow_request函数判断是否被限流,如果限流了就<br>抛出异常,并提示还需要多久才能再次访问</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_throttles</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Check if request should be throttled.</span></span><br><span class="line"><span class="string">    Raises an appropriate exception if the request is throttled.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">for</span> throttle <span class="keyword">in</span> self.get_throttles():</span><br><span class="line">        <span class="comment"># 当返回None或者False会抛出异常</span></span><br><span class="line">        <span class="comment"># 返回为True,表示可以正常访问</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> throttle.allow_request(request, self):</span><br><span class="line">            self.throttled(request, throttle.wait())</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 获取throttle_class列表数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_throttles</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Instantiates and returns the list of throttles that this view uses.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">return</span> [throttle() <span class="keyword">for</span> throttle <span class="keyword">in</span> self.throttle_classes]</span><br><span class="line"><span class="comment"># 默认值</span></span><br><span class="line">throttle_classes = api_settings.DEFAULT_THROTTLE_CLASSES</span><br></pre></td></tr></table></figure>
+
+<h4 id="SimpleRateThrottle"><a href="#SimpleRateThrottle" class="headerlink" title="SimpleRateThrottle"></a>SimpleRateThrottle</h4><p>rest_framework.throttling:<br>一般我们自定义限流类都会继承该类,并且重写scope属性,以及get_cache_key()函数.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleRateThrottle</span><span class="params">(BaseThrottle)</span>:</span></span><br><span class="line">    <span class="comment"># 使用哪种缓存</span></span><br><span class="line">    cache = default_cache</span><br><span class="line">    <span class="comment"># 时间戳</span></span><br><span class="line">    timer = time.time</span><br><span class="line">    <span class="comment"># 存入缓存时的key值</span></span><br><span class="line">    cache_format = <span class="string">'throttle_%(scope)s_%(ident)s'</span></span><br><span class="line">    <span class="comment"># 自定义时必须重写</span></span><br><span class="line">    scope = <span class="literal">None</span></span><br><span class="line">    <span class="comment"># 频率设置 &#123; ‘user’: ‘10/m’ &#125;</span></span><br><span class="line">    THROTTLE_RATES = api_settings.DEFAULT_THROTTLE_RATES</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> getattr(self, <span class="string">'rate'</span>, <span class="literal">None</span>):</span><br><span class="line">            self.rate = self.get_rate()</span><br><span class="line">        <span class="comment"># 配置文件中一定访问时间内的访问次数</span></span><br><span class="line">        self.num_requests, self.duration = self.parse_rate(self.rate)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 自定义时必须重写,放回某限流下的唯一值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_cache_key</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError(<span class="string">'.get_cache_key() must be overridden'</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_rate</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 没有scope时抛出异常</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> getattr(self, <span class="string">'scope'</span>, <span class="literal">None</span>):</span><br><span class="line">            msg = (<span class="string">"You must set either `.scope` or `.rate` for '%s'</span></span><br><span class="line"><span class="string">throttle"</span> %</span><br><span class="line">                   self.__class__.__name__)</span><br><span class="line">            <span class="keyword">raise</span> ImproperlyConfigured(msg)</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 返回频率,类似 ‘10/m’之类</span></span><br><span class="line">            <span class="keyword">return</span> self.THROTTLE_RATES[self.scope]</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            msg = <span class="string">"No default throttle rate set for '%s' scope"</span> %</span><br><span class="line">self.scope</span><br><span class="line">            <span class="keyword">raise</span> ImproperlyConfigured(msg)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 返回频率元祖</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_rate</span><span class="params">(self, rate)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> rate <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> (<span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">        num, period = rate.split(<span class="string">'/'</span>)</span><br><span class="line">        num_requests = int(num)</span><br><span class="line">        duration = &#123;<span class="string">'s'</span>: <span class="number">1</span>, <span class="string">'m'</span>: <span class="number">60</span>, <span class="string">'h'</span>: <span class="number">3600</span>, <span class="string">'d'</span>: <span class="number">86400</span>&#125;[period[<span class="number">0</span>]]</span><br><span class="line">        <span class="keyword">return</span> (num_requests, duration)</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">allow_request</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="comment"># 是否限制访问频率</span></span><br><span class="line">        <span class="comment"># 当限制的频率为空时,不会抛出异常</span></span><br><span class="line">        <span class="keyword">if</span> self.rate <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment"># 获取用户的唯一标志</span></span><br><span class="line">        self.key = self.get_cache_key(request, view)</span><br><span class="line">        <span class="keyword">if</span> self.key <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment"># 获取用户的历史访问次数</span></span><br><span class="line">        self.history = self.cache.get(self.key, [])</span><br><span class="line">        <span class="comment"># 当前时间</span></span><br><span class="line">        self.now = self.timer()</span><br><span class="line"> </span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">如果之前已经访问过该链接,但距离当前时间最长的一次访问超过了duration,</span><br><span class="line">        <span class="comment"># 就将其删除</span></span><br><span class="line">        <span class="comment"># 循环判断</span></span><br><span class="line">        <span class="keyword">while</span> self.history <span class="keyword">and</span> self.history[<span class="number">-1</span>] &lt;= self.now -</span><br><span class="line">self.duration:</span><br><span class="line">            self.history.pop()</span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">删除<span class="string">"过期"</span>时间后,剩下的访问次数仍然大于等于限制次数,那么就限制访问</span><br><span class="line">        <span class="keyword">if</span> len(self.history) &gt;= self.num_requests:</span><br><span class="line">            <span class="keyword">return</span> self.throttle_failure()</span><br><span class="line">        <span class="comment"># 正常访问</span></span><br><span class="line">        <span class="keyword">return</span> self.throttle_success()</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 可以正常访问</span></span><br><span class="line">    <span class="comment"># 将访问时间插入列表首位</span></span><br><span class="line">    <span class="comment"># 更新缓存信息</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">throttle_success</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.history.insert(<span class="number">0</span>, self.now)</span><br><span class="line">        self.cache.set(self.key, self.history, self.duration)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 限制访问</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">throttle_failure</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 不可访问时的等待时间</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wait</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 如果有访问记录,就返回限制时间-最新一次访问时间</span></span><br><span class="line">        <span class="comment"># 否则返回总的限制时间</span></span><br><span class="line">        <span class="keyword">if</span> self.history:</span><br><span class="line">            remaining_duration = self.duration - (self.now -</span><br><span class="line">self.history[<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            remaining_duration = self.duration</span><br><span class="line"> </span><br><span class="line">        <span class="comment"># TODO 没看懂</span></span><br><span class="line">        available_requests = self.num_requests - len(self.history) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> available_requests &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> remaining_duration / float(available_requests)</span><br></pre></td></tr></table></figure>
+
+<h4 id="get-ident"><a href="#get-ident" class="headerlink" title="get_ident"></a>get_ident</h4><p>rest_framework.BaseThrottle:<br>如果用户没有返回唯一的值,那么可以调用该函数,用ip地址做唯一值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_ident</span><span class="params">(self, request)</span>:</span></span><br><span class="line">    xff = request.META.get(<span class="string">'HTTP_X_FORWARDED_FOR'</span>)</span><br><span class="line">    remote_addr = request.META.get(<span class="string">'REMOTE_ADDR'</span>)</span><br><span class="line">    num_proxies = api_settings.NUM_PROXIES</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span> num_proxies <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> num_proxies == <span class="number">0</span> <span class="keyword">or</span> xff <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> remote_addr</span><br><span class="line">        addrs = xff.split(<span class="string">','</span>)</span><br><span class="line">        client_addr = addrs[-min(num_proxies, len(addrs))]</span><br><span class="line">        <span class="keyword">return</span> client_addr.strip()</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(xff.split()) <span class="keyword">if</span> xff <span class="keyword">else</span> remote_addr</span><br></pre></td></tr></table></figure>
+
+<h4 id="drf定义限流类介绍"><a href="#drf定义限流类介绍" class="headerlink" title="drf定义限流类介绍"></a>drf定义限流类介绍</h4><p>rest_framework.throttling:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserRateThrottle</span><span class="params">(SimpleRateThrottle)</span>:</span></span><br><span class="line">    scope = <span class="string">'user'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_cache_key</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="comment"># 如果登录了,则返回pk</span></span><br><span class="line">        <span class="comment"># 否则返回ip</span></span><br><span class="line">        <span class="keyword">if</span> request.user.is_authenticated:</span><br><span class="line">            ident = request.user.pk</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ident = self.get_ident(request)</span><br><span class="line"> </span><br><span class="line">        <span class="comment"># 需要拼接字符串</span></span><br><span class="line">        <span class="keyword">return</span> self.cache_format % &#123;</span><br><span class="line">            <span class="string">'scope'</span>: self.scope,</span><br><span class="line">            <span class="string">'ident'</span>: ident</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnonRateThrottle</span><span class="params">(SimpleRateThrottle)</span>:</span></span><br><span class="line">    scope = <span class="string">'anon'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_cache_key</span><span class="params">(self, request, view)</span>:</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">为了避免与user的冲突,如果在设置anon时,如果已经登录了,那么就返回<span class="literal">None</span>,不记录次数</span><br><span class="line">        <span class="keyword">if</span> request.user.is_authenticated:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span>  <span class="comment"># Only throttle unauthenticated requests.</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment"># 拼接字符串</span></span><br><span class="line">        <span class="keyword">return</span> self.cache_format % &#123;</span><br><span class="line">            <span class="string">'scope'</span>: self.scope,</span><br><span class="line">            <span class="string">'ident'</span>: self.get_ident(request)</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="自定义throttle异常"><a href="#自定义throttle异常" class="headerlink" title="自定义throttle异常"></a>自定义throttle异常</h4><p>在APIView类下有个throttled()函数,重写该函数就可实现自定义异常<br>rest_framework.views.APIView:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">throttled</span><span class="params">(self, request, wait)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    If request is throttled, determine what kind of exception to raise.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">raise</span> exceptions.Throttled(wait)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># rest_framework.exceptions:</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Throttled</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    status_code = status.HTTP_429_TOO_MANY_REQUESTS</span><br><span class="line">    default_detail = _(<span class="string">'Request was throttled.'</span>)</span><br><span class="line">    extra_detail_singular = <span class="string">'Expected available in &#123;wait&#125; second.'</span></span><br><span class="line">    extra_detail_plural = <span class="string">'Expected available in &#123;wait&#125; seconds.'</span></span><br><span class="line">    default_code = <span class="string">'throttled'</span></span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, wait=None, detail=None, code=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> detail <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            detail = force_text(self.default_detail)</span><br><span class="line">        <span class="keyword">if</span> wait <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            wait = math.ceil(wait)</span><br><span class="line">            detail = <span class="string">' '</span>.join((</span><br><span class="line">                detail,</span><br><span class="line">force_text(ungettext(self.extra_detail_singular.format(wait=wait),</span><br><span class="line">self.extra_detail_plural.format(wait=wait),</span><br><span class="line">                                     wait))))</span><br><span class="line">        self.wait = wait</span><br><span class="line">        super(Throttled, self).__init__(detail, code)</span><br></pre></td></tr></table></figure>
+<p>例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> exceptions</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">throttled</span><span class="params">(self, request, wait)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyThrottled</span><span class="params">(exceptions.Throttled)</span>:</span></span><br><span class="line">        default_detail = <span class="string">'请求被限制.'</span></span><br><span class="line">        extra_detail_singular = <span class="string">'Expected available in &#123;wait&#125; second.'</span></span><br><span class="line">        extra_detail_plural = <span class="string">'还需要再等待&#123;wait&#125;'</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">raise</span> MyThrottled(wait)</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;cjaaron&#x2F;p&#x2F;10443725.html</span><br><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;eric_yi&#x2F;p&#x2F;8424424.html</span><br><span class="line">https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_42487752&#x2F;article&#x2F;details&#x2F;85328307</span><br><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;supery007&#x2F;p&#x2F;8423769.html</span><br><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;welan&#x2F;p&#x2F;10138615.html</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/05/23/django-rest-framework-%E9%99%90%E6%B5%81/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2020/05/23/%E5%88%A4%E6%96%AD%E5%8D%95%E9%93%BE%E8%A1%A8%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            判断单链表是否有环的两种方法
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/23/django-%E8%AF%B7%E6%B1%82%E5%88%B0%E5%93%8D%E5%BA%94%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">django --- 请求到响应源码分析</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "WsTe7qzqb4a2pxJVBdPy6FI5-gzGzoHsz",
+    app_key: "EACB4Omi8LuM9N2KVXA81Am0",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2020
+        <i class="ri-heart-fill heart_icon"></i> _Tao
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="MoonMonsters"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
