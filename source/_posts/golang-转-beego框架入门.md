@@ -7,6 +7,8 @@ categories:
 date: 2020-11-08 17:13:00
 ---
 
+[转载至Clown1995](https://www.jianshu.com/u/4bede98c5ae5)
+
 [Beego脱坑（一）Beego简介和安装](https://www.jianshu.com/p/462e23ae402c)
 
 [Beego脱坑（二）新建Beego项目](https://www.jianshu.com/p/5a586b06c55f)
@@ -37,5 +39,3 @@ date: 2020-11-08 17:13:00
 [Beego脱坑（十四）ORM高级查询](https://www.jianshu.com/p/6a1da3390615)
 
 [Beego脱坑（十五）ORM关系查询](https://www.jianshu.com/p/a0ffd74e7481)
-
-
