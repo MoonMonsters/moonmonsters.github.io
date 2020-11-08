@@ -137,6 +137,73 @@
     
     
     <article
+  id="post-leetcode-实现-Trie-前缀树"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/leetcode-%E5%AE%9E%E7%8E%B0-Trie-%E5%89%8D%E7%BC%80%E6%A0%91/"
+    >leetcode --- 实现 Trie (前缀树)</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/leetcode-%E5%AE%9E%E7%8E%B0-Trie-%E5%89%8D%E7%BC%80%E6%A0%91/" class="article-date">
+  <time datetime="2020-05-23T10:56:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p><a href="https://leetcode-cn.com/problems/implement-trie-prefix-tree" target="_blank" rel="noopener">前缀树</a></p>
+<p>实现一个 Trie (前缀树)，包含 insert, search, 和 startsWith 这三个操作。</p>
+<p>示例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Trie trie = new Trie();</span><br><span class="line">trie.insert(<span class="string">"apple"</span>);</span><br><span class="line">trie.search(<span class="string">"apple"</span>);   // 返回 true</span><br><span class="line">trie.search(<span class="string">"app"</span>);     // 返回 false</span><br><span class="line">trie.startsWith(<span class="string">"app"</span>); // 返回 true</span><br><span class="line">trie.insert(<span class="string">"app"</span>);   </span><br><span class="line">trie.search(<span class="string">"app"</span>);     // 返回 true</span><br></pre></td></tr></table></figure>
+
+<p>说明:</p>
+<p>你可以假设所有的输入都是由小写字母 a-z 构成的。<br>保证所有输入均为非空字符串。</p>
+<p>leetcode上该代码已经通过了，自己在原基础上加了注释和遍历的功能。<br>这个就是字典树:</p>
+<ul>
+<li>插入一个单词时，遍历此单词各个字符</li>
+<li>如果单个字符存在，则取出该字符对应的节点</li>
+<li>如果字符不存在，则创建字符节点，并加入到上一个字符的子节点(next)中</li>
+<li>循环</li>
+</ul> 
+      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%AE%9E%E7%8E%B0-Trie-%E5%89%8D%E7%BC%80%E6%A0%91/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-leetcode-两数相加"
   class="article article-type-post"
   itemscope
@@ -636,63 +703,6 @@
   <p><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">无重复字符的最长子串</a><br><br/><br>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。</p>
 <p>输入: “abcabcbb”<br>输出: 3<br>解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。</p> 
       <a class="article-more-link" href="/2020/05/23/leetcode-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-合并K个有序链表"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6K%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"
-    >leetcode --- 合并K个有序链表</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6K%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2020-05-23T09:51:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/merge-k-sorted-lists/" target="_blank" rel="noopener">合并K个有序链表</a></p>
-<p>合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。</p>
-<p>示例:</p>
-<p>输入:<br>[<br>  1-&gt;4-&gt;5,<br>  1-&gt;3-&gt;4,<br>  2-&gt;6<br>]<br>输出: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6K%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"
         >阅读更多...</a
       >
        

@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>golang - [转]beego框架入门</title>
+    <url>/2020/11/08/golang-%E8%BD%AC-beego%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<p><a href="https://www.jianshu.com/p/462e23ae402c" target="_blank" rel="noopener">Beego脱坑（一）Beego简介和安装</a></p>
+<p><a href="https://www.jianshu.com/p/5a586b06c55f" target="_blank" rel="noopener">Beego脱坑（二）新建Beego项目</a></p>
+<p><a href="https://www.jianshu.com/p/d0d1462113d4" target="_blank" rel="noopener">Beego脱坑（三）Router</a></p>
+<p><a href="https://www.jianshu.com/p/a0ece5f05ab9" target="_blank" rel="noopener">Beego脱坑（四）Controller</a></p>
+<p><a href="https://www.jianshu.com/p/fa3dbf8aa774" target="_blank" rel="noopener">Beego脱坑（五）使用模板获取数据</a></p>
+<p><a href="https://www.jianshu.com/p/69c8b3f8d58c" target="_blank" rel="noopener">Beego脱坑（六）多种格式数据输出</a></p>
+<p><a href="https://www.jianshu.com/p/43459409ec00" target="_blank" rel="noopener">Beego脱坑（七）获取表单数据并解析到结构体</a></p>
+<p><a href="https://www.jianshu.com/p/37abab5808bb" target="_blank" rel="noopener">Beego脱坑（八）表单数据验证</a></p>
+<p><a href="https://www.jianshu.com/p/9aee6d938c49" target="_blank" rel="noopener">Beego脱坑（九）Cookie和Session</a></p>
+<p><a href="https://www.jianshu.com/p/a519cf3ff3b7" target="_blank" rel="noopener">Beego脱坑（十）数据绑定</a></p>
+<p><a href="https://www.jianshu.com/p/a63953b32e60" target="_blank" rel="noopener">Beego脱坑（十一）文件上传、下载</a></p>
+<p><a href="https://www.jianshu.com/p/a65cad84a4b9" target="_blank" rel="noopener">Beego脱坑（十二）ORM介绍并创建第一个表</a></p>
+<p><a href="https://www.jianshu.com/p/d6bf1e3d6187" target="_blank" rel="noopener">Beego脱坑（十三）ORM基本增删改查</a></p>
+<p><a href="https://www.jianshu.com/p/6a1da3390615" target="_blank" rel="noopener">Beego脱坑（十四）ORM高级查询</a></p>
+<p><a href="https://www.jianshu.com/p/a0ffd74e7481" target="_blank" rel="noopener">Beego脱坑（十五）ORM关系查询</a></p>
+]]></content>
+      <categories>
+        <category>golang</category>
+      </categories>
+      <tags>
+        <tag>beego</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>golang - [转]解密Go协程的栈内存管理</title>
     <url>/2020/10/12/golang-%E8%BD%AC-%E8%A7%A3%E5%AF%86Go%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%A0%88%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<p>转载：<a href="https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&mid=2247485886&idx=1&sn=f29fe2ce95a485e2c2ef1c4cd33b5085&chksm=fa80d829cdf7513fdf45b16be023809d9725b150803b6482643c3dd84aa3c0090c2cb9efd3aa&token=940952510&lang=zh_CN#rd" target="_blank" rel="noopener">解密Go协程的栈内存管理</a></p>
