@@ -1,4 +1,4 @@
-title: 'golang - [转]图文结合，白话Go的垃圾回收原理'
+title: '[转]golang - 图文结合，白话Go的垃圾回收原理'
 author: _Tao
 tags: []
 categories:

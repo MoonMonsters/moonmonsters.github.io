@@ -1,4 +1,4 @@
-title: (转)super没那么简单
+title: '[转]super没那么简单'
 author: _Tao
 tags: []
 categories:

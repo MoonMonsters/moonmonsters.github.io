@@ -1,4 +1,4 @@
-title: 'golang - [转]发布订阅模型'
+title: '[转]golang - 发布订阅模型'
 author: _Tao
 tags: []
 categories:

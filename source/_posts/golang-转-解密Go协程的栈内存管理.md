@@ -1,4 +1,4 @@
-title: 'golang - [转]解密Go协程的栈内存管理'
+title: '[转]golang - 解密Go协程的栈内存管理'
 author: _Tao
 tags: []
 categories:

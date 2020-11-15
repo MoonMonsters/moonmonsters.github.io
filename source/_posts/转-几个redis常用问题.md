@@ -1,4 +1,4 @@
-title: (转)几个redis常用问题
+title: '[转]几个redis常用问题'
 author: _Tao
 tags: []
 categories:

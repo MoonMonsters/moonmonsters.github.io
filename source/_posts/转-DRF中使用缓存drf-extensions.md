@@ -1,4 +1,4 @@
-title: (转)DRF中使用缓存drf-extensions
+title: '[转]DRF中使用缓存drf-extensions'
 author: _Tao
 tags:
   - django

@@ -1,4 +1,4 @@
-title: 'golang - [转]图解Go内存管理器的内存分配策略'
+title: '[转]golang - 图解Go内存管理器的内存分配策略'
 author: _Tao
 tags: []
 categories:
