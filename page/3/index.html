@@ -137,6 +137,125 @@
     
     
     <article
+  id="post-转-Go语言中new-和-make-的区别"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/%E8%BD%AC-Go%E8%AF%AD%E8%A8%80%E4%B8%ADnew-%E5%92%8C-make-%E7%9A%84%E5%8C%BA%E5%88%AB/"
+    >[转]Go语言中new()和 make()的区别</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/%E8%BD%AC-Go%E8%AF%AD%E8%A8%80%E4%B8%ADnew-%E5%92%8C-make-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
+  <time datetime="2020-05-23T11:27:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go 语言中的 new 和 make 一直是新手比较容易混淆的东西，咋一看很相似。不过解释两者之间的不同也非常容易。</p>
+<h3 id="new-的主要特性"><a href="#new-的主要特性" class="headerlink" title="new 的主要特性"></a>new 的主要特性</h3><p>首先 new 是内建函数，你可以从 <a href="http://golang.org/pkg/builtin/#new" target="_blank" rel="noopener">http://golang.org/pkg/builtin/#new</a> 这儿看到它，它的定义也很简单：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">new</span><span class="params">(Type)</span> *<span class="title">Type</span></span></span><br></pre></td></tr></table></figure>
+<p>官方文档对于它的描述是：</p>
+<blockquote>
+<p>内建函数 new 用来分配内存，它的第一个参数是一个类型，不是一个值，它的返回值是一个指向新分配类型零值的指针</p>
+</blockquote>
+<p>根据这段描述，我们可以自己实现一个类似 new 的功能：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newInt</span><span class="params">()</span> *<span class="title">int</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> i <span class="keyword">int</span></span><br><span class="line">  <span class="keyword">return</span> &amp;i</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">someInt := newInt()</span><br></pre></td></tr></table></figure>
+<p>我们这个函数的功能跟 someInt := new(int) 一模一样。所以在我们自己定义 new 开头的函数时，出于约定也应该返回类型的指针。</p> 
+      <a class="article-more-link" href="/2020/05/23/%E8%BD%AC-Go%E8%AF%AD%E8%A8%80%E4%B8%ADnew-%E5%92%8C-make-%E7%9A%84%E5%8C%BA%E5%88%AB/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-golang-接口介绍"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/golang-%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D/"
+    >golang --- 接口介绍</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/golang-%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D/" class="article-date">
+  <time datetime="2020-05-23T11:26:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>Go语言的主要设计者之一罗布·派克（Rob Pike）曾经说过，如果只能选择一个Go语言的特 性移植到其他语言中，他会选择接口。</p>
+<p>接口在Go语言有着至关重要的地位。如果说goroutine和channel是支撑起Go语言的并发模型 的基石，让Go语言在如今集群化与多核化的时代成为一道极为亮丽的风景，那么接口是Go语言 整个类型系统的基石，让Go语言在基础编程哲学的探索上达到前所未有的高度。</p>
+<p>Go语言在编程哲学上是变革派，而不是改良派。这不是因为Go语言有goroutine和channel， 而更重要的是因为Go语言的类型系统，更是因为Go语言的接口。Go语言的编程哲学因为有接口 而趋近完美。</p> 
+      <a class="article-more-link" href="/2020/05/23/golang-%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-转-DRF中使用缓存drf-extensions"
   class="article article-type-post"
   itemscope
@@ -149,7 +268,7 @@
        
 <h2 itemprop="name">
   <a class="article-title" href="/2020/05/23/%E8%BD%AC-DRF%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98drf-extensions/"
-    >(转)DRF中使用缓存drf-extensions</a> 
+    >[转]DRF中使用缓存drf-extensions</a> 
 </h2>
  
 
@@ -260,7 +379,7 @@
        
 <h2 itemprop="name">
   <a class="article-title" href="/2020/05/23/%E8%BD%AC-super%E6%B2%A1%E9%82%A3%E4%B9%88%E7%AE%80%E5%8D%95/"
-    >(转)super没那么简单</a> 
+    >[转]super没那么简单</a> 
 </h2>
  
 
@@ -589,129 +708,6 @@
 </article>
 
     
-    <article
-  id="post-django-日志配置"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/"
-    >django --- 日志配置</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/" class="article-date">
-  <time datetime="2020-05-23T11:18:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="常用配置"><a href="#常用配置" class="headerlink" title="常用配置"></a>常用配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">import datetime</span><br><span class="line"></span><br><span class="line">LOGGING &#x3D; &#123;</span><br><span class="line">    # 指明dictConnfig的版本</span><br><span class="line">    &#39;version&#39;: 1,</span><br><span class="line">    # 是否禁用所有的已经存在的日志配置</span><br><span class="line">    &#39;disable_existing_loggers&#39;: True,</span><br><span class="line">    &#39;formatters&#39;: &#123;</span><br><span class="line">        &#39;standard&#39;: &#123;</span><br><span class="line">            # 配置打印log格式</span><br><span class="line">            &#39;format&#39;: &#39;%(asctime)s [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s] %(message)s&#39;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    # 过滤器</span><br><span class="line">    &#39;filters&#39;: &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    # 用来定义具体处理日志的方式，可以定义多种</span><br><span class="line">    &#39;handlers&#39;: &#123;</span><br><span class="line">        &#39;mail_admins&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;django.utils.log.AdminEmailHandler&#39;,</span><br><span class="line">            &#39;include_html&#39;: True,</span><br><span class="line">        &#125;,</span><br><span class="line">        # 默认类型</span><br><span class="line">        &#39;default&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            # 保存的文件</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;QWebFX_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),  # 日志输出文件</span><br><span class="line">            # 文件大小</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            # 备份份数</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            # 使用哪种formatters日志格式</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;django_backends&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            # 保存的文件</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;backends_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),  # 日志输出文件</span><br><span class="line">            # 文件大小</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            # 备份份数</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            # 使用哪种formatters日志格式</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;error&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Error&#x2F;QWebFX_Error_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        # 打印log到控制台</span><br><span class="line">        &#39;console&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.StreamHandler&#39;,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;request_handler&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Request&#x2F;QWebFX_Request_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;scripts_handler&#39;: &#123;</span><br><span class="line">            # 只有INFO及以上级别的log才会写入文件中</span><br><span class="line">            &#39;level&#39;: &#39;INFO&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Script&#x2F;QWebFX_Script_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#39;loggers&#39;: &#123;</span><br><span class="line">        # django 表示就是django本身默认的控制台输出，就是原本在控制台里面输出的内容</span><br><span class="line">        &#39;django&#39;: &#123;</span><br><span class="line">            # 使用default类型的处理器进行处理</span><br><span class="line">            &#39;handlers&#39;: [&#39;default&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: False</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;django.request&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;request_handler&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: False,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;scripts&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;scripts_handler&#39;],</span><br><span class="line">            # 只有INFO及以上级别的消息才会调用此handler</span><br><span class="line">            &#39;level&#39;: &#39;INFO&#39;,</span><br><span class="line">            &#39;propagate&#39;: False</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;console&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;console&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        # API&#x2F;Views 模块的日志处理</span><br><span class="line">        &#39;views&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;default&#39;, &#39;error&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;util&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;error&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        # 保存所有的数据库操作</span><br><span class="line">        &#39;django.db.backends&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;django_backends&#39;],  # 指定file handler处理器，表示只写入到文件</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-django-rest-framework-视图集中附加action的声明"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/django-rest-framework-%E8%A7%86%E5%9B%BE%E9%9B%86%E4%B8%AD%E9%99%84%E5%8A%A0action%E7%9A%84%E5%A3%B0%E6%98%8E/"
-    >django-rest-framework --- 视图集中附加action的声明</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/django-rest-framework-%E8%A7%86%E5%9B%BE%E9%9B%86%E4%B8%AD%E9%99%84%E5%8A%A0action%E7%9A%84%E5%A3%B0%E6%98%8E/" class="article-date">
-  <time datetime="2020-05-23T11:16:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>在视图集(<code>ViewSet</code>)中，如果想要让Router自动帮助我们为自定义的动作生成路由信息，需要使用rest_framework.decorators.action装饰器。<br>以action装饰器装饰的方法名会作为action动作名，与list、retrieve等同。</p>
-<p><code>@action</code>可以接收四个参数: </p>
-<ul>
-<li>methods: 声明该action对应的请求方式，列表传递</li>
-<li>detail: 声明该action的路径是否与单一资源对应，及是否是xxx/<pk>/action方法名/<ul>
-<li>True 表示路径格式是xxx/<pk>/action方法名/</li>
-<li>False 表示路径格式是xxx/action方法名/</li>
-</ul>
-</li>
-<li>url_path: 重设访问该函数的路径,默认是通过函数名<code>func.__name__</code>来访问</li>
-<li>url_name: 改函数对应的name,可用来设置跳转链接,例如revese(‘’)等.</li>
-</ul> 
-      <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E8%A7%86%E5%9B%BE%E9%9B%86%E4%B8%AD%E9%99%84%E5%8A%A0action%E7%9A%84%E5%A3%B0%E6%98%8E/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
   </article>
   
 
@@ -807,6 +803,10 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2020/11/15/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5">链接</a>
     </li>
     
   </ul>
