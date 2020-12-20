@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">536</span>
+            <span class="post-count">677</span>
         </span>
     </span>
 
@@ -89,7 +89,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">2 min</span>
+            <span class="post-count">3 min</span>
         </span>
     </span>
 </div>
@@ -123,6 +123,18 @@
 <h3 id="加入gin的中间件"><a href="#加入gin的中间件" class="headerlink" title="加入gin的中间件"></a>加入gin的中间件</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 限制了/auth的访问频率</span></span><br><span class="line"><span class="comment">// 限制时间间隔, 1秒钟</span></span><br><span class="line"><span class="comment">// 一秒钟内, 最多被访问10次</span></span><br><span class="line"><span class="comment">// 当一秒后, 重新放入10个令牌到令牌桶内, 也就是下一秒可再次被访问10次</span></span><br><span class="line"><span class="keyword">var</span> methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucketRule&#123;</span><br><span class="line">    <span class="comment">// 令牌桶限制的url</span></span><br><span class="line">    Key: <span class="string">"/auth"</span>,</span><br><span class="line">    <span class="comment">// 时间间隔</span></span><br><span class="line">    FillInterval: time.Second * <span class="number">1</span>,</span><br><span class="line">    <span class="comment">// 令牌总容量</span></span><br><span class="line">    Capacity: <span class="number">10</span>,</span><br><span class="line">    <span class="comment">// 重新放入令牌桶数量</span></span><br><span class="line">    Quantum: <span class="number">10</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r := gin.New()</span><br><span class="line">r.Use(middleware.RateLimiter(methodLimiters))</span><br></pre></td></tr></table></figure>
+
+<h3 id="从配置文件中读取方式"><a href="#从配置文件中读取方式" class="headerlink" title="从配置文件中读取方式"></a>从配置文件中读取方式</h3><h4 id="配置yaml"><a href="#配置yaml" class="headerlink" title="配置yaml"></a>配置yaml</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Limiter:</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">Limits:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">Key:</span> <span class="string">"/auth"</span></span><br><span class="line">      <span class="attr">FillInterval:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">Capacity:</span> <span class="number">10</span></span><br><span class="line">      <span class="attr">Quantum:</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">Key:</span> <span class="string">"/api/v1/tags"</span></span><br><span class="line">      <span class="attr">FillInterval:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">Capacity:</span> <span class="number">10</span></span><br><span class="line">      <span class="attr">Quantum:</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="配置Setting"><a href="#配置Setting" class="headerlink" title="配置Setting"></a>配置Setting</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> LimiterSetting <span class="keyword">struct</span> &#123;</span><br><span class="line">    Limits []<span class="keyword">struct</span> &#123;</span><br><span class="line">        Key          <span class="keyword">string</span></span><br><span class="line">        FillInterval time.Duration</span><br><span class="line">        Capacity     <span class="keyword">int64</span></span><br><span class="line">        Quantum      <span class="keyword">int64</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="修改中间件参数传入方式"><a href="#修改中间件参数传入方式" class="headerlink" title="修改中间件参数传入方式"></a>修改中间件参数传入方式</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newLimiter</span><span class="params">()</span> <span class="title">limiter</span>.<span class="title">LimiterIface</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> rules []limiter.LimiterBucketRule</span><br><span class="line">    <span class="keyword">for</span> _, limit := <span class="keyword">range</span> global.LimiterSetting.Limits &#123;</span><br><span class="line">        rules = <span class="built_in">append</span>(rules, limiter.LimiterBucketRule&#123;</span><br><span class="line">            <span class="comment">// 令牌桶限制的url</span></span><br><span class="line">            Key: limit.Key,</span><br><span class="line">            <span class="comment">// 时间间隔</span></span><br><span class="line">            FillInterval: limit.FillInterval * time.Second,</span><br><span class="line">            <span class="comment">// 令牌总容量</span></span><br><span class="line">            Capacity: limit.Capacity,</span><br><span class="line">            <span class="comment">// 重新放入令牌桶数量</span></span><br><span class="line">            Quantum: limit.Quantum,</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> methodLimiters = limiter.NewMethodLimiter().AddBuckets(rules...)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> methodLimiters</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r.Use(middleware.RateLimiter(newLimiter()))</span><br></pre></td></tr></table></figure>
 
  
       <!-- reward -->
@@ -188,6 +200,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            golang - 解析yaml配置文件
+          
+        </div>
+      </a>
     
     
       <a href="/2020/11/18/%E8%BD%AC-%E4%BD%BF%E7%94%A8PySnooper%E8%B0%83%E8%AF%95%E4%BB%A3%E7%A0%81/" class="article-nav-link">

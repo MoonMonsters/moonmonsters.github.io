@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    友情链接 |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+    golang - 解析yaml配置文件 |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -50,7 +50,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-友情链接"
+  id="post-golang-解析yaml配置文件"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -61,22 +61,22 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  友情链接
+  golang - 解析yaml配置文件
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/11/15/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/" class="article-date">
-  <time datetime="2020-11-15T08:32:00.000Z" itemprop="datePublished">2020-11-15</time>
+      <a href="/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-date">
+  <time datetime="2020-12-14T13:09:00.000Z" itemprop="datePublished">2020-12-14</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">126</span>
+            <span class="post-count">244</span>
         </span>
     </span>
 
@@ -100,24 +100,25 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="官方网站"><a href="#官方网站" class="headerlink" title="官方网站"></a>官方网站</h3><p><a href="https://docs.python.org/zh-cn/3/index.html" target="_blank" rel="noopener">Python3官方文档</a></p>
-<p><a href="https://docs.djangoproject.com/en/2.2/" target="_blank" rel="noopener">Django官方文档</a></p>
-<p><a href="http://djangobook.py3k.cn/2.0/" target="_blank" rel="noopener">Django中文版</a></p>
-<p><a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener">rest-framework官方文档</a></p>
-<p><a href="http://drf.jiuyou.info/#/" target="_blank" rel="noopener">rest-framework文档中文版</a></p>
-<p><a href="https://redis-py.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">python-redis官方文档</a></p>
-<p><a href="https://django-redis-chs.readthedocs.io/zh_CN/latest/#id8" target="_blank" rel="noopener">django-redis 中文文档</a></p>
-<p><a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener">RabbitMQ官方文档</a></p>
-<h3 id="Python学习"><a href="#Python学习" class="headerlink" title="Python学习"></a>Python学习</h3><p><a href="https://www.the5fire.com" target="_blank" rel="noopener">the5fire: Django企业开发实战作者</a></p>
-<h3 id="Golang学习"><a href="#Golang学习" class="headerlink" title="Golang学习"></a>Golang学习</h3><p><a href="https://lailin.xyz/post/go-design-pattern.html" target="_blank" rel="noopener">golang设计模式</a></p>
-<p><a href="https://wskdsgcf.gitbook.io/mastering-go-zh-cn/" target="_blank" rel="noopener">mastering-go-zh-cn: golang入门</a></p>
-<p><a href="https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md" target="_blank" rel="noopener">the-way-to-go_ZH_CN: golang入门</a></p>
-<p><a href="https://github.com/geektutu/7days-golang" target="_blank" rel="noopener">从零开始系列…</a></p>
-<p><a href="https://chai2010.cn/advanced-go-programming-book/" target="_blank" rel="noopener">Go语言高级编程(Advanced Go Programming)</a></p>
-<p><a href="https://draveness.me/golang/" target="_blank" rel="noopener">Go 语言设计与实现</a></p>
-<p><a href="https://geektutu.com" target="_blank" rel="noopener">极客兔兔</a></p>
-<h3 id="常用软件"><a href="#常用软件" class="headerlink" title="常用软件"></a>常用软件</h3><p><a href="https://gitee.com/qishibo/AnotherRedisDesktopManager" target="_blank" rel="noopener">Redis可视化客户端</a></p>
-<p><a href="https://dbeaver.io/download/" target="_blank" rel="noopener">数据库客户端</a></p>
+  <h1 id="golang-解析yaml配置文件"><a href="#golang-解析yaml配置文件" class="headerlink" title="golang - 解析yaml配置文件"></a>golang - 解析yaml配置文件</h1><h3 id="安装第三方库"><a href="#安装第三方库" class="headerlink" title="安装第三方库"></a>安装第三方库</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get -u <span class="string">"github.com/spf13/viper"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件整体结构"><a href="#文件整体结构" class="headerlink" title="文件整体结构"></a>文件整体结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── configs</span><br><span class="line">│   └── stand_alone.yaml</span><br><span class="line">└── pkg</span><br><span class="line">    └── settings</span><br><span class="line">        ├── section.go</span><br><span class="line">        └── setting.go</span><br></pre></td></tr></table></figure>
+
+<h3 id="yaml配置文件"><a href="#yaml配置文件" class="headerlink" title="yaml配置文件"></a>yaml配置文件</h3><p>路径: configs/stand_alone.yaml</p>
+<p>详细格式可以参考:</p>
+<p><a href="http://www.ruanyifeng.com/blog/2016/07/yaml.html" target="_blank" rel="noopener">YAML 语言教程</a></p>
+<p><a href="https://en.wikipedia.org/wiki/YAML" target="_blank" rel="noopener">YAML</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Server:</span></span><br><span class="line">  <span class="attr">StorageRoot:</span> <span class="string">"Storage/upload"</span></span><br><span class="line">  <span class="attr">ListenAddress:</span> <span class="string">":8888"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="定义Setting结构体"><a href="#定义Setting结构体" class="headerlink" title="定义Setting结构体"></a>定义Setting结构体</h3><p>路径: pkg/settings/setting.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> settings</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/spf13/viper"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Setting <span class="keyword">struct</span> &#123;</span><br><span class="line">    vp *viper.Viper</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewSetting</span><span class="params">()</span> <span class="params">(*Setting, error)</span></span> &#123;</span><br><span class="line">    vp := viper.New()</span><br><span class="line">    vp.SetConfigName(<span class="string">"stand_alone.yaml"</span>)</span><br><span class="line">    vp.AddConfigPath(<span class="string">"stand_alone/configs"</span>)</span><br><span class="line">    vp.SetConfigType(<span class="string">"yaml"</span>)</span><br><span class="line"></span><br><span class="line">    err := vp.ReadInConfig()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &amp;Setting&#123;vp&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义Section结构体"><a href="#定义Section结构体" class="headerlink" title="定义Section结构体"></a>定义Section结构体</h3><p>路径: pkg/settings/section.go</p>
+<p>如果有多组配置, 那么按照格式, 创建多个struct变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> settings</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Server <span class="keyword">struct</span> &#123;</span><br><span class="line">    StorageRoot   <span class="keyword">string</span></span><br><span class="line">    ListenAddress <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Setting)</span> <span class="title">ReadSection</span><span class="params">(sType <span class="keyword">string</span>, section <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">    err := s.vp.UnmarshalKey(sType, section)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"Storage/stand_alone/pkg/settings"</span></span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"log"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    setting, err := settings.NewSetting()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Println(<span class="string">"err: "</span>, err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> server *settings.Server</span><br><span class="line">    _ = setting.ReadSection(<span class="string">"Server"</span>, &amp;server)</span><br><span class="line">    fmt.Println(server.StorageRoot, server.ListenAddress)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
  
       <!-- reward -->
       
@@ -170,7 +171,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/11/15/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -181,19 +182,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2020/11/18/%E8%BD%AC-%E4%BD%BF%E7%94%A8PySnooper%E8%B0%83%E8%AF%95%E4%BB%A3%E7%A0%81/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            [转]使用PySnooper调试代码
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/11/15/golang-%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E6%A1%86%E6%9E%B6swagger/" class="article-nav-link">
+      <a href="/2020/12/12/golang-%E4%BD%BF%E7%94%A8%E4%BB%A4%E7%89%8C%E6%A1%B6%E9%99%90%E5%88%B6%E6%8E%A5%E5%8F%A3%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">golang - 接口文档框架swagger</div>
+        <div class="article-nav-title">golang - 使用令牌桶限制接口访问频率</div>
       </a>
     
   </nav>

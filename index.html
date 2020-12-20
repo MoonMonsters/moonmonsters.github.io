@@ -137,6 +137,71 @@
     
     
     <article
+  id="post-golang-解析yaml配置文件"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"
+    >golang - 解析yaml配置文件</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-date">
+  <time datetime="2020-12-14T13:09:00.000Z" itemprop="datePublished">2020-12-14</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="golang-解析yaml配置文件"><a href="#golang-解析yaml配置文件" class="headerlink" title="golang - 解析yaml配置文件"></a>golang - 解析yaml配置文件</h1><h3 id="安装第三方库"><a href="#安装第三方库" class="headerlink" title="安装第三方库"></a>安装第三方库</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get -u <span class="string">"github.com/spf13/viper"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件整体结构"><a href="#文件整体结构" class="headerlink" title="文件整体结构"></a>文件整体结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── configs</span><br><span class="line">│   └── stand_alone.yaml</span><br><span class="line">└── pkg</span><br><span class="line">    └── settings</span><br><span class="line">        ├── section.go</span><br><span class="line">        └── setting.go</span><br></pre></td></tr></table></figure>
+
+<h3 id="yaml配置文件"><a href="#yaml配置文件" class="headerlink" title="yaml配置文件"></a>yaml配置文件</h3><p>路径: configs/stand_alone.yaml</p>
+<p>详细格式可以参考:</p>
+<p><a href="http://www.ruanyifeng.com/blog/2016/07/yaml.html" target="_blank" rel="noopener">YAML 语言教程</a></p>
+<p><a href="https://en.wikipedia.org/wiki/YAML" target="_blank" rel="noopener">YAML</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Server:</span></span><br><span class="line">  <span class="attr">StorageRoot:</span> <span class="string">"Storage/upload"</span></span><br><span class="line">  <span class="attr">ListenAddress:</span> <span class="string">":8888"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="定义Setting结构体"><a href="#定义Setting结构体" class="headerlink" title="定义Setting结构体"></a>定义Setting结构体</h3><p>路径: pkg/settings/setting.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> settings</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/spf13/viper"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Setting <span class="keyword">struct</span> &#123;</span><br><span class="line">    vp *viper.Viper</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewSetting</span><span class="params">()</span> <span class="params">(*Setting, error)</span></span> &#123;</span><br><span class="line">    vp := viper.New()</span><br><span class="line">    vp.SetConfigName(<span class="string">"stand_alone.yaml"</span>)</span><br><span class="line">    vp.AddConfigPath(<span class="string">"stand_alone/configs"</span>)</span><br><span class="line">    vp.SetConfigType(<span class="string">"yaml"</span>)</span><br><span class="line"></span><br><span class="line">    err := vp.ReadInConfig()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &amp;Setting&#123;vp&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义Section结构体"><a href="#定义Section结构体" class="headerlink" title="定义Section结构体"></a>定义Section结构体</h3><p>路径: pkg/settings/section.go</p>
+<p>如果有多组配置, 那么按照格式, 创建多个struct变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> settings</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Server <span class="keyword">struct</span> &#123;</span><br><span class="line">    StorageRoot   <span class="keyword">string</span></span><br><span class="line">    ListenAddress <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Setting)</span> <span class="title">ReadSection</span><span class="params">(sType <span class="keyword">string</span>, section <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">    err := s.vp.UnmarshalKey(sType, section)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"Storage/stand_alone/pkg/settings"</span></span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"log"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    setting, err := settings.NewSetting()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Println(<span class="string">"err: "</span>, err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> server *settings.Server</span><br><span class="line">    _ = setting.ReadSection(<span class="string">"Server"</span>, &amp;server)</span><br><span class="line">    fmt.Println(server.StorageRoot, server.ListenAddress)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-golang-使用令牌桶限制接口访问频率"
   class="article article-type-post"
   itemscope
@@ -186,6 +251,18 @@
 <h3 id="加入gin的中间件"><a href="#加入gin的中间件" class="headerlink" title="加入gin的中间件"></a>加入gin的中间件</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 限制了/auth的访问频率</span></span><br><span class="line"><span class="comment">// 限制时间间隔, 1秒钟</span></span><br><span class="line"><span class="comment">// 一秒钟内, 最多被访问10次</span></span><br><span class="line"><span class="comment">// 当一秒后, 重新放入10个令牌到令牌桶内, 也就是下一秒可再次被访问10次</span></span><br><span class="line"><span class="keyword">var</span> methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucketRule&#123;</span><br><span class="line">    <span class="comment">// 令牌桶限制的url</span></span><br><span class="line">    Key: <span class="string">"/auth"</span>,</span><br><span class="line">    <span class="comment">// 时间间隔</span></span><br><span class="line">    FillInterval: time.Second * <span class="number">1</span>,</span><br><span class="line">    <span class="comment">// 令牌总容量</span></span><br><span class="line">    Capacity: <span class="number">10</span>,</span><br><span class="line">    <span class="comment">// 重新放入令牌桶数量</span></span><br><span class="line">    Quantum: <span class="number">10</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r := gin.New()</span><br><span class="line">r.Use(middleware.RateLimiter(methodLimiters))</span><br></pre></td></tr></table></figure>
+
+<h3 id="从配置文件中读取方式"><a href="#从配置文件中读取方式" class="headerlink" title="从配置文件中读取方式"></a>从配置文件中读取方式</h3><h4 id="配置yaml"><a href="#配置yaml" class="headerlink" title="配置yaml"></a>配置yaml</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Limiter:</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">Limits:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">Key:</span> <span class="string">"/auth"</span></span><br><span class="line">      <span class="attr">FillInterval:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">Capacity:</span> <span class="number">10</span></span><br><span class="line">      <span class="attr">Quantum:</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">Key:</span> <span class="string">"/api/v1/tags"</span></span><br><span class="line">      <span class="attr">FillInterval:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">Capacity:</span> <span class="number">10</span></span><br><span class="line">      <span class="attr">Quantum:</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="配置Setting"><a href="#配置Setting" class="headerlink" title="配置Setting"></a>配置Setting</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> LimiterSetting <span class="keyword">struct</span> &#123;</span><br><span class="line">    Limits []<span class="keyword">struct</span> &#123;</span><br><span class="line">        Key          <span class="keyword">string</span></span><br><span class="line">        FillInterval time.Duration</span><br><span class="line">        Capacity     <span class="keyword">int64</span></span><br><span class="line">        Quantum      <span class="keyword">int64</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="修改中间件参数传入方式"><a href="#修改中间件参数传入方式" class="headerlink" title="修改中间件参数传入方式"></a>修改中间件参数传入方式</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newLimiter</span><span class="params">()</span> <span class="title">limiter</span>.<span class="title">LimiterIface</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> rules []limiter.LimiterBucketRule</span><br><span class="line">    <span class="keyword">for</span> _, limit := <span class="keyword">range</span> global.LimiterSetting.Limits &#123;</span><br><span class="line">        rules = <span class="built_in">append</span>(rules, limiter.LimiterBucketRule&#123;</span><br><span class="line">            <span class="comment">// 令牌桶限制的url</span></span><br><span class="line">            Key: limit.Key,</span><br><span class="line">            <span class="comment">// 时间间隔</span></span><br><span class="line">            FillInterval: limit.FillInterval * time.Second,</span><br><span class="line">            <span class="comment">// 令牌总容量</span></span><br><span class="line">            Capacity: limit.Capacity,</span><br><span class="line">            <span class="comment">// 重新放入令牌桶数量</span></span><br><span class="line">            Quantum: limit.Quantum,</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> methodLimiters = limiter.NewMethodLimiter().AddBuckets(rules...)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> methodLimiters</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r.Use(middleware.RateLimiter(newLimiter()))</span><br></pre></td></tr></table></figure>
 
  
       <!-- reward -->
@@ -362,6 +439,7 @@
 <p><a href="https://github.com/geektutu/7days-golang" target="_blank" rel="noopener">从零开始系列…</a></p>
 <p><a href="https://chai2010.cn/advanced-go-programming-book/" target="_blank" rel="noopener">Go语言高级编程(Advanced Go Programming)</a></p>
 <p><a href="https://draveness.me/golang/" target="_blank" rel="noopener">Go 语言设计与实现</a></p>
+<p><a href="https://geektutu.com" target="_blank" rel="noopener">极客兔兔</a></p>
 <h3 id="常用软件"><a href="#常用软件" class="headerlink" title="常用软件"></a>常用软件</h3><p><a href="https://gitee.com/qishibo/AnotherRedisDesktopManager" target="_blank" rel="noopener">Redis可视化客户端</a></p>
 <p><a href="https://dbeaver.io/download/" target="_blank" rel="noopener">数据库客户端</a></p>
  
@@ -764,70 +842,6 @@
        
   <p>转载: <a href="https://zhuanlan.zhihu.com/p/264789260" target="_blank" rel="noopener">图文结合，白话Go的垃圾回收原理</a></p>
 <p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/v2-9515a7f1156f98371a25361572b25f0d_720w.jpg" alt=""></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-hello-world"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/09/21/hello-world/"
-    >Hello World</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/09/21/hello-world/" class="article-date">
-  <time datetime="2020-09-21T11:56:18.000Z" itemprop="datePublished">2020-09-21</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<h3 id="更换电脑后，如何更新博客"><a href="#更换电脑后，如何更新博客" class="headerlink" title="更换电脑后，如何更新博客"></a>更换电脑后，如何更新博客</h3><p><a href="https://www.zhihu.com/question/21193762/answer/79109280" target="_blank" rel="noopener">使用hexo，如果换了电脑怎么更新博客？</a></p>
-<h4 id="关于日常的改动流程"><a href="#关于日常的改动流程" class="headerlink" title="关于日常的改动流程"></a>关于日常的改动流程</h4><ol>
-<li>依次执行git add .、git commit -m “…”、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）</li>
-<li>然后才执行hexo g -d发布网站到master分支上</li>
-</ol>
  
       <!-- reward -->
       
