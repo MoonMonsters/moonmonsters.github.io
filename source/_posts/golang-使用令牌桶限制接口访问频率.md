@@ -6,7 +6,6 @@ categories:
   - golang
 date: 2020-12-12 19:33:00
 ---
-
 ### 三方库
 
 ```go
@@ -171,5 +170,69 @@ var methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucket
 ```go
 r := gin.New()
 r.Use(middleware.RateLimiter(methodLimiters))
+```
+
+### 从配置文件中读取方式
+
+#### 配置yaml
+
+```yaml
+Limiter:
+
+  Limits:
+    - Key: "/auth"
+      FillInterval: 1
+      Capacity: 10
+      Quantum: 10
+
+    - Key: "/api/v1/tags"
+      FillInterval: 1
+      Capacity: 10
+      Quantum: 10
+```
+
+
+
+#### 配置Setting
+
+```go
+type LimiterSetting struct {
+	Limits []struct {
+		Key          string
+		FillInterval time.Duration
+		Capacity     int64
+		Quantum      int64
+	}
+}
+```
+
+
+
+### 修改中间件参数传入方式
+
+```go
+func newLimiter() limiter.LimiterIface {
+
+	var rules []limiter.LimiterBucketRule
+	for _, limit := range global.LimiterSetting.Limits {
+		rules = append(rules, limiter.LimiterBucketRule{
+			// 令牌桶限制的url
+			Key: limit.Key,
+			// 时间间隔
+			FillInterval: limit.FillInterval * time.Second,
+			// 令牌总容量
+			Capacity: limit.Capacity,
+			// 重新放入令牌桶数量
+			Quantum: limit.Quantum,
+		})
+	}
+	var methodLimiters = limiter.NewMethodLimiter().AddBuckets(rules...)
+
+	return methodLimiters
+}
+```
+
+```go
+r.Use(middleware.RateLimiter(newLimiter()))
 ```
 
