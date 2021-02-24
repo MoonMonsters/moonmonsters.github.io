@@ -137,6 +137,61 @@
     
     
     <article
+  id="post-装饰器的几种用法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E7%94%A8%E6%B3%95/"
+    >装饰器的几种用法</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E7%94%A8%E6%B3%95/" class="article-date">
+  <time datetime="2020-05-23T11:11:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>装饰器是python的一种特殊工具，提供了一种在函数外部修改函数的灵活能力，可以改变函数本身的行为，简单说，就是在不修改函数代码的情况下，给函数增加新的功能。例如常用的<code>staticmethod</code>和<code>classmethod</code>等。</p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fprint</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@fprint</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E7%94%A8%E6%B3%95/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-django-rest-framework-常用视图函数"
   class="article article-type-post"
   itemscope
@@ -658,73 +713,13 @@
 </article>
 
     
-    <article
-  id="post-leetcode-打印零与奇偶数"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E6%89%93%E5%8D%B0%E9%9B%B6%E4%B8%8E%E5%A5%87%E5%81%B6%E6%95%B0/"
-    >leetcode --- 打印零与奇偶数</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E6%89%93%E5%8D%B0%E9%9B%B6%E4%B8%8E%E5%A5%87%E5%81%B6%E6%95%B0/" class="article-date">
-  <time datetime="2020-05-23T11:00:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/print-zero-even-odd/" target="_blank" rel="noopener">打印零与奇偶数</a></p>
-<p>假设有这么一个类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZeroEvenOdd</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ZeroEvenOdd</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123; ... &#125;      <span class="comment">// 构造函数</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">zero</span><span class="params">(printNumber)</span> </span>&#123; ... &#125;  <span class="comment">// 仅打印出 0</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">even</span><span class="params">(printNumber)</span> </span>&#123; ... &#125;  <span class="comment">// 仅打印出 偶数</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">odd</span><span class="params">(printNumber)</span> </span>&#123; ... &#125;   <span class="comment">// 仅打印出 奇数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>相同的一个 ZeroEvenOdd 类实例将会传递给三个不同的线程：</p>
-<pre><code>线程 A 将调用 zero()，它只输出 0 。
-线程 B 将调用 even()，它只输出偶数。
-线程 C 将调用 odd()，它只输出奇数。</code></pre><p>每个线程都有一个 printNumber 方法来输出一个整数。请修改给出的代码以输出整数序列 010203040506… ，其中序列的长度必须为 2n。<br>示例1:<br>输入：n = 2<br/><br>输出：”0102”<br/><br>说明：三条线程异步执行，其中一个调用 zero()，另一个线程调用 even()，最后一个线程调用odd()。正确的输出为 “0102”。<br>示例2:<br>输入：n = 5<br/><br>输出：”0102030405”</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E6%89%93%E5%8D%B0%E9%9B%B6%E4%B8%8E%E5%A5%87%E5%81%B6%E6%95%B0/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
   </nav>
   
 </section>

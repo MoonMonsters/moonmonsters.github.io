@@ -137,6 +137,66 @@
     
     
     <article
+  id="post-golang-使用函数自定义排序"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
+    >golang - 使用函数自定义排序</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2020-06-06T08:48:00.000Z" itemprop="datePublished">2020-06-06</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="golang-使用函数自定义排序"><a href="#golang-使用函数自定义排序" class="headerlink" title="golang - 使用函数自定义排序"></a>golang - 使用函数自定义排序</h1><p>有时候我们想使用和集合的自然排序不同的方法对集合进行排序。 例如，我们想按照字母的长度而不是首字母顺序对字符串排序。 </p>
+<p>在golang自带的sort模块中, 可以先阅读下函数的代码:</p>
+<p><code>sort.Sort</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sort</span><span class="params">(data Interface)</span></span> &#123;</span><br><span class="line">    n := data.Len()</span><br><span class="line">    quickSort(data, <span class="number">0</span>, n, maxDepth(n))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>sort.quickSort</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickSort</span><span class="params">(data Interface, a, b, maxDepth <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> b-a &gt; <span class="number">12</span> &#123; <span class="comment">// Use ShellSort for slices &lt;= 12 elements</span></span><br><span class="line">        <span class="keyword">if</span> maxDepth == <span class="number">0</span> &#123;</span><br><span class="line">            heapSort(data, a, b)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        maxDepth--</span><br><span class="line">        mlo, mhi := doPivot(data, a, b)</span><br><span class="line">        <span class="comment">// Avoiding recursion on the larger subproblem guarantees</span></span><br><span class="line">        <span class="comment">// a stack depth of at most lg(b-a).</span></span><br><span class="line">        <span class="keyword">if</span> mlo-a &lt; b-mhi &#123;</span><br><span class="line">            quickSort(data, a, mlo, maxDepth)</span><br><span class="line">            a = mhi <span class="comment">// i.e., quickSort(data, mhi, b)</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            quickSort(data, mhi, b, maxDepth)</span><br><span class="line">            b = mlo <span class="comment">// i.e., quickSort(data, a, mlo)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> b-a &gt; <span class="number">1</span> &#123;</span><br><span class="line">        <span class="comment">// Do ShellSort pass with gap 6</span></span><br><span class="line">        <span class="comment">// It could be written in this simplified form cause b-a &lt;= 12</span></span><br><span class="line">        <span class="keyword">for</span> i := a + <span class="number">6</span>; i &lt; b; i++ &#123;</span><br><span class="line">            <span class="keyword">if</span> data.Less(i, i<span class="number">-6</span>) &#123;</span><br><span class="line">                data.Swap(i, i<span class="number">-6</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        insertionSort(data, a, b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-转-golang-web-中间件介绍"
   class="article article-type-post"
   itemscope
@@ -653,69 +713,13 @@
 </article>
 
     
-    <article
-  id="post-django-session源码分析"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
-    >django --- session源码分析</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-05-23T11:29:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="cookie和seesion的区别"><a href="#cookie和seesion的区别" class="headerlink" title="cookie和seesion的区别"></a>cookie和seesion的区别</h3><p>简单来讲就是都是key-value形式的数据，不同的是，cookie存储在客户端，session存储在服务端。具体的解释可以上网搜，不做叙述。</p> 
-      <a class="article-more-link" href="/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81/" rel="tag">源码</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
   </nav>
   
 </section>
