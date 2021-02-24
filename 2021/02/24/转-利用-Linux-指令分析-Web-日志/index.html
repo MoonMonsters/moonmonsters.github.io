@@ -117,6 +117,8 @@
 <li>HTTP 请求的方法、路径和协议版本、返回的状态码；</li>
 <li>User Agent。</li>
 </ul>
+<a id="more"></a>
+
 <h3 id="第三步：PV-分析"><a href="#第三步：PV-分析" class="headerlink" title="第三步：PV 分析"></a>第三步：PV 分析</h3><p><code>PV（Page View）</code>，用户每访问一个页面就是一次Page View。对于nginx的acess_log来说，分析 PV 非常简单，我们直接使用<code>wc -l</code>就可以看到整体的<code>PV</code>。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210224221531.png" alt=""><br>如上图所示：我们看到了一共有 51462 条 PV。</p>
 <h3 id="第四步：PV-分组"><a href="#第四步：PV-分组" class="headerlink" title="第四步：PV 分组"></a>第四步：PV 分组</h3><p>通常一个日志中可能有几天的 PV，为了得到更加直观的数据，有时候需要按天进行分组。为了简化这个问题，我们先来看看日志中都有哪些天的日志。</p>
 <p>使用<code>awk &#39;{print $4}&#39; access.log  | less</code>可以看到如下结果。<code>awk</code>是一个处理文本的领域专有语言。这里就牵扯到领域专有语言这个概念，英文是Domain Specific Language。领域专有语言，就是为了处理某个领域专门设计的语言。比如awk是用来分析处理文本的DSL，html是专门用来描述网页的DSL，SQL是专门用来查询数据的DSL……大家还可以根据自己的业务设计某种针对业务的DSL。</p>
