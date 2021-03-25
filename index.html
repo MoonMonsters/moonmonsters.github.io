@@ -137,6 +137,262 @@
     
     
     <article
+  id="post-leetcode-电话号码的字母组合"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/26/leetcode-%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/"
+    >leetcode --- 电话号码的字母组合</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/26/leetcode-%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" class="article-date">
+  <time datetime="2021-03-25T16:51:00.000Z" itemprop="datePublished">2021-03-26</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener">电话号码的字母组合</a></p>
+<p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210326005238.png" alt=""></p>
+<p>示例 1：</p>
+<blockquote>
+<p>输入：digits = “23” <br/><br>输出：[“ad”,”ae”,”af”,”bd”,”be”,”bf”,”cd”,”ce”,”cf”] <br/></p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：digits = “” <br/><br>输出：[]</p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：digits = “2” <br/><br>输出：[“a”,”b”,”c”]</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">letterCombinations</span><span class="params">(self, digits: str)</span>:</span></span><br><span class="line">        number = &#123;</span><br><span class="line">            <span class="string">"2"</span>: [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>],</span><br><span class="line">            <span class="string">"3"</span>: [<span class="string">"d"</span>, <span class="string">"e"</span>, <span class="string">"f"</span>],</span><br><span class="line">            <span class="string">"4"</span>: [<span class="string">"g"</span>, <span class="string">"h"</span>, <span class="string">"i"</span>],</span><br><span class="line">            <span class="string">"5"</span>: [<span class="string">"j"</span>, <span class="string">"k"</span>, <span class="string">"l"</span>],</span><br><span class="line">            <span class="string">"6"</span>: [<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>],</span><br><span class="line">            <span class="string">"7"</span>: [<span class="string">"p"</span>, <span class="string">"q"</span>, <span class="string">"r"</span>, <span class="string">"s"</span>],</span><br><span class="line">            <span class="string">"8"</span>: [<span class="string">"t"</span>, <span class="string">"u"</span>, <span class="string">"v"</span>],</span><br><span class="line">            <span class="string">"9"</span>: [<span class="string">"w"</span>, <span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"z"</span>]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> digits <span class="keyword">or</span> digits == <span class="string">"1"</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ret = [<span class="string">""</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> digits:</span><br><span class="line">            ret = [r + n <span class="keyword">for</span> r <span class="keyword">in</span> ret <span class="keyword">for</span> n <span class="keyword">in</span> number[i]]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">d = <span class="string">"23"</span></span><br><span class="line">print(s.letterCombinations(d))</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-三数之和"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/26/leetcode-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"
+    >leetcode --- 三数之和</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/26/leetcode-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/" class="article-date">
+  <time datetime="2021-03-25T16:48:00.000Z" itemprop="datePublished">2021-03-26</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/3sum/" target="_blank" rel="noopener">三数之和</a></p>
+<p>给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。</p>
+<p>注意：答案中不可以包含重复的三元组。</p>
+<p>示例 1</p>
+<blockquote>
+<p>输入：nums = [-1,0,1,2,-1,-4] <br/><br>输出：[[-1,-1,2],[-1,0,1]] <br/></p>
+</blockquote>
+<p>示例 2</p>
+<blockquote>
+<p>输入：nums = [] <br/><br>输出：[] <br/></p>
+</blockquote>
+<p>示例 3</p>
+<blockquote>
+<p>输入：nums = [0] <br/><br>输出：[] <br/></p>
+</blockquote>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">threeSum</span><span class="params">(self, nums: list)</span> -&gt; list:</span></span><br><span class="line">        result = set()</span><br><span class="line">        nums = sorted(nums)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line"></span><br><span class="line">            m = nums[i]</span><br><span class="line">            <span class="keyword">if</span> m &gt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            left = i + <span class="number">1</span></span><br><span class="line">            right = len(nums) - <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right:</span><br><span class="line">                n = nums[left]</span><br><span class="line">                o = nums[right]</span><br><span class="line">                <span class="keyword">if</span> m + n + o == <span class="number">0</span>:</span><br><span class="line">                    result.add(tuple(sorted([m, n, o])))</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> m + n + o &gt; <span class="number">0</span>:</span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> [list(r) <span class="keyword">for</span> r <span class="keyword">in</span> result]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">ns = [<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-4</span>]</span><br><span class="line">print(s.threeSum(ns))</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-无重复字符的最长子串"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/26/leetcode-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/"
+    >leetcode --- 无重复字符的最长子串</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/26/leetcode-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/" class="article-date">
+  <time datetime="2021-03-25T16:44:00.000Z" itemprop="datePublished">2021-03-26</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">无重复字符的最长子串</a></p>
+<p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。</p>
+<p>示例 1</p>
+<blockquote>
+<p>输入: s = “abcabcbb”    <br/><br>输出: 3     <br/><br>解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。<br/></p>
+</blockquote>
+<p>示例 2</p>
+<blockquote>
+<p>输入: s = “bbbbb”<br/><br>输出: 1    <br/><br>解释: 因为无重复字符的最长子串是 “b”，所以其长度为 1。    <br/></p>
+</blockquote>
+<p>示例 3</p>
+<blockquote>
+<p>输入: s = “pwwkew”<br/><br>输出: 3    <br/><br>解释: 因为无重复字符的最长子串是 “wke”，所以其长度为 3。<br>     请注意，你的答案必须是 子串 的长度，”pwke” 是一个子序列，不是子串。<br/></p>
+</blockquote>
+<p>示例 4:</p>
+<blockquote>
+<p>输入: s = “” <br/><br>输出: 0</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        temp = <span class="string">""</span></span><br><span class="line">        length = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> ss <span class="keyword">in</span> s:</span><br><span class="line">            index = temp.find(ss)</span><br><span class="line">            <span class="keyword">if</span> index == <span class="number">-1</span>:</span><br><span class="line">                temp += ss</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                temp = temp[index + <span class="number">1</span>:] + ss</span><br><span class="line">            <span class="keyword">if</span> len(temp) &gt; length:</span><br><span class="line">                length = len(temp)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> length</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">string = <span class="string">"aabaab!bb"</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.lengthOfLongestSubstring(string))</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-两数之和"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/26/leetcode-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/"
+    >leetcode --- 两数之和</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/26/leetcode-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="article-date">
+  <time datetime="2021-03-25T16:39:00.000Z" itemprop="datePublished">2021-03-26</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/two-sum/" target="_blank" rel="noopener">两数之和</a></p>
+<p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 的那 两个 整数，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<p>示例1</p>
+<blockquote>
+<p>输入：nums = [2,7,11,15], target = 9 <br/><br>输出：[0,1] <br/><br>解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。<br/></p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：nums = [3,2,4], target = 6 <br/><br>输出：[1,2]    <br/></p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：nums = [3,3], target = 6    <br/><br>输出：[0,1]    <br/></p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(self, nums: list, target: int)</span> -&gt; list:</span></span><br><span class="line">        numDict = dict()</span><br><span class="line">        <span class="keyword">for</span> index, n <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">            numDict.setdefault(n, []).append(index)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">            tmp = target - n</span><br><span class="line">            values = numDict.get(tmp)</span><br><span class="line">            <span class="keyword">if</span> values:</span><br><span class="line">                <span class="keyword">if</span> tmp == n:</span><br><span class="line">                    <span class="keyword">if</span> len(values) &gt;= <span class="number">2</span>:</span><br><span class="line">                        <span class="keyword">return</span> values[:<span class="number">2</span>]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> [numDict[n][<span class="number">0</span>], numDict[tmp][<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ns = [<span class="number">3</span>, <span class="number">3</span>]</span><br><span class="line">target = <span class="number">6</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.twoSum(ns, target))</span><br></pre></td></tr></table></figure>
+
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-leetcode-旋转链表"
   class="article article-type-post"
   itemscope
@@ -482,248 +738,6 @@
     
     <footer class="article-footer">
        
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-数据结构-最小栈的实现"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/01/31/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%80%E5%B0%8F%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/"
-    >数据结构 - 最小栈的实现</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/01/31/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%9C%80%E5%B0%8F%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="article-date">
-  <time datetime="2021-01-31T10:59:00.000Z" itemprop="datePublished">2021-01-31</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>题目:<br>实现一个栈, 该栈带有出栈(pop), 入栈(push), 取最小元素(get_min)三个方法, 并且保证三个方法的时间复杂度都是O(1).<br>注: 只是需要通过get_min获取到最小元素, 并不是说pop出来的要是最小元素.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinStack</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    最小栈的实现</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 主栈, 存储所有数据</span></span><br><span class="line">        self.stack = list()</span><br><span class="line">        <span class="comment"># 辅助栈, 保存最小值列表</span></span><br><span class="line">        self.bak_stack = list()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, element)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        入栈</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> len(self.stack) == <span class="number">0</span>:</span><br><span class="line">            self.stack.append(element)</span><br><span class="line">            self.bak_stack.append(element)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        self.stack.append(element)</span><br><span class="line">        <span class="comment"># 栈顶元素</span></span><br><span class="line">        top = self.bak_stack[<span class="number">-1</span>]</span><br><span class="line">        <span class="comment"># 如果辅助栈的栈顶元素大于入职元素, 那么就说明入栈元素是新的最小值</span></span><br><span class="line">        <span class="comment"># 放入辅助栈的栈顶</span></span><br><span class="line">        <span class="keyword">if</span> top &gt;= element:</span><br><span class="line">            self.bak_stack.append(element)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> len(self.stack) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        top = self.stack.pop(<span class="number">-1</span>)</span><br><span class="line">        <span class="comment"># 如果当前主栈的栈顶元素和辅助栈的一致, 那么也需要将辅助栈的栈顶pop掉</span></span><br><span class="line">        <span class="keyword">if</span> top == self.bak_stack[<span class="number">-1</span>]:</span><br><span class="line">            self.bak_stack.pop(<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> top</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_min</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> len(self.bak_stack) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取最小元素时, 直接从辅助栈中获取</span></span><br><span class="line">        <span class="keyword">return</span> self.bak_stack[<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_print</span><span class="params">(_ms: MinStack)</span>:</span></span><br><span class="line">    print(<span class="string">"抛出栈顶元素: %s, 当前数组: %s, 最小元素: %s"</span> % (_ms.pop(), _ms.stack, _ms.get_min()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    array = [random.randint(<span class="number">0</span>, <span class="number">100</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">7</span>)]</span><br><span class="line">    array.append(array[<span class="number">3</span>])</span><br><span class="line">    array.append(<span class="number">-1</span>)</span><br><span class="line">    array.append(array[<span class="number">4</span>])</span><br><span class="line">    array.append(<span class="number">-1</span>)</span><br><span class="line">    print(<span class="string">"初始化数组: "</span>, array)</span><br><span class="line">    ms = MinStack()</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> array:</span><br><span class="line">        ms.push(a)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(len(array)):</span><br><span class="line">        _print(ms)</span><br></pre></td></tr></table></figure>
-
-<p>输出:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">初始化数组:  [80, 65, 4, 52, 90, 37, 70, 52, -1, 90, -1]</span><br><span class="line">抛出栈顶元素: -1, 当前数组: [80, 65, 4, 52, 90, 37, 70, 52, -1, 90], 最小元素: -1</span><br><span class="line">抛出栈顶元素: 90, 当前数组: [80, 65, 4, 52, 90, 37, 70, 52, -1], 最小元素: -1</span><br><span class="line">抛出栈顶元素: -1, 当前数组: [80, 65, 4, 52, 90, 37, 70, 52], 最小元素: 4</span><br><span class="line">抛出栈顶元素: 52, 当前数组: [80, 65, 4, 52, 90, 37, 70], 最小元素: 4</span><br><span class="line">抛出栈顶元素: 70, 当前数组: [80, 65, 4, 52, 90, 37], 最小元素: 4</span><br><span class="line">抛出栈顶元素: 37, 当前数组: [80, 65, 4, 52, 90], 最小元素: 4</span><br><span class="line">抛出栈顶元素: 90, 当前数组: [80, 65, 4, 52], 最小元素: 4</span><br><span class="line">抛出栈顶元素: 52, 当前数组: [80, 65, 4], 最小元素: 4</span><br><span class="line">抛出栈顶元素: 4, 当前数组: [80, 65], 最小元素: 65</span><br><span class="line">抛出栈顶元素: 65, 当前数组: [80], 最小元素: 80</span><br><span class="line">抛出栈顶元素: 80, 当前数组: [], 最小元素: None</span><br></pre></td></tr></table></figure>
-
-
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-django-QuerySet特性及高级使用技巧，如何减少数据库的访问"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/01/30/django-QuerySet%E7%89%B9%E6%80%A7%E5%8F%8A%E9%AB%98%E7%BA%A7%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%EF%BC%8C%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/"
-    >[转]django - QuerySet特性及高级使用技巧，如何减少数据库的访问</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/01/30/django-QuerySet%E7%89%B9%E6%80%A7%E5%8F%8A%E9%AB%98%E7%BA%A7%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%EF%BC%8C%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/" class="article-date">
-  <time datetime="2021-01-30T08:34:00.000Z" itemprop="datePublished">2021-01-30</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s/OyJy6Do4_4eA7tMXU0NlZQ" target="_blank" rel="noopener">QuerySet特性及高级使用技巧，如何减少数据库的访问，节省内存，提升网站性能。</a></p>
-<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>对于中大型网站或Web APP而言，最影响网站性能的就是数据库查询部分了。一是因为反复从数据库读写数据很消耗时间和计算资源，二是当返回的查询数据集queryset非常大时还会占据很多内存。</p>
-<h3 id="什么是QuerySet"><a href="#什么是QuerySet" class="headerlink" title="什么是QuerySet"></a>什么是QuerySet</h3><p>QuerySet是Django提供的强大的数据库接口(API)。正是因为通过它，我们可以使用filter, exclude, get等方法进行数据库查询，而不需要使用原始的SQL语言与数据库进行交互。从数据库中查询出来的结果一般是一个集合，这个集合叫就做 queryset。</p>
-<h3 id="Django的QuerySet是惰性的"><a href="#Django的QuerySet是惰性的" class="headerlink" title="Django的QuerySet是惰性的"></a>Django的QuerySet是惰性的</h3><p>Django的QuerySet是惰性的。下例中article_list试图从数据库查询一个标题含有django的全部文章列表。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">article_list = Article.objects.filter(title__contains=<span class="string">"django"</span>)</span><br></pre></td></tr></table></figure>
-<p>但是当我们定义article_list的时候，Django的数据接口QuerySet并没有对数据库进行任何查询。无论你加多少过滤条件，Django都不会对数据库进行查询。只有当你需要对article_list做进一步运算时（比如打印出查询结果，判断是否存在，统计查询结果长度)，Django才会真正执行对数据库的查询(见下例1)。这个过程被称为queryset的<code>执行(evaluation)</code>。Django这样设计的本意是尽量减少对数据库的无效操作，比如查询了结果而不用是计算资源的很大浪费。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># example 1</span></span><br><span class="line"><span class="keyword">for</span> article <span class="keyword">in</span> article_list:</span><br><span class="line">    print(article.title)</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="Django的QuerySet自带缓存-Cache"><a href="#Django的QuerySet自带缓存-Cache" class="headerlink" title="Django的QuerySet自带缓存(Cache)"></a>Django的QuerySet自带缓存(Cache)</h3><p>在例1中，当你遍历queryset(article_list)时，所有匹配的记录会从数据库获取。这些结果会载入内存并保存在queryset内置的cache中。这样如果你再次遍历或读取这个article_list时，Django就不需要重复查询了，这样也可以减少对数据库的查询。</p>
-<p>下例中例2比例3要好，因为在你打印文章标题后，Django不仅执行了查询，还把查询到的article_list放在了缓存里。这个article_list是可以复用的。例3就不行了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Example 2: Good</span></span><br><span class="line">article_list = Article.objects.filter(title__contains=<span class="string">"django"</span>)</span><br><span class="line"><span class="keyword">for</span> article <span class="keyword">in</span> article_list:</span><br><span class="line">    print(article.title)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example 3: Bad</span></span><br><span class="line"><span class="keyword">for</span> article <span class="keyword">in</span> Article.objects.filter(title__contains=<span class="string">"django"</span>):</span><br><span class="line">    print(article.title)</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="用if也会导致queryset的执行"><a href="#用if也会导致queryset的执行" class="headerlink" title="用if也会导致queryset的执行"></a>用if也会导致queryset的执行</h3><p>不知道你注意到上述例2中有个问题没有？万一article_list是个空数据集呢? 虽然for….in…用到空集合上也不会出现raise什么错误，但专业优秀的我们怎么能允许这样的低级事情发生呢？最好的做法就是在loop前加个if判断（例4）。因为django会对执行过的queryset进行缓存(if也会导致queryset执行, 缓存article_list)，所以我们在遍历article_list时不用担心Django会对数据库进行二次查询。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Example 4: Good</span></span><br><span class="line">article_list = Article.objects.filter(title__contains=<span class="string">"django"</span>)</span><br><span class="line"><span class="keyword">if</span> article_list:</span><br><span class="line">    <span class="keyword">for</span> article <span class="keyword">in</span> article_list:</span><br><span class="line">        print(article.title)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">"No records"</span>)</span><br></pre></td></tr></table></figure>
-<p>但有时我们只希望了解查询的结果是否存在，而不需要使用整个数据集，这时if触发整个queryset的缓存变成了一件坏事情。哎，程序员要担心的事情着不少。这时你可以用exists()方法。与if判断不同，exists只会检查查询结果是否存在，返回True或False，而不会缓存article_list(见例5）。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Example 5: Good</span></span><br><span class="line">article_list = Article.objects.filter(title__contains=<span class="string">"django"</span>)</span><br><span class="line"><span class="keyword">if</span> article_list.exists():</span><br><span class="line">    print(<span class="string">"Records found."</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">"No records"</span>)</span><br></pre></td></tr></table></figure>
-<p><code>注意</code>: 判断查询结果是否存在到底用if还是exists取决于你是否希望缓存查询数据集复用，如果是用if，反之用exists。</p>
-<h3 id="统计查询结果数量优选count方法"><a href="#统计查询结果数量优选count方法" class="headerlink" title="统计查询结果数量优选count方法"></a>统计查询结果数量优选count方法</h3><p><code>len()</code>与<code>count()</code>均能统计查询结果的数量。一般来说count更快，因为它是<code>从数据库层面直接获取查询结果的数量</code>，而不是返回整个数据集，而len会导致queryset的执行，需要将整个queryset载入内存后才能统计其长度。但事情也没有绝对，如果<code>数据集queryset已经在缓存里了，使用len更快</code>，因为它不需要跟数据库再次打交道。</p>
-<p>下面三个例子中，只有例7最差，尽量不要用。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Example 6: Good</span></span><br><span class="line">count = Article.objects.filter(title__contains=<span class="string">"django"</span>).count()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example 7:Bad</span></span><br><span class="line">count = Article.objects.filter(title__contains=<span class="string">"django"</span>).len()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example 8: Good</span></span><br><span class="line">article_list = Article.objects.filter(title__contains=<span class="string">"django"</span>)</span><br><span class="line"><span class="keyword">if</span> article_list:</span><br><span class="line">    print(<span class="string">"&#123;&#125; records found."</span>.format(article_list.len()))</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="当queryset非常大时，数据请按需去取"><a href="#当queryset非常大时，数据请按需去取" class="headerlink" title="当queryset非常大时，数据请按需去取"></a>当queryset非常大时，数据请按需去取</h3><p>当查询到的queryset的非常大时，会大量占用内存(缓存)。我们可以使用<code>values</code>和<code>value_list</code>方法按需提取数据。比如例1中我们只需要打印文章标题，这时我们完全没有必要把每篇文章对象的全部信息都提取出来载入到内存中。我们可以做如下改进（例9）。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Example 9: Good</span></span><br><span class="line">article_list = Article.objects.filter(title__contains=<span class="string">"django"</span>).values(<span class="string">'title'</span>)</span><br><span class="line"><span class="keyword">if</span> article_list:</span><br><span class="line">    print(article.title)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">article_list = Article.objects.filter(title__contains=<span class="string">"django"</span>).values_list(<span class="string">'id'</span>, <span class="string">'title'</span>)</span><br><span class="line"><span class="keyword">if</span> article_list:</span><br><span class="line">    print(article.title)</span><br></pre></td></tr></table></figure>
-<p><code>注意</code>: values和values_list返回的是字典形式字符串数据，而不是对象集合。如果不理解请不要乱用。<br>另外还可以使用iterator()方法可以优化程序对内存的使用，其工作原理是不对queryset进行缓存，而是采用迭代方法逐一返回查询结果，但这有时会增加数据库的访问次数，新手一般也驾驭不了。</p>
-<h3 id="更新数据库部分字段请用update方法"><a href="#更新数据库部分字段请用update方法" class="headerlink" title="更新数据库部分字段请用update方法"></a>更新数据库部分字段请用update方法</h3><p>如果需要对数据库中的某条已有数据或某些字段进行更新，更好的方式是用update，而不是save方法。我们现在可以对比下面两个案例。例10中需要把整个Article对象的数据(标题，正文…..)先提取出来，缓存到内存中，变更信息后再写入数据库。而例11直接对标题做了更新，不需要把整个文章对象的数据载入内存，显然更高效。尽管单篇文章占用内存不多，但是万一用户非常多呢，那么占用的内存加起来也是很恐怖的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Example 10: Bad</span></span><br><span class="line">article = Article.objects.get(id=<span class="number">10</span>)</span><br><span class="line">Article.title = <span class="string">"Django"</span></span><br><span class="line">article.save()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example 11: Good</span></span><br><span class="line">Article.objects.filter(id=<span class="number">10</span>).update(title=<span class="string">'Django'</span>)</span><br></pre></td></tr></table></figure>
-<p>update方法还会返回已更新条目的数量，这点也非常有用。当然事情也没有绝对，save方法对于单个模型的更新还是很有优势的，比如save(commit=False), article.author = request.user等等事情update都做不来。</p>
-<h3 id="专业地使用explain方法"><a href="#专业地使用explain方法" class="headerlink" title="专业地使用explain方法"></a>专业地使用explain方法</h3><p>Django 2.1中QuerySet新增了explain方法，可以统计一个查询所消耗的执行时间。这可以帮助程序员更好地优化查询结果。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print(Blog.objects.filter(title=<span class="string">'My Blog'</span>).explain(verbose=<span class="literal">True</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># output</span></span><br><span class="line">Seq Scan on public.blog  (cost=<span class="number">0.00</span>.<span class="number">.35</span><span class="number">.50</span> rows=<span class="number">10</span> width=<span class="number">12</span>) (actual time=<span class="number">0.004</span>.<span class="number">.0</span><span class="number">.004</span> rows=<span class="number">10</span> loops=<span class="number">1</span>)</span><br><span class="line">  Output: id, title</span><br><span class="line">  Filter: (blog.title = <span class="string">'My Blog'</span>::bpchar)</span><br><span class="line">Planning time: <span class="number">0.064</span> ms</span><br><span class="line">Execution time: <span class="number">0.058</span> ms</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>Django QuerySet的惰性和缓存特性对于减少数据库的访问次数非常有用。你需要根据不同应用场景选择合适的方法(比如exists, count, update, values) 来减少数据库的访问，减少查询结果占用的内存空间从而提升网站的性能。</p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-数据结构-优先队列"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/01/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/"
-    >数据结构 - 优先队列</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/01/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="article-date">
-  <time datetime="2021-01-26T14:48:21.000Z" itemprop="datePublished">2021-01-26</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PriorityQueue</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    优先队列</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.array = list()</span><br><span class="line">        self.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span><span class="params">(self, element)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        入队</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.array.append(element)</span><br><span class="line">        self.size += <span class="number">1</span></span><br><span class="line">        self.up_adjust()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">up_adjust</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        向上调整</span></span><br><span class="line"><span class="string">        插入元素后, 放在最末尾</span></span><br><span class="line"><span class="string">        需要往上调整, 变成最大堆</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 插入的元素的位置</span></span><br><span class="line">        child_index = self.size - <span class="number">1</span></span><br><span class="line">        parent_index = (child_index - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">        <span class="comment"># 插入的元素, 一直往上移动</span></span><br><span class="line">        tmp = self.array[child_index]</span><br><span class="line">        <span class="comment"># 直到移动到第一个根节点, 或者比父节点小</span></span><br><span class="line">        <span class="keyword">while</span> child_index &gt; <span class="number">0</span> <span class="keyword">and</span> tmp &gt; self.array[parent_index]:</span><br><span class="line">            <span class="comment"># tmp往上移动, 将父节点赋值给子节点</span></span><br><span class="line">            self.array[child_index] = self.array[parent_index]</span><br><span class="line">            <span class="comment"># 往上移动一层</span></span><br><span class="line">            child_index = parent_index</span><br><span class="line">            parent_index = (child_index - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">        <span class="comment"># 移动到最终位置</span></span><br><span class="line">        self.array[child_index] = tmp</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        获取优先队列的最大优先值</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.size &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">"队列为空"</span>)</span><br><span class="line">        <span class="comment"># 返回最大优先值</span></span><br><span class="line">        head = self.array[<span class="number">0</span>]</span><br><span class="line">        <span class="comment"># 将最后一个节点移动到根节点位置</span></span><br><span class="line">        self.array[<span class="number">0</span>] = self.array[self.size - <span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 自顶向下移动</span></span><br><span class="line">        self.down_adjust()</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">down_adjust</span><span class="params">(self)</span>:</span></span><br><span class="line">        parent_index = <span class="number">0</span></span><br><span class="line">        tmp = self.array[parent_index]</span><br><span class="line">        child_index = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> child_index &lt; self.size:</span><br><span class="line">            <span class="comment"># 如果有右孩子节点, 并且值大于左孩子节点, 那么父节点往右孩子节点移动</span></span><br><span class="line">            <span class="comment"># 需要构建最大堆, 所以需要保证父节点要大于子节点</span></span><br><span class="line">            <span class="keyword">if</span> child_index + <span class="number">1</span> &lt; self.size <span class="keyword">and</span> self.array[child_index + <span class="number">1</span>] &gt; self.array[child_index]:</span><br><span class="line">                child_index += <span class="number">1</span></span><br><span class="line">            <span class="comment"># 父节点并最大子节点都大, 那么退出</span></span><br><span class="line">            <span class="keyword">if</span> tmp &gt;= self.array[child_index]:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="comment"># 将最大子节点移动到父节点位置</span></span><br><span class="line">            self.array[parent_index] = self.array[child_index]</span><br><span class="line">            <span class="comment"># 移动到子节点位置</span></span><br><span class="line">            parent_index = child_index</span><br><span class="line">            <span class="comment"># 判断左孩子节点</span></span><br><span class="line">            child_index = <span class="number">2</span> * child_index + <span class="number">1</span></span><br><span class="line">        self.array[parent_index] = tmp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    queue = PriorityQueue()</span><br><span class="line">    queue.enqueue(<span class="number">3</span>)</span><br><span class="line">    queue.enqueue(<span class="number">20</span>)</span><br><span class="line">    queue.enqueue(<span class="number">30</span>)</span><br><span class="line">    queue.enqueue(<span class="number">50</span>)</span><br><span class="line">    queue.enqueue(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    print(queue.dequeue())</span><br><span class="line">    print(queue.dequeue())</span><br><span class="line">    print(queue.dequeue())</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-django-LocMemCache源码分析"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/01/24/django-LocMemCache%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
-    >django - LocMemCache源码分析</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/01/24/django-LocMemCache%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2021-01-24T01:04:00.000Z" itemprop="datePublished">2021-01-24</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"Thread-safe in-memory cache backend."</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.core.cache.backends.base <span class="keyword">import</span> DEFAULT_TIMEOUT, BaseCache</span><br><span class="line"><span class="keyword">from</span> django.utils.synch <span class="keyword">import</span> RWLock</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> django.utils.six.moves <span class="keyword">import</span> cPickle <span class="keyword">as</span> pickle</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Global in-memory store of cache data. Keyed by name, to provide</span></span><br><span class="line"><span class="comment"># multiple named local memory caches.</span></span><br><span class="line">_caches = &#123;&#125;</span><br><span class="line">_expire_info = &#123;&#125;</span><br><span class="line">_locks = &#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dummy</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""A context manager that does nothing special."""</span></span><br><span class="line">    <span class="keyword">yield</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocMemCache</span><span class="params">(BaseCache)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, params)</span>:</span></span><br><span class="line">        BaseCache.__init__(self, params)</span><br><span class="line">        <span class="comment"># 使用字典, 保存数据到内存</span></span><br><span class="line">        <span class="comment"># 按照_cull_frequency看, 此处可以设置成OrderDict, 并且按LRU方式, 删除较少访问的数据</span></span><br><span class="line">        self._cache = _caches.setdefault(name, &#123;&#125;)</span><br><span class="line">        <span class="comment"># 存储key过期信息</span></span><br><span class="line">        self._expire_info = _expire_info.setdefault(name, &#123;&#125;)</span><br><span class="line">        <span class="comment"># 使用了读写锁</span></span><br><span class="line">        self._lock = _locks.setdefault(name, RWLock())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, key, value, timeout=DEFAULT_TIMEOUT, version=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        添加缓存数据</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 生成key值</span></span><br><span class="line">        key = self.make_key(key, version=version)</span><br><span class="line">        <span class="comment"># 对key值校验</span></span><br><span class="line">        self.validate_key(key)</span><br><span class="line">        <span class="comment"># 序列化</span></span><br><span class="line">        pickled = pickle.dumps(value, pickle.HIGHEST_PROTOCOL)</span><br><span class="line">        <span class="comment"># 获取写锁</span></span><br><span class="line">        <span class="keyword">with</span> self._lock.writer():</span><br><span class="line">            <span class="comment"># 判断key值是否过期</span></span><br><span class="line">            <span class="keyword">if</span> self._has_expired(key):</span><br><span class="line">                <span class="comment"># key没有过期或者不存在, 则缓存数据</span></span><br><span class="line">                self._set(key, pickled, timeout)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, key, default=None, version=None, acquire_lock=True)</span>:</span></span><br><span class="line">        key = self.make_key(key, version=version)</span><br><span class="line">        self.validate_key(key)</span><br><span class="line">        pickled = <span class="literal">None</span></span><br><span class="line">        <span class="comment"># 获取读锁</span></span><br><span class="line">        <span class="keyword">with</span> (self._lock.reader() <span class="keyword">if</span> acquire_lock <span class="keyword">else</span> dummy()):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self._has_expired(key):</span><br><span class="line">                pickled = self._cache[key]</span><br><span class="line">        <span class="comment"># 获取到了数据</span></span><br><span class="line">        <span class="keyword">if</span> pickled <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 反序列化</span></span><br><span class="line">                <span class="keyword">return</span> pickle.loads(pickled)</span><br><span class="line">            <span class="keyword">except</span> pickle.PickleError:</span><br><span class="line">                <span class="keyword">return</span> default</span><br><span class="line"></span><br><span class="line">        <span class="keyword">with</span> (self._lock.writer() <span class="keyword">if</span> acquire_lock <span class="keyword">else</span> dummy()):</span><br><span class="line">            <span class="comment"># 如果没有拿到数据, 则从缓存和过期信息中, 删除所有key值</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="keyword">del</span> self._cache[key]</span><br><span class="line">                <span class="keyword">del</span> self._expire_info[key]</span><br><span class="line">            <span class="keyword">except</span> KeyError:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line">            <span class="keyword">return</span> default</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_set</span><span class="params">(self, key, value, timeout=DEFAULT_TIMEOUT)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        实际上的缓存操作</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 判断缓存的key值数量, 是否超过配置数量, 默认是300</span></span><br><span class="line">        <span class="keyword">if</span> len(self._cache) &gt;= self._max_entries:</span><br><span class="line">            <span class="comment">#</span></span><br><span class="line">            self._cull()</span><br><span class="line">        self._cache[key] = value</span><br><span class="line">        <span class="comment"># 缓存过期时间信息</span></span><br><span class="line">        self._expire_info[key] = self.get_backend_timeout(timeout)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set</span><span class="params">(self, key, value, timeout=DEFAULT_TIMEOUT, version=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        缓存操作</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        key = self.make_key(key, version=version)</span><br><span class="line">        self.validate_key(key)</span><br><span class="line">        pickled = pickle.dumps(value, pickle.HIGHEST_PROTOCOL)</span><br><span class="line">        <span class="keyword">with</span> self._lock.writer():</span><br><span class="line">            self._set(key, pickled, timeout)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">(self, key, delta=<span class="number">1</span>, version=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        数值增加</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">with</span> self._lock.writer():</span><br><span class="line">            value = self.get(key, version=version, acquire_lock=<span class="literal">False</span>)</span><br><span class="line">            <span class="keyword">if</span> value <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">raise</span> ValueError(<span class="string">"Key '%s' not found"</span> % key)</span><br><span class="line">            <span class="comment"># 没有确保value是数字判断?</span></span><br><span class="line">            new_value = value + delta</span><br><span class="line">            key = self.make_key(key, version=version)</span><br><span class="line">            pickled = pickle.dumps(new_value, pickle.HIGHEST_PROTOCOL)</span><br><span class="line">            self._cache[key] = pickled</span><br><span class="line">        <span class="keyword">return</span> new_value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">has_key</span><span class="params">(self, key, version=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        判断key值是否存在</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        key = self.make_key(key, version=version)</span><br><span class="line">        self.validate_key(key)</span><br><span class="line">        <span class="keyword">with</span> self._lock.reader():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self._has_expired(key):</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 不存在则清空key值相关数据</span></span><br><span class="line">        <span class="keyword">with</span> self._lock.writer():</span><br><span class="line">            <span class="comment"># ...还不如直接调用self._delete(key)函数</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="keyword">del</span> self._cache[key]</span><br><span class="line">                <span class="keyword">del</span> self._expire_info[key]</span><br><span class="line">            <span class="keyword">except</span> KeyError:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_has_expired</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        key值是否过期</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 获取过期时间</span></span><br><span class="line">        exp = self._expire_info.get(key, <span class="number">-1</span>)</span><br><span class="line">        <span class="comment"># 如果过期时间不存在(key值不存在的意思), 获取超过当前时间</span></span><br><span class="line">        <span class="keyword">if</span> exp <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> exp &gt; time.time():</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_cull</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        删除频率</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 如果设置为0, 则清空所有缓存</span></span><br><span class="line">        <span class="comment"># 默认是3</span></span><br><span class="line">        <span class="keyword">if</span> self._cull_frequency == <span class="number">0</span>:</span><br><span class="line">            self.clear()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 按取模操作, 按照设置的频率删除数据</span></span><br><span class="line">            doomed = [k <span class="keyword">for</span> (i, k) <span class="keyword">in</span> enumerate(self._cache) <span class="keyword">if</span> i % self._cull_frequency == <span class="number">0</span>]</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> doomed:</span><br><span class="line">                self._delete(k)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_delete</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">del</span> self._cache[key]</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">del</span> self._expire_info[key]</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(self, key, version=None)</span>:</span></span><br><span class="line">        key = self.make_key(key, version=version)</span><br><span class="line">        self.validate_key(key)</span><br><span class="line">        <span class="keyword">with</span> self._lock.writer():</span><br><span class="line">            self._delete(key)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">clear</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        清空所有缓存信息</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self._cache.clear()</span><br><span class="line">        self._expire_info.clear()</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-
     </footer>
   </div>
 

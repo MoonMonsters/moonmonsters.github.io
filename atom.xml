@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-03-07T08:20:35.089Z</updated>
+  <updated>2021-03-25T17:26:44.734Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,96 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>leetcode --- 电话号码的字母组合</title>
+    <link href="http://yoursite.com/2021/03/26/leetcode-%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/"/>
+    <id>http://yoursite.com/2021/03/26/leetcode-%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/</id>
+    <published>2021-03-25T16:51:00.000Z</published>
+    <updated>2021-03-25T17:26:44.734Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener">电话号码的字母组合</a></p><p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p><p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210326005238.png" alt=""></p><p>示例 1：</p><blockquote><p>输入：digits = “23” <br/><br>输出：[“ad”,”ae”,”af”,”bd”,”be”,”bf”,”cd”,”ce”,”cf”] <br/></p></blockquote><p>示例 2：</p><blockquote><p>输入：digits = “” <br/><br>输出：[]</p></blockquote><p>示例 3：</p><blockquote><p>输入：digits = “2” <br/><br>输出：[“a”,”b”,”c”]</p></blockquote><h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">letterCombinations</span><span class="params">(self, digits: str)</span>:</span></span><br><span class="line">        number = &#123;</span><br><span class="line">            <span class="string">"2"</span>: [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>],</span><br><span class="line">            <span class="string">"3"</span>: [<span class="string">"d"</span>, <span class="string">"e"</span>, <span class="string">"f"</span>],</span><br><span class="line">            <span class="string">"4"</span>: [<span class="string">"g"</span>, <span class="string">"h"</span>, <span class="string">"i"</span>],</span><br><span class="line">            <span class="string">"5"</span>: [<span class="string">"j"</span>, <span class="string">"k"</span>, <span class="string">"l"</span>],</span><br><span class="line">            <span class="string">"6"</span>: [<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>],</span><br><span class="line">            <span class="string">"7"</span>: [<span class="string">"p"</span>, <span class="string">"q"</span>, <span class="string">"r"</span>, <span class="string">"s"</span>],</span><br><span class="line">            <span class="string">"8"</span>: [<span class="string">"t"</span>, <span class="string">"u"</span>, <span class="string">"v"</span>],</span><br><span class="line">            <span class="string">"9"</span>: [<span class="string">"w"</span>, <span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"z"</span>]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> digits <span class="keyword">or</span> digits == <span class="string">"1"</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ret = [<span class="string">""</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> digits:</span><br><span class="line">            ret = [r + n <span class="keyword">for</span> r <span class="keyword">in</span> ret <span class="keyword">for</span> n <span class="keyword">in</span> number[i]]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">d = <span class="string">"23"</span></span><br><span class="line">print(s.letterCombinations(d))</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode-cn.com/problems/letter-combinations-of-a-pho
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>leetcode --- 三数之和</title>
+    <link href="http://yoursite.com/2021/03/26/leetcode-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"/>
+    <id>http://yoursite.com/2021/03/26/leetcode-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/</id>
+    <published>2021-03-25T16:48:00.000Z</published>
+    <updated>2021-03-25T16:50:24.290Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/3sum/" target="_blank" rel="noopener">三数之和</a></p><p>给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。</p><p>注意：答案中不可以包含重复的三元组。</p><p>示例 1</p><blockquote><p>输入：nums = [-1,0,1,2,-1,-4] <br/><br>输出：[[-1,-1,2],[-1,0,1]] <br/></p></blockquote><p>示例 2</p><blockquote><p>输入：nums = [] <br/><br>输出：[] <br/></p></blockquote><p>示例 3</p><blockquote><p>输入：nums = [0] <br/><br>输出：[] <br/></p></blockquote><h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">threeSum</span><span class="params">(self, nums: list)</span> -&gt; list:</span></span><br><span class="line">        result = set()</span><br><span class="line">        nums = sorted(nums)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line"></span><br><span class="line">            m = nums[i]</span><br><span class="line">            <span class="keyword">if</span> m &gt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            left = i + <span class="number">1</span></span><br><span class="line">            right = len(nums) - <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right:</span><br><span class="line">                n = nums[left]</span><br><span class="line">                o = nums[right]</span><br><span class="line">                <span class="keyword">if</span> m + n + o == <span class="number">0</span>:</span><br><span class="line">                    result.add(tuple(sorted([m, n, o])))</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> m + n + o &gt; <span class="number">0</span>:</span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> [list(r) <span class="keyword">for</span> r <span class="keyword">in</span> result]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">ns = [<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-4</span>]</span><br><span class="line">print(s.threeSum(ns))</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode-cn.com/problems/3sum/&quot; target=&quot;_blank&quot; rel=&quot;
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>leetcode --- 无重复字符的最长子串</title>
+    <link href="http://yoursite.com/2021/03/26/leetcode-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/"/>
+    <id>http://yoursite.com/2021/03/26/leetcode-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/</id>
+    <published>2021-03-25T16:44:00.000Z</published>
+    <updated>2021-03-25T16:47:08.742Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">无重复字符的最长子串</a></p><p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。</p><p>示例 1</p><blockquote><p>输入: s = “abcabcbb”    <br/><br>输出: 3     <br/><br>解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。<br/></p></blockquote><p>示例 2</p><blockquote><p>输入: s = “bbbbb”<br/><br>输出: 1    <br/><br>解释: 因为无重复字符的最长子串是 “b”，所以其长度为 1。    <br/></p></blockquote><p>示例 3</p><blockquote><p>输入: s = “pwwkew”<br/><br>输出: 3    <br/><br>解释: 因为无重复字符的最长子串是 “wke”，所以其长度为 3。<br>     请注意，你的答案必须是 子串 的长度，”pwke” 是一个子序列，不是子串。<br/></p></blockquote><p>示例 4:</p><blockquote><p>输入: s = “” <br/><br>输出: 0</p></blockquote><h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        temp = <span class="string">""</span></span><br><span class="line">        length = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> ss <span class="keyword">in</span> s:</span><br><span class="line">            index = temp.find(ss)</span><br><span class="line">            <span class="keyword">if</span> index == <span class="number">-1</span>:</span><br><span class="line">                temp += ss</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                temp = temp[index + <span class="number">1</span>:] + ss</span><br><span class="line">            <span class="keyword">if</span> len(temp) &gt; length:</span><br><span class="line">                length = len(temp)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> length</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">string = <span class="string">"aabaab!bb"</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.lengthOfLongestSubstring(string))</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode-cn.com/problems/longest-substring-without-re
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>leetcode --- 两数之和</title>
+    <link href="http://yoursite.com/2021/03/26/leetcode-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/"/>
+    <id>http://yoursite.com/2021/03/26/leetcode-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</id>
+    <published>2021-03-25T16:39:00.000Z</published>
+    <updated>2021-03-25T16:43:10.198Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/two-sum/" target="_blank" rel="noopener">两数之和</a></p><p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 的那 两个 整数，并返回它们的数组下标。</p><p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p><p>你可以按任意顺序返回答案。</p><p>示例1</p><blockquote><p>输入：nums = [2,7,11,15], target = 9 <br/><br>输出：[0,1] <br/><br>解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。<br/></p></blockquote><p>示例 2：</p><blockquote><p>输入：nums = [3,2,4], target = 6 <br/><br>输出：[1,2]    <br/></p></blockquote><p>示例 3：</p><blockquote><p>输入：nums = [3,3], target = 6    <br/><br>输出：[0,1]    <br/></p></blockquote><h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(self, nums: list, target: int)</span> -&gt; list:</span></span><br><span class="line">        numDict = dict()</span><br><span class="line">        <span class="keyword">for</span> index, n <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">            numDict.setdefault(n, []).append(index)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">            tmp = target - n</span><br><span class="line">            values = numDict.get(tmp)</span><br><span class="line">            <span class="keyword">if</span> values:</span><br><span class="line">                <span class="keyword">if</span> tmp == n:</span><br><span class="line">                    <span class="keyword">if</span> len(values) &gt;= <span class="number">2</span>:</span><br><span class="line">                        <span class="keyword">return</span> values[:<span class="number">2</span>]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> [numDict[n][<span class="number">0</span>], numDict[tmp][<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ns = [<span class="number">3</span>, <span class="number">3</span>]</span><br><span class="line">target = <span class="number">6</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.twoSum(ns, target))</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode-cn.com/problems/two-sum/&quot; target=&quot;_blank&quot; re
+      
+    
+    </summary>
+    
+    
+      <category term="leetcode" scheme="http://yoursite.com/categories/leetcode/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>leetcode --- 旋转链表</title>
@@ -425,105 +515,6 @@
       
       
         &lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span 
-      
-    
-    </summary>
-    
-    
-      <category term="golang" scheme="http://yoursite.com/categories/golang/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>[转]常见面试题之缓存雪崩、缓存穿透、缓存击穿</title>
-    <link href="http://yoursite.com/2020/11/08/%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B9%8B%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E3%80%81%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/"/>
-    <id>http://yoursite.com/2020/11/08/%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B9%8B%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E3%80%81%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/</id>
-    <published>2020-11-08T12:44:00.000Z</published>
-    <updated>2020-11-15T08:38:42.918Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s?__biz=MzIzMDU0MTA3Nw==&mid=2247483988&idx=1&sn=3bd52650907867d65f1c4d5c3cff8f13&chksm=e8b0902edfc71938f7d7a29246d7278ac48e6c104ba27c684e12e840892252b0823de94b94c1&token=1558933779&lang=zh_CN#rd" target="_blank" rel="noopener">常见面试题之缓存雪崩、缓存穿透、缓存击穿</a></p><h3 id="缓存应用"><a href="#缓存应用" class="headerlink" title="缓存应用"></a>缓存应用</h3><p>缓存在我们平常的项目中多多少少都会使用到，缓存使用的使用场景还是比较多的，缓存是分布式系统中的重要组件，主要解决高并发、大数据场景下，热点数据访问的性能问题。提高性能的数据快速访问。一提到缓存，这些是我们都能想到的一些缓存应用场景，但是我们是不太清楚缓存的本质思想是什么的。缓存的基本思想就是我们非常熟悉的空间换时间。缓存也并不是那么的高大上，虽然他可以为系统的性能进行提升。缓存的思想实际在操作系统或者其他地方都被大量用到。比如 「<strong>CPU Cache 缓存的是内存数据用于解决 CPU 处理速度和内存不匹配的问题，内存缓存的是硬盘数据用于解决硬盘访问速度过慢的问题。</strong>」 「<strong>再比如操作系统在 页表方案 基础之上引入了 快表 来加速虚拟地址到物理地址的转换。我们可以把快表理解为一种特殊的高速缓冲存储器（Cache）。</strong>」</p><p>上面简单介绍了缓存的基本思想，现在回到业务系统来说：<strong>我们为了避免用户在请求数据的时候获取速度过于缓慢，所以我们在数据库之上增加了缓存这一层来弥补。</strong>画个图能更加方便大家的理解：</p><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108204545.png" alt=""><br>简单点说当我们查询一条数据时，先去查询缓存，如果缓存有就直接返回，如果没有就去查询数据库，然后返回。这种情况下就可能会出现一些现象。</p><h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><h4 id="什么是缓存雪崩"><a href="#什么是缓存雪崩" class="headerlink" title="什么是缓存雪崩"></a>什么是缓存雪崩</h4><p>这里我们通过一个例子进行分析。比如马老师的某宝，我们打开某宝的首页时，看到一些图片呀、推荐店铺信息呀等等，这些都属于热点数据，为什么他们会加载的那么快呢？因为使用到了缓存呗。这些热点数据都做了缓存，假设现在把这些热点数据的缓存失效时间为一样，现在我们马老师要做一个秒杀活动，假设在秒杀活动时每秒有8000个请求，本来有缓存我们是可以扛住每秒 6000 个请求，但是缓存当时所有的Key都失效了。此时 1 秒 8000 个请求全部落数据库，数据库必然扛不住，它会报一下警，真实情况可能DBA都没反应过来就直接挂了。此时，如果没用什么特别的方案来处理这个故障，DBA 很着急，重启数据库，但是数据库立马又被新的流量给打死了。上面造成缓存雪崩的原因是因为失效时间造成，还有一种可能是因为缓存服务宕机。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205054.png" alt=""></p><h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><p>这里分三个时间段进行进行分析</p><h5 id="事前"><a href="#事前" class="headerlink" title="事前"></a>事前</h5><p>如果缓存雪崩造成的原因是因为缓存服务宕机造成的，可以将redis采用集群部署，可以使用 主从+哨兵 ，Redis Cluster 来避免 Redis 全盘崩溃的情况。若缓存雪崩是因为大量缓存因为失效时间而造成的，我们在批量往redis存数据的时候，把每个Key的失效时间都加个随机值就好了，这样可以保证数据不会在同一时间大面积失效，或者设置热点数据永远不过期，有更新操作就更新缓存就可以了。</p><h5 id="事中"><a href="#事中" class="headerlink" title="事中"></a>事中</h5><p>如果我们之前没有考虑缓存雪崩的问题，那么在实际使用中真的发生缓存雪崩了，我们该怎么办呢？这时我们就要考虑使用其他方法避免出现这种情况了。我们可以使用ehcache 本地缓存 + Hystrix 限流&amp;降级 ,避免 MySQL 被打死的情况发生。<br>这里使用echache本地缓存的目的就是考虑在 Redis Cluster 完全不可用的时候，ehcache 本地缓存还能够支撑一阵。</p><p>使用 Hystrix 进行 限流 &amp; 降级 ，比如一秒来了5000个请求，我们可以设置假设只能有一秒 2000 个请求能通过这个组件，那么其他剩余的 3000 请求就会走限流逻辑，然后去调用我们自己开发的降级组件（降级）。比如设置的一些默认值呀之类的。以此来保护最后的 MySQL 不会被大量的请求给打死。</p><h5 id="事后"><a href="#事后" class="headerlink" title="事后"></a>事后</h5><p>如果缓存服务宕机了，这里我们可以开启「Redis」 持久化 「RDB」+「AOF」，一旦重启，自动从磁盘上加载数据，快速恢复缓存数据。</p><p>综上所述，可画出如下图所示：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205219.png" alt=""></p><h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><h4 id="什么是缓存穿透"><a href="#什么是缓存穿透" class="headerlink" title="什么是缓存穿透"></a>什么是缓存穿透</h4><p>在正常的情况下，用户查询数据都是存在的，但是在异常情况下，缓存与数据都没有数据，但是用户不断发起请求，这样每次请求都会打到数据库上面去，这时的用户很可能是攻击者，攻击会导致数据库压力过大，严重会击垮数据库。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205312.png" alt=""></p><h4 id="解决办法-1"><a href="#解决办法-1" class="headerlink" title="解决办法"></a>解决办法</h4><h5 id="添加参数校验"><a href="#添加参数校验" class="headerlink" title="添加参数校验"></a>添加参数校验</h5><p>我刚入职的时候，我的老大就跟我说过，作为一名后端开发工程师，不要相信前端传来的东西，所以数据一定要在后端进行校验。我们可以在接口层添加校验，不合法的直接返回即可，没必要做后续的操作。</p><h5 id="缓存空值"><a href="#缓存空值" class="headerlink" title="缓存空值"></a>缓存空值</h5><p>上面我们也介绍了，之所以会发生穿透，就是因为缓存中没有存储这些空数据的key。从而导致每次查询都到数据库去了。</p><p>那么我们就可以为这些key 设置的值设置为null 丢到缓存里面去。后面再出现查询这个key 的请求的时候，直接返回null ,就不用在到 数据库中去走一圈了。但是别忘了设置过期时间。</p><h5 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h5><p>redis的一个高级用法就是使用布隆过滤器（Bloom Filter），BloomFilter 类似于一个hase set 用来判断某个元素（key）是否存在于某个集合中。这个也能很好的防止缓存穿透的发生，他的原理也很简单就是利用高效的数据结构和算法快速判断出你这个Key是否在数据库中存在，不存在你return就好了，存在你就去查了DB刷新KV再return。</p><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205409.png" alt=""></p><p>上面介绍了三种方法，用哪种方法最好呢？下面我们来分析一下：</p><p>第一种方法，添加参数校验，这里是必须要添加，不过只能过滤掉一些特殊值，比如传的id为负数，如果传的正常id，这里参数校验就不起作用了。</p><p>第二种方法，如果有一些恶意攻击，攻击会带来大量的ke y是不存在的，这样采用第二种方法就不合适了。所以针对这种key 异常多，请求重复率比较低的数据，我们就没有必要进行缓存，使用第三种方案直接过滤掉。</p><p>如果对于空数据key有限的，重复率比较高的，我们则可以采用第二种方式进行缓存。</p><h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><h4 id="什么是缓存击穿"><a href="#什么是缓存击穿" class="headerlink" title="什么是缓存击穿"></a>什么是缓存击穿</h4><p>我们在平常高并发的系统中，大量的请求同时查询一个key时，假设此时，这个key正好失效了，就会导致大量的请求都打到数据库上面去，这种现象我们称为击穿。</p><p>这么看缓存击穿和缓存雪崩有点像，但是又有一点不一样，缓存雪崩是因为大面积的缓存失效，打崩了DB，而缓存击穿不同的是「缓存击穿」是指一个Key非常热点，在不停的扛着大并发，大并发集中对这一个点进行访问，当这个Key在失效的瞬间，持续的大并发就穿破缓存，直接请求数据库，就像在一个完好无损的桶上凿开了一个洞。</p><p>缓存击穿带来的问题就是会造成某一时刻数据库请求量过大，压力剧增。</p><h4 id="解决办法-2"><a href="#解决办法-2" class="headerlink" title="解决办法"></a>解决办法</h4><h5 id="不过期"><a href="#不过期" class="headerlink" title="不过期"></a>不过期</h5><p>我们简单粗暴点，直接让热点数据永远不过期，定时任务定期去刷新数据就可以了。不过这样设置需要区分场景，比如某宝首页可以这么做。</p><h5 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h5><p>为了避免出现缓存击穿的情况，我们可以在第一个请求去查询数据库的时候对他加一个互斥锁，其余的查询请求都会被阻塞住，直到锁被释放，后面的线程进来发现已经有缓存了，就直接走缓存，从而保护数据库。但是也是由于它会阻塞其他的线程，此时系统吞吐量会下降。需要结合实际的业务去考虑是否要这么做。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;转载&quot;&gt;&lt;a href=&quot;#转载&quot; class=&quot;headerlink&quot; title=&quot;转载&quot;&gt;&lt;/a&gt;转载&lt;/h3&gt;&lt;p&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzIzMDU0MTA3Nw==&amp;mid=2247483
-      
-    
-    </summary>
-    
-    
-      <category term="redis" scheme="http://yoursite.com/categories/redis/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>[转]golang - beego框架入门</title>
-    <link href="http://yoursite.com/2020/11/08/golang-%E8%BD%AC-beego%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8/"/>
-    <id>http://yoursite.com/2020/11/08/golang-%E8%BD%AC-beego%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8/</id>
-    <published>2020-11-08T09:13:00.000Z</published>
-    <updated>2020-11-15T08:38:42.910Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="https://www.jianshu.com/u/4bede98c5ae5" target="_blank" rel="noopener">转载至Clown1995</a></p><p><a href="https://www.jianshu.com/p/462e23ae402c" target="_blank" rel="noopener">Beego脱坑（一）Beego简介和安装</a></p><p><a href="https://www.jianshu.com/p/5a586b06c55f" target="_blank" rel="noopener">Beego脱坑（二）新建Beego项目</a></p><p><a href="https://www.jianshu.com/p/d0d1462113d4" target="_blank" rel="noopener">Beego脱坑（三）Router</a></p><p><a href="https://www.jianshu.com/p/a0ece5f05ab9" target="_blank" rel="noopener">Beego脱坑（四）Controller</a></p><p><a href="https://www.jianshu.com/p/fa3dbf8aa774" target="_blank" rel="noopener">Beego脱坑（五）使用模板获取数据</a></p><p><a href="https://www.jianshu.com/p/69c8b3f8d58c" target="_blank" rel="noopener">Beego脱坑（六）多种格式数据输出</a></p><p><a href="https://www.jianshu.com/p/43459409ec00" target="_blank" rel="noopener">Beego脱坑（七）获取表单数据并解析到结构体</a></p><p><a href="https://www.jianshu.com/p/37abab5808bb" target="_blank" rel="noopener">Beego脱坑（八）表单数据验证</a></p><p><a href="https://www.jianshu.com/p/9aee6d938c49" target="_blank" rel="noopener">Beego脱坑（九）Cookie和Session</a></p><p><a href="https://www.jianshu.com/p/a519cf3ff3b7" target="_blank" rel="noopener">Beego脱坑（十）数据绑定</a></p><p><a href="https://www.jianshu.com/p/a63953b32e60" target="_blank" rel="noopener">Beego脱坑（十一）文件上传、下载</a></p><p><a href="https://www.jianshu.com/p/a65cad84a4b9" target="_blank" rel="noopener">Beego脱坑（十二）ORM介绍并创建第一个表</a></p><p><a href="https://www.jianshu.com/p/d6bf1e3d6187" target="_blank" rel="noopener">Beego脱坑（十三）ORM基本增删改查</a></p><p><a href="https://www.jianshu.com/p/6a1da3390615" target="_blank" rel="noopener">Beego脱坑（十四）ORM高级查询</a></p><p><a href="https://www.jianshu.com/p/a0ffd74e7481" target="_blank" rel="noopener">Beego脱坑（十五）ORM关系查询</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/u/4bede98c5ae5&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;转载至Clown1995&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/
-      
-    
-    </summary>
-    
-    
-      <category term="golang" scheme="http://yoursite.com/categories/golang/"/>
-    
-    
-      <category term="beego" scheme="http://yoursite.com/tags/beego/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>[转]golang - 解密Go协程的栈内存管理</title>
-    <link href="http://yoursite.com/2020/10/12/golang-%E8%BD%AC-%E8%A7%A3%E5%AF%86Go%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%A0%88%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
-    <id>http://yoursite.com/2020/10/12/golang-%E8%BD%AC-%E8%A7%A3%E5%AF%86Go%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%A0%88%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</id>
-    <published>2020-10-12T10:12:00.000Z</published>
-    <updated>2020-11-15T08:38:42.911Z</updated>
-    
-    <content type="html"><![CDATA[<p>转载：<a href="https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&mid=2247485886&idx=1&sn=f29fe2ce95a485e2c2ef1c4cd33b5085&chksm=fa80d829cdf7513fdf45b16be023809d9725b150803b6482643c3dd84aa3c0090c2cb9efd3aa&token=940952510&lang=zh_CN#rd" target="_blank" rel="noopener">解密Go协程的栈内存管理</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;转载：&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&amp;mid=2247485886&amp;idx=1&amp;sn=f29fe2ce95a485e2c2ef1c4cd33b5085&amp;chksm=fa80d829cdf7
-      
-    
-    </summary>
-    
-    
-      <category term="golang" scheme="http://yoursite.com/categories/golang/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>[转]golang - 图解Go内存管理器的内存分配策略</title>
-    <link href="http://yoursite.com/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E8%A7%A3Go%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/"/>
-    <id>http://yoursite.com/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E8%A7%A3Go%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/</id>
-    <published>2020-10-12T10:11:00.000Z</published>
-    <updated>2020-11-15T08:38:42.910Z</updated>
-    
-    <content type="html"><![CDATA[<p>转载：<a href="https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&mid=2247485736&idx=1&sn=921a9dfe3d638074b68a4fd072ea3cb9&chksm=fa80d8bfcdf751a948ea49ee620ca9d88ff0a62b4ad4e3a53321fee6813b8f90098fd72f7b11&token=940952510&lang=zh_CN#rd" target="_blank" rel="noopener">图解Go内存管理器的内存分配策略</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;转载：&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&amp;mid=2247485736&amp;idx=1&amp;sn=921a9dfe3d638074b68a4fd072ea3cb9&amp;chksm=fa80d8bfcdf7
       
     
     </summary>
