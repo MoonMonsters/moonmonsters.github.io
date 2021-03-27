@@ -137,7 +137,7 @@
     
     
     <article
-  id="post-leetcode-在排序数组中查找元素的第一个和最后一个位置"
+  id="post-django-rest-framework-ListSerializer的使用及源码分析"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -148,36 +148,29 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE/"
-    >leetcode --- 在排序数组中查找元素的第一个和最后一个位置</a> 
+  <a class="article-title" href="/2020/05/23/django-rest-framework-ListSerializer%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
+    >django-rest-framework --- ListSerializer的使用及源码分析</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE/" class="article-date">
-  <time datetime="2020-05-23T10:58:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/django-rest-framework-ListSerializer%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2020-05-23T11:20:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener">在排序数组中查找元素的第一个和最后一个位置</a></p>
-<p>给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。<br>你的算法时间复杂度必须是 O(log n) 级别。<br>如果数组中不存在目标值，返回 [-1, -1]。</p>
-<p>示例1:</p>
-<blockquote>
-<p>输入: nums = [5,7,7,8,8,10], target = 8<br>输出: [3,4]</p>
-</blockquote>
-<p>示例2:</p>
-<blockquote>
-<p>输入: nums = [5,7,7,8,8,10], target = 6<br>输出: [-1,-1]</p>
-</blockquote> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE/"
+  <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>想根据不同的情况，例如登录用户的身份，权限等，可添加或删除返回的数据中的字段。</p>
+<p>最开始以为只需要定义一个序列化类然后重写data方法即可，但发现返回多条数据时，要删除的字段一直存在。翻看了官方文档，结合源码才发现还需要其他操作。</p>
+<p>解决了这个问题，特简单 记录下。</p> 
+      <a class="article-more-link" href="/2020/05/23/django-rest-framework-ListSerializer%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
         >阅读更多...</a
       >
        
@@ -190,6 +183,8 @@
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
     </footer>
   </div>
 
@@ -200,7 +195,7 @@
 
     
     <article
-  id="post-leetcode-实现-Trie-前缀树"
+  id="post-django-多数据库及分库实现"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -211,40 +206,266 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E5%AE%9E%E7%8E%B0-Trie-%E5%89%8D%E7%BC%80%E6%A0%91/"
-    >leetcode --- 实现 Trie (前缀树)</a> 
+  <a class="article-title" href="/2020/05/23/django-%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8A%E5%88%86%E5%BA%93%E5%AE%9E%E7%8E%B0/"
+    >django --- 多数据库及分库实现</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E5%AE%9E%E7%8E%B0-Trie-%E5%89%8D%E7%BC%80%E6%A0%91/" class="article-date">
-  <time datetime="2020-05-23T10:56:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/django-%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8A%E5%88%86%E5%BA%93%E5%AE%9E%E7%8E%B0/" class="article-date">
+  <time datetime="2020-05-23T11:19:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="https://leetcode-cn.com/problems/implement-trie-prefix-tree" target="_blank" rel="noopener">前缀树</a></p>
-<p>实现一个 Trie (前缀树)，包含 insert, search, 和 startsWith 这三个操作。</p>
-<p>示例:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Trie trie = new Trie();</span><br><span class="line">trie.insert(<span class="string">"apple"</span>);</span><br><span class="line">trie.search(<span class="string">"apple"</span>);   // 返回 true</span><br><span class="line">trie.search(<span class="string">"app"</span>);     // 返回 false</span><br><span class="line">trie.startsWith(<span class="string">"app"</span>); // 返回 true</span><br><span class="line">trie.insert(<span class="string">"app"</span>);   </span><br><span class="line">trie.search(<span class="string">"app"</span>);     // 返回 true</span><br></pre></td></tr></table></figure>
+  <p>在django项目中, 一个工程中存在多个APP应用很常见. 有时候希望不同的APP连接不同的数据库，这个时候需要建立多个数据库连接。</p>
+<h3 id="修改项目的-settings-配置"><a href="#修改项目的-settings-配置" class="headerlink" title="修改项目的 settings 配置"></a>修改项目的 settings 配置</h3><p>在settings.py中配置多个数据库，给个数据库有自己的功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">'default'</span>: &#123;</span><br><span class="line">        <span class="string">'ENGINE'</span>: <span class="string">'django.db.backends.mysql'</span>,</span><br><span class="line">        <span class="string">'NAME'</span>: <span class="string">'customs'</span>,</span><br><span class="line">        <span class="string">'USER'</span>: <span class="string">'xx'</span>,</span><br><span class="line">        <span class="string">'PASSWORD'</span>: <span class="string">'xx'</span>,</span><br><span class="line">        <span class="string">'HOST'</span>: <span class="string">'xx.xx.0.10'</span>,</span><br><span class="line">        <span class="string">'PORT'</span>: <span class="string">'3306'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">'xxx'</span>: &#123;</span><br><span class="line">        <span class="string">'ENGINE'</span>: <span class="string">'django.db.backends.mysql'</span>,</span><br><span class="line">        <span class="string">'NAME'</span>: <span class="string">'xxx'</span>,</span><br><span class="line">        <span class="string">'USER'</span>: <span class="string">'root'</span>,</span><br><span class="line">        <span class="string">'PASSWORD'</span>: <span class="string">'xxx'</span>,</span><br><span class="line">        <span class="string">'HOST'</span>: <span class="string">'xx.xx.0.10'</span>,</span><br><span class="line">        <span class="string">'PORT'</span>: <span class="string">'3306'</span>,</span><br><span class="line">        <span class="string">'OPTIONS'</span>: &#123;</span><br><span class="line">            <span class="string">'init_command'</span>: <span class="string">'SET storage_engine=MyISAM'</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/django-%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8A%E5%88%86%E5%BA%93%E5%AE%9E%E7%8E%B0/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
 
-<p>说明:</p>
-<p>你可以假设所有的输入都是由小写字母 a-z 构成的。<br>保证所有输入均为非空字符串。</p>
-<p>leetcode上该代码已经通过了，自己在原基础上加了注释和遍历的功能。<br>这个就是字典树:</p>
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-django-日志配置"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/"
+    >django --- 日志配置</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2020-05-23T11:18:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="常用配置"><a href="#常用配置" class="headerlink" title="常用配置"></a>常用配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">import datetime</span><br><span class="line"></span><br><span class="line">LOGGING &#x3D; &#123;</span><br><span class="line">    # 指明dictConnfig的版本</span><br><span class="line">    &#39;version&#39;: 1,</span><br><span class="line">    # 是否禁用所有的已经存在的日志配置</span><br><span class="line">    &#39;disable_existing_loggers&#39;: True,</span><br><span class="line">    &#39;formatters&#39;: &#123;</span><br><span class="line">        &#39;standard&#39;: &#123;</span><br><span class="line">            # 配置打印log格式</span><br><span class="line">            &#39;format&#39;: &#39;%(asctime)s [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s] %(message)s&#39;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    # 过滤器</span><br><span class="line">    &#39;filters&#39;: &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    # 用来定义具体处理日志的方式，可以定义多种</span><br><span class="line">    &#39;handlers&#39;: &#123;</span><br><span class="line">        &#39;mail_admins&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;django.utils.log.AdminEmailHandler&#39;,</span><br><span class="line">            &#39;include_html&#39;: True,</span><br><span class="line">        &#125;,</span><br><span class="line">        # 默认类型</span><br><span class="line">        &#39;default&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            # 保存的文件</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;QWebFX_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),  # 日志输出文件</span><br><span class="line">            # 文件大小</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            # 备份份数</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            # 使用哪种formatters日志格式</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;django_backends&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            # 保存的文件</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;backends_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),  # 日志输出文件</span><br><span class="line">            # 文件大小</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            # 备份份数</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            # 使用哪种formatters日志格式</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;error&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Error&#x2F;QWebFX_Error_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        # 打印log到控制台</span><br><span class="line">        &#39;console&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.StreamHandler&#39;,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;request_handler&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Request&#x2F;QWebFX_Request_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;scripts_handler&#39;: &#123;</span><br><span class="line">            # 只有INFO及以上级别的log才会写入文件中</span><br><span class="line">            &#39;level&#39;: &#39;INFO&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Script&#x2F;QWebFX_Script_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#39;loggers&#39;: &#123;</span><br><span class="line">        # django 表示就是django本身默认的控制台输出，就是原本在控制台里面输出的内容</span><br><span class="line">        &#39;django&#39;: &#123;</span><br><span class="line">            # 使用default类型的处理器进行处理</span><br><span class="line">            &#39;handlers&#39;: [&#39;default&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: False</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;django.request&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;request_handler&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: False,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;scripts&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;scripts_handler&#39;],</span><br><span class="line">            # 只有INFO及以上级别的消息才会调用此handler</span><br><span class="line">            &#39;level&#39;: &#39;INFO&#39;,</span><br><span class="line">            &#39;propagate&#39;: False</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;console&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;console&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        # API&#x2F;Views 模块的日志处理</span><br><span class="line">        &#39;views&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;default&#39;, &#39;error&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;util&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;error&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        # 保存所有的数据库操作</span><br><span class="line">        &#39;django.db.backends&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;django_backends&#39;],  # 指定file handler处理器，表示只写入到文件</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-django-rest-framework-视图集中附加action的声明"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-rest-framework-%E8%A7%86%E5%9B%BE%E9%9B%86%E4%B8%AD%E9%99%84%E5%8A%A0action%E7%9A%84%E5%A3%B0%E6%98%8E/"
+    >django-rest-framework --- 视图集中附加action的声明</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-rest-framework-%E8%A7%86%E5%9B%BE%E9%9B%86%E4%B8%AD%E9%99%84%E5%8A%A0action%E7%9A%84%E5%A3%B0%E6%98%8E/" class="article-date">
+  <time datetime="2020-05-23T11:16:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>在视图集(<code>ViewSet</code>)中，如果想要让Router自动帮助我们为自定义的动作生成路由信息，需要使用rest_framework.decorators.action装饰器。<br>以action装饰器装饰的方法名会作为action动作名，与list、retrieve等同。</p>
+<p><code>@action</code>可以接收四个参数: </p>
 <ul>
-<li>插入一个单词时，遍历此单词各个字符</li>
-<li>如果单个字符存在，则取出该字符对应的节点</li>
-<li>如果字符不存在，则创建字符节点，并加入到上一个字符的子节点(next)中</li>
-<li>循环</li>
+<li>methods: 声明该action对应的请求方式，列表传递</li>
+<li>detail: 声明该action的路径是否与单一资源对应，及是否是xxx/<pk>/action方法名/<ul>
+<li>True 表示路径格式是xxx/<pk>/action方法名/</li>
+<li>False 表示路径格式是xxx/action方法名/</li>
+</ul>
+</li>
+<li>url_path: 重设访问该函数的路径,默认是通过函数名<code>func.__name__</code>来访问</li>
+<li>url_name: 改函数对应的name,可用来设置跳转链接,例如revese(‘’)等.</li>
 </ul> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%AE%9E%E7%8E%B0-Trie-%E5%89%8D%E7%BC%80%E6%A0%91/"
+      <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E8%A7%86%E5%9B%BE%E9%9B%86%E4%B8%AD%E9%99%84%E5%8A%A0action%E7%9A%84%E5%A3%B0%E6%98%8E/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-django-中间件介绍"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
+    >django --- 中间件介绍</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/" class="article-date">
+  <time datetime="2020-05-23T11:16:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>在http请求到达函数之前和函数return之后,django会根据自己的规则在合适的时机执行中间件中相应的方法.因为改变的是全局,所以谨慎使用.</p>
+<p>中间件是一个与django的请求/响应处理相关的框架,是一种轻的,低层次的”插件”系统,用于django的全局的输入/输出.</p>
+<p>如果你想修改请求，例如被传送到view中的HttpRequest对象。<br>或者你想修改view返回的HttpResponse对象，这些都可以通过中间件来实现。<br>可能你还想在view执行之前做一些操作，这种情况就可以用 middleware来实现。</p> 
+      <a class="article-more-link" href="/2020/05/23/django-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-二叉查找树转变为有序双向链表"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E8%BD%AC%E5%8F%98%E4%B8%BA%E6%9C%89%E5%BA%8F%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/"
+    >二叉查找树转变为有序双向链表</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E8%BD%AC%E5%8F%98%E4%B8%BA%E6%9C%89%E5%BA%8F%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/" class="article-date">
+  <time datetime="2020-05-23T11:15:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>一道微软的面试题: 输入一棵二元查找树，将该二元查找树转换成一个排序的双向链表。</p> 
+      <a class="article-more-link" href="/2020/05/23/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E8%BD%AC%E5%8F%98%E4%B8%BA%E6%9C%89%E5%BA%8F%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/"
         >阅读更多...</a
       >
        
@@ -267,7 +488,7 @@
 
     
     <article
-  id="post-leetcode-两数相加"
+  id="post-判断单链表是否有环的两种方法"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -278,32 +499,26 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/"
-    >leetcode --- 两数相加</a> 
+  <a class="article-title" href="/2020/05/23/%E5%88%A4%E6%96%AD%E5%8D%95%E9%93%BE%E8%A1%A8%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/"
+    >判断单链表是否有环的两种方法</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/" class="article-date">
-  <time datetime="2020-05-23T10:54:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/%E5%88%A4%E6%96%AD%E5%8D%95%E9%93%BE%E8%A1%A8%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/" class="article-date">
+  <time datetime="2020-05-23T11:14:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="https://leetcode-cn.com/problems/add-two-numbers/" target="_blank" rel="noopener">两数相加</a></p>
-<p>给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。<br>如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。<br>您可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
-<p>示例：<br>输入：(2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>输出：7 -&gt; 0 -&gt; 8<br>原因：342 + 465 = 807</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/"
-        >阅读更多...</a
-      >
-       
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有环单链表</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span><span class="params">(object)</span>:</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data, next=None)</span>:</span></span><br><span class="line">      self.data = data</span><br><span class="line">      self.next = next</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CircleLinklist</span><span class="params">(object)</span>:</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">      self.head = <span class="literal">None</span></span><br><span class="line">      self.length = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">insert</span><span class="params">(self, node)</span>:</span></span><br><span class="line">      <span class="keyword">if</span> self.length == <span class="number">0</span>:</span><br><span class="line">         self.head = node</span><br><span class="line">         self.length += <span class="number">1</span></span><br><span class="line">         <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">      cur = self.head</span><br><span class="line">      <span class="keyword">while</span> cur.next:</span><br><span class="line">         cur = cur.next</span><br><span class="line"></span><br><span class="line">      cur.next = node</span><br><span class="line">      self.length += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">traverse</span><span class="params">(self)</span>:</span></span><br><span class="line">      cur = self.head</span><br><span class="line">      <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">         print(cur.data)</span><br><span class="line">         cur = cur.next</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">judge_circle_quick_slow_pointer</span><span class="params">(self)</span>:</span></span><br><span class="line">      <span class="string">"""</span></span><br><span class="line"><span class="string">      判断单链表是否有环</span></span><br><span class="line"><span class="string">      如果在某个时候,快指针追上了慢指针,那么便说明有环</span></span><br><span class="line"><span class="string">      """</span></span><br><span class="line">      <span class="comment"># 快指针,每次走两个节点</span></span><br><span class="line">      quick = self.head</span><br><span class="line">      <span class="comment"># 慢指针,每次走一个节点</span></span><br><span class="line">      slow = self.head</span><br><span class="line"></span><br><span class="line">      <span class="comment"># 标志,判断是否有环</span></span><br><span class="line">      flag = <span class="literal">False</span></span><br><span class="line">      <span class="comment"># 每个指针的步数</span></span><br><span class="line">      count = <span class="number">0</span></span><br><span class="line">      <span class="comment"># 加上try-except，因为在没环的情况下，快指针会出错</span></span><br><span class="line">      <span class="keyword">try</span>:</span><br><span class="line">         <span class="comment"># 循环终止条件,如果某个节点的next为空,就说明没有环了</span></span><br><span class="line">         <span class="keyword">while</span> quick.next.next <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> slow.next <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            <span class="comment"># 排除第一次相等的情况</span></span><br><span class="line">            <span class="comment"># 用后面那个条件做判断不是个好想法，万一环的起点就是head，然后节点个数又是偶数的话，不会停止了吧</span></span><br><span class="line">            <span class="keyword">if</span> quick.data == slow.data <span class="keyword">and</span> count != <span class="number">1</span>:  <span class="comment"># quick != self.head</span></span><br><span class="line">               print(<span class="string">'快指针追上慢指针时的节点的值: '</span>,quick.data)</span><br><span class="line">               flag = <span class="literal">True</span></span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">            <span class="comment"># 一次跨两个节点</span></span><br><span class="line">            quick = quick.next.next</span><br><span class="line">            <span class="comment"># 一次跨一个节点</span></span><br><span class="line">            slow = slow.next</span><br><span class="line">      <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">         print(e.args)</span><br><span class="line">         print(<span class="string">'quick条件报错，说明没有环'</span>)</span><br><span class="line">      <span class="keyword">finally</span>:</span><br><span class="line">         print(<span class="string">'步数: '</span>, count)</span><br><span class="line">         print(<span class="string">'是否有环: '</span>, flag)</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">judge_circle_by_traversing</span><span class="params">(self)</span>:</span></span><br><span class="line">      <span class="string">"""</span></span><br><span class="line"><span class="string">      将每个遍历过的节点保存到集合中，如果下一次遍历的节点在集合中了，就说明有环</span></span><br><span class="line"><span class="string">      这个方法很傻，但却可以得到环的点是哪个</span></span><br><span class="line"><span class="string">      快慢指针只能判断是否有环，不能得到环的起点</span></span><br><span class="line"><span class="string">      """</span></span><br><span class="line">      nodes = []</span><br><span class="line">      cur = self.head</span><br><span class="line">      <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">         <span class="keyword">if</span> cur <span class="keyword">not</span> <span class="keyword">in</span> nodes:</span><br><span class="line">            nodes.append(cur)</span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">'有环，环的值是: '</span>, cur.data)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">         cur = cur.next</span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">         print(<span class="string">'没有环'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">   cl = CircleLinklist()</span><br><span class="line">   nodes = []</span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">'ABCDEFGHIJKLMN'</span>:</span><br><span class="line">      nodes.append(Node(i))</span><br><span class="line">   nodes[len(nodes) - <span class="number">1</span>].next = nodes[<span class="number">5</span>]  <span class="comment"># 将最后一个节点的next指向F</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> node <span class="keyword">in</span> nodes:</span><br><span class="line">      cl.insert(node)</span><br><span class="line"></span><br><span class="line">   <span class="comment"># cl.traverse()</span></span><br><span class="line"></span><br><span class="line">   cl.judge_circle_quick_slow_pointer()</span><br><span class="line">   print(<span class="string">'-'</span> * <span class="number">80</span>)</span><br><span class="line">   cl.judge_circle_by_traversing()</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
     </div>
@@ -323,7 +538,7 @@
 
     
     <article
-  id="post-leetcode-合并两个有序链表"
+  id="post-django-rest-framework-限流"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -334,30 +549,27 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"
-    >leetcode --- 合并两个有序链表</a> 
+  <a class="article-title" href="/2020/05/23/django-rest-framework-%E9%99%90%E6%B5%81/"
+    >django-rest-framework --- 限流</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2020-05-23T10:54:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/django-rest-framework-%E9%99%90%E6%B5%81/" class="article-date">
+  <time datetime="2020-05-23T11:13:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="https://leetcode-cn.com/problems/merge-two-sorted-lists/" target="_blank" rel="noopener">合并两个有序链表</a></p>
-<p>将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 </p>
-<p>示例：</p>
-<p>输入：1-&gt;2-&gt;4, 1-&gt;3-&gt;4<br>输出：1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4<br><br/></p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"
+  <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>限流就是限制访问,就是通常一个用户在多次请求一个页面，或者点击一个链接的时候，前几次点击是没有问题的，但是一旦连续几次之后，就会出现访问受限，离下一次访问还有50秒等的字样，在django<br>rest framework 中有一个专门的组件来做限制访问.</p> 
+      <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E9%99%90%E6%B5%81/"
         >阅读更多...</a
       >
        
@@ -370,6 +582,8 @@
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
     </footer>
   </div>
 
@@ -380,7 +594,7 @@
 
     
     <article
-  id="post-leetcode-最长公共前缀"
+  id="post-django-请求到响应源码分析"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -391,33 +605,30 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%89%8D%E7%BC%80/"
-    >leetcode --- 最长公共前缀</a> 
+  <a class="article-title" href="/2020/05/23/django-%E8%AF%B7%E6%B1%82%E5%88%B0%E5%93%8D%E5%BA%94%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
+    >django --- 请求到响应源码分析</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%89%8D%E7%BC%80/" class="article-date">
-  <time datetime="2020-05-23T09:58:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/django-%E8%AF%B7%E6%B1%82%E5%88%B0%E5%93%8D%E5%BA%94%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2020-05-23T11:12:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p>编写一个函数来查找字符串数组中的最长公共前缀。</p>
-<p>如果不存在公共前缀，返回空字符串 <code>&quot;&quot;</code>。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]</span><br><span class="line">输出: &quot;fl&quot;</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]</span><br><span class="line">输出: &quot;&quot;</span><br><span class="line">解释: 输入不存在公共前缀。</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%89%8D%E7%BC%80/"
+  <p>web应用或者网站本质上都是围绕着请求-响应的方式来运作的。当你通过浏览器访问网站时，浏览器会向web服务器发送请求。当web服务器收到请求后，服务器会对请求进行相应的处理，然后返回相应的响应给浏览器，最后浏览器呈现给你。</p>
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>这是web服务器转发请求到django应用的地方，也是返回响应的地方。</p>
+<p>路径: <code>xxx.wsgi.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.core.wsgi <span class="keyword">import</span> get_wsgi_application</span><br><span class="line"><span class="comment"># 设置django要使用的配置文件</span></span><br><span class="line">os.environ.setdefault(<span class="string">'DJANGO_SETTINGS_MODULE'</span>, <span class="string">'JwtDemo.settings'</span>)</span><br><span class="line"></span><br><span class="line">application = get_wsgi_application()</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/django-%E8%AF%B7%E6%B1%82%E5%88%B0%E5%93%8D%E5%BA%94%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
         >阅读更多...</a
       >
        
@@ -430,6 +641,8 @@
     
     <footer class="article-footer">
        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81/" rel="tag">源码</a></li></ul>
+
     </footer>
   </div>
 
@@ -440,7 +653,7 @@
 
     
     <article
-  id="post-leetcode-—-括号生成"
+  id="post-python-四种单例模式写法"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -451,268 +664,26 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E2%80%94-%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/"
-    >leetcode — 括号生成</a> 
+  <a class="article-title" href="/2020/05/23/python-%E5%9B%9B%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E5%86%99%E6%B3%95/"
+    >python 四种单例模式写法</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E2%80%94-%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/" class="article-date">
-  <time datetime="2020-05-23T09:57:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/python-%E5%9B%9B%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E5%86%99%E6%B3%95/" class="article-date">
+  <time datetime="2020-05-23T11:11:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="https://leetcode-cn.com/problems/generate-parentheses/" target="_blank" rel="noopener">括号生成</a></p>
-<p>给出 n 代表生成括号的对数，请你写出一个函数，使其能够生成所有可能的并且有效的括号组合。</p>
-<p>例如，给出 n = 3，生成结果为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &quot;((()))&quot;,</span><br><span class="line">  &quot;(()())&quot;,</span><br><span class="line">  &quot;(())()&quot;,</span><br><span class="line">  &quot;()(())&quot;,</span><br><span class="line">  &quot;()()()&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E2%80%94-%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-盛最多水的容器"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/"
-    >leetcode --- 盛最多水的容器</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/" class="article-date">
-  <time datetime="2020-05-23T09:56:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/container-with-most-water/" target="_blank" rel="noopener">盛最多水的容器</a></p>
-<p>给定 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。</p>
-<p>说明：你不能倾斜容器，且 n 的值至少为 2。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/pic/question_11.jpg" alt=""><br>图中垂直线代表输入数组 (1,8,6,2,5,4,8,3,7)。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。</p>
-<p>示例:</p>
-<p>输入: (1,8,6,2,5,4,8,3,7)<br>输出: 49</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-整数反转"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E6%95%B4%E6%95%B0%E5%8F%8D%E8%BD%AC/"
-    >leetcode --- 整数反转</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E6%95%B4%E6%95%B0%E5%8F%8D%E8%BD%AC/" class="article-date">
-  <time datetime="2020-05-23T09:55:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/reverse-integer/" target="_blank" rel="noopener">整数反转</a></p>
-<p>给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。</p>
-<p>示例 1:<br>输入: 123<br>输出: 321</p>
-<p> 示例 2:<br>输入: -123<br>输出: -321</p>
-<p>示例 3:<br>输入: 120<br>输出: 21</p>
-<p>注意:<br>假设我们的环境只能存储得下 32 位的有符号整数，则其数值范围为 [−2<sup>31</sup>,  2<sup>31</sup> − 1]。请根据这个假设，如果反转后整数溢出那么就返回 0。</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E6%95%B4%E6%95%B0%E5%8F%8D%E8%BD%AC/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-LRU缓存机制"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"
-    >leetcode --- LRU缓存机制</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="article-date">
-  <time datetime="2020-05-23T09:54:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/lru-cache/" target="_blank" rel="noopener">LRU缓存机制</a></p>
-<p>运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。</p>
-<p>获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。<br>写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。</p>
-<p>进阶:</p>
-<p>你是否可以在 O(1) 时间复杂度内完成这两种操作？</p>
-<p>示例:</p>
-<p>LRUCache cache = new LRUCache( 2 /* 缓存容量 */ );</p>
-<p>cache.put(1, 1);<br/><br>cache.put(2, 2);<br/><br>cache.get(1);       // 返回  1<br/><br>cache.put(3, 3);    // 该操作会使得密钥 2 作废<br/><br>cache.get(2);       // 返回 -1 (未找到)<br/><br>cache.put(4, 4);    // 该操作会使得密钥 1 作废<br/><br>cache.get(1);       // 返回 -1 (未找到)<br/><br>cache.get(3);       // 返回  3<br/><br>cache.get(4);       // 返回  4<br/></p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-合并K个有序链表"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6K%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"
-    >leetcode --- 合并K个有序链表</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6K%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2020-05-23T09:51:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/merge-k-sorted-lists/" target="_blank" rel="noopener">合并K个有序链表</a></p>
-<p>合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。</p>
-<p>示例:</p>
-<p>输入:<br>[<br>  1-&gt;4-&gt;5,<br>  1-&gt;3-&gt;4,<br>  2-&gt;6<br>]<br>输出: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%90%88%E5%B9%B6K%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"
-        >阅读更多...</a
-      >
-       
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">通过单例模式，可以保证系统中的这个类只产生一个对象且容易被外界访问，方便控制个例个数以及节省资源</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls,*args,**kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        确保每次通过__new__函数，返回的对象都是同一个即可</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(cls,<span class="string">'_instance'</span>):</span><br><span class="line">            <span class="comment">#orig = super(Singleton,cls)</span></span><br><span class="line">            <span class="comment">#cls._instance = orig.__new__(cls,*args,**kwargs)</span></span><br><span class="line">            <span class="comment"># or</span></span><br><span class="line">            cls._instance = super().__new__(cls,*args,**kwargs)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(Singleton)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">a1 = A()</span><br><span class="line">a2 = A()</span><br><span class="line">a3 = A()</span><br><span class="line"></span><br><span class="line">print(id(a1),id(a2),id(a3))</span><br><span class="line">a1.num = <span class="number">100</span></span><br><span class="line">print(a2.num,a3.num,A.num)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'-'</span> * <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#2</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton2</span><span class="params">(object)</span>:</span></span><br><span class="line">    _state = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls,*args,**kwargs)</span>:</span></span><br><span class="line">        single = super().__new__(cls,*args,**kwargs)</span><br><span class="line">        single.__dict__ = cls._state</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> single</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(Singleton2)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">b1 = B()</span><br><span class="line">b2 = B()</span><br><span class="line">b3 = B()</span><br><span class="line"><span class="comment"># 每次返回的对象都不一样</span></span><br><span class="line">print(id(b1),id(b2),id(b3))</span><br><span class="line"></span><br><span class="line">b1.num = <span class="number">100</span></span><br><span class="line">print(b2.num,b3.num,B.num)</span><br><span class="line"><span class="comment"># 但贡献了__dict__的魔法方法，即具有的属性，数据都是一样的，一个对象修改，其他对象跟着修改</span></span><br><span class="line">print(b1.__dict__,b2.__dict__,b3.__dict__)</span><br><span class="line">print(b1._state)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'-'</span> * <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">跟第一种方法效果一样，都是只生成一个对象</span></span><br><span class="line"><span class="string">使用一个dict存储类对象，在使用装饰器时先判断cls是否已经存在，如果存在则取出，否则创建存入再取出</span></span><br><span class="line"><span class="string">就能确保每次都是只使用同一个对象</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">singleton</span><span class="params">(cls)</span>:</span></span><br><span class="line">    instances = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getinstance</span><span class="params">(*args,**kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> instances:</span><br><span class="line">            instances[cls] = cls(*args,**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> instances[cls]</span><br><span class="line">    <span class="keyword">return</span> getinstance</span><br><span class="line"></span><br><span class="line"><span class="meta">@singleton</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">c1 = C()</span><br><span class="line">c2 = C()</span><br><span class="line">c3 = C()</span><br><span class="line">print(id(c1),id(c2),id(c3))</span><br><span class="line"></span><br><span class="line">print(<span class="string">'-'</span> * <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">模块导入，在python中，模块是天然的单例模式</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># 在 single.py 中的类</span></span><br><span class="line"><span class="string">class Singleton4(object):</span></span><br><span class="line"><span class="string">    num = 0</span></span><br><span class="line"><span class="string">    def foo(self):</span></span><br><span class="line"><span class="string">        print(self.num)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">single = Singleton4()</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">from</span> single <span class="keyword">import</span> single,Singleton4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但仅限于把已经创建好的实例对象导入进来</span></span><br><span class="line">single.num = <span class="number">100</span></span><br><span class="line">single.foo()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果是导入了类，然后创建了实例对象，那么跟普通类没有区别</span></span><br><span class="line">s1 = Singleton4()</span><br><span class="line">s2 = Singleton4()</span><br><span class="line">s3 = Singleton4()</span><br><span class="line">print(id(s1),id(s2),id(s3))</span><br><span class="line"></span><br><span class="line">s1.num = <span class="number">500</span></span><br><span class="line">print(s2.num,s3.num,Singleton4.num)</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
     </div>
@@ -737,7 +708,7 @@
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/7/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/7/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/">下一页</a>
   </nav>
   
 </section>

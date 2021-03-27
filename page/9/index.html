@@ -137,7 +137,7 @@
     
     
     <article
-  id="post-leetcode-二叉树的最近公共祖先"
+  id="post-装饰器的几种用法"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -148,16 +148,238 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"
-    >leetcode --- 二叉树的最近公共祖先</a> 
+  <a class="article-title" href="/2020/05/23/%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E7%94%A8%E6%B3%95/"
+    >装饰器的几种用法</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" class="article-date">
-  <time datetime="2020-05-23T09:50:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E7%94%A8%E6%B3%95/" class="article-date">
+  <time datetime="2020-05-23T11:11:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>装饰器是python的一种特殊工具，提供了一种在函数外部修改函数的灵活能力，可以改变函数本身的行为，简单说，就是在不修改函数代码的情况下，给函数增加新的功能。例如常用的<code>staticmethod</code>和<code>classmethod</code>等。</p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fprint</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@fprint</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E7%94%A8%E6%B3%95/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-django-rest-framework-常用视图函数"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-rest-framework-%E5%B8%B8%E7%94%A8%E8%A7%86%E5%9B%BE%E5%87%BD%E6%95%B0/"
+    >django-rest-framework 常用视图函数</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-rest-framework-%E5%B8%B8%E7%94%A8%E8%A7%86%E5%9B%BE%E5%87%BD%E6%95%B0/" class="article-date">
+  <time datetime="2020-05-23T11:10:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="settings-py"><a href="#settings-py" class="headerlink" title="settings.py"></a>settings.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 设置分页</span></span><br><span class="line">    <span class="string">'DEFAULT_PAGINATION_CLASS'</span>: <span class="string">'rest_framework.pagination.PageNumberPagination'</span>,</span><br><span class="line">    <span class="string">'DEFAULT_VERSIONING_CLASS'</span>: <span class="string">'rest_framework.versioning.NamespaceVersioning'</span>,</span><br><span class="line">    <span class="string">'DEFAULT_PERMISSOIN_CLASSES'</span>:[</span><br><span class="line">        <span class="string">'rest_framework.permissions.IsAdminUser'</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment"># 每一页数量</span></span><br><span class="line">    <span class="string">'PAGE_SIZE'</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E5%B8%B8%E7%94%A8%E8%A7%86%E5%9B%BE%E5%87%BD%E6%95%B0/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-django-rest-framework-mixin模式"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-rest-framework-mixin%E6%A8%A1%E5%BC%8F/"
+    >django-rest-framework --- mixin模式</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-rest-framework-mixin%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time datetime="2020-05-23T11:08:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>假设存在这个三个类，Bird, Fish, Animal，分别具有不同的功能，像fly, swim, run等。现有某种虚拟Animal具有以上三种功能，那么便使用继承就可实现 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bird</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fly</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'can fly'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fish</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swim</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'can swim'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'can run'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VirtualAnimal</span><span class="params">(Bird, Fish, Animal)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">can</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.fly()</span><br><span class="line">        self.swim()</span><br><span class="line">        self.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">va = VirtualAnimal()</span><br><span class="line">va.can()</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/django-rest-framework-mixin%E6%A8%A1%E5%BC%8F/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-python使用单分派泛函数实现函数-重载-功能"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/python%E4%BD%BF%E7%94%A8%E5%8D%95%E5%88%86%E6%B4%BE%E6%B3%9B%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E5%87%BD%E6%95%B0-%E9%87%8D%E8%BD%BD-%E5%8A%9F%E8%83%BD/"
+    >python使用单分派泛函数实现函数`重载`功能</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/python%E4%BD%BF%E7%94%A8%E5%8D%95%E5%88%86%E6%B4%BE%E6%B3%9B%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E5%87%BD%E6%95%B0-%E9%87%8D%E8%BD%BD-%E5%8A%9F%E8%83%BD/" class="article-date">
+  <time datetime="2020-05-23T11:06:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>众所周知,python中没有类似Java中的函数重载功能,当定义多个函数名一样但参数不一样的函数时,最后一个会前面前的同名函数覆盖.</p> 
+      <a class="article-more-link" href="/2020/05/23/python%E4%BD%BF%E7%94%A8%E5%8D%95%E5%88%86%E6%B4%BE%E6%B3%9B%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E5%87%BD%E6%95%B0-%E9%87%8D%E8%BD%BD-%E5%8A%9F%E8%83%BD/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-分隔链表"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/leetcode-%E5%88%86%E9%9A%94%E9%93%BE%E8%A1%A8/"
+    >leetcode ---  分隔链表</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/leetcode-%E5%88%86%E9%9A%94%E9%93%BE%E8%A1%A8/" class="article-date">
+  <time datetime="2020-05-23T11:03:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
@@ -167,22 +389,252 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/" target="_blank" rel="noopener">二叉树的最近公共祖先</a></p>
-<p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
-<p>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
-<p>例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]</p>
-<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/pic/32.png" alt="示例"></p>
-<p>示例 1:</p>
-<p>输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1</p>
-<p>输出: 3</p>
-<p>解释: 节点 5 和节点 1 的最近公共祖先是节点 3。<br/></p>
-<p>示例 2:</p>
-<p>输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4</p>
-<p>输出: 5</p>
-<p>解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。</p>
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/partition-list/submissions/" target="_blank" rel="noopener">分隔链表</a><br><br/></p>
+<p>给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于 x 的节点都在大于或等于 x 的节点之前。<br>你应当保留两个分区中每个节点的初始相对位置。</p>
+<p>示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: head &#x3D; 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2, x &#x3D; 3</span><br><span class="line">输出: 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%88%86%E9%9A%94%E9%93%BE%E8%A1%A8/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-颜色分类"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/leetcode-%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB/"
+    >leetcode ---  颜色分类</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/leetcode-%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB/" class="article-date">
+  <time datetime="2020-05-23T11:03:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/sort-colors/" target="_blank" rel="noopener">颜色分类</a><br><br/><br>给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
+<p>此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
+<p>注意:<br>不能使用代码库中的排序函数来解决这道题。</p>
+<p>示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,0,2,1,1,0]</span><br><span class="line">输出: [0,0,1,1,2,2]</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/leetcode-%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-最大子序和"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/leetcode-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/"
+    >leetcode --- 最大子序和</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/leetcode-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/" class="article-date">
+  <time datetime="2020-05-23T11:02:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/maximum-subarray/" target="_blank" rel="noopener">最大子序和</a></p>
+<p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p>示例:</p>
+<blockquote>
+</blockquote>
+<p>输入: [-2,1,-3,4,-1,2,1,-5,4],<br/><br>输出: 6 <br/><br>解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。<br/></p> 
+      <a class="article-more-link" href="/2020/05/23/leetcode-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-爬楼梯"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/leetcode-%E7%88%AC%E6%A5%BC%E6%A2%AF/"
+    >leetcode --- 爬楼梯</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/leetcode-%E7%88%AC%E6%A5%BC%E6%A2%AF/" class="article-date">
+  <time datetime="2020-05-23T11:02:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/climbing-stairs/" target="_blank" rel="noopener">爬楼梯</a><br><br/><br>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。<br>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？<br>注意：给定 n 是一个正整数。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入： 2 </span><br><span class="line">输出： 2</span><br><span class="line">解释： 有两种方法可以爬到楼顶。</span><br><span class="line">1.  1 阶 + 1 阶</span><br><span class="line">2.  2 阶</span><br></pre></td></tr></table></figure>
+
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入： 3</span><br><span class="line">输出： 3</span><br><span class="line">解释： 有三种方法可以爬到楼顶。</span><br><span class="line">1.  1 阶 + 1 阶 + 1 阶</span><br><span class="line">2.  1 阶 + 2 阶</span><br><span class="line">3.  2 阶 + 1 阶</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/leetcode-%E7%88%AC%E6%A5%BC%E6%A2%AF/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-字符串相乘"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/leetcode-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E4%B9%98/"
+    >leetcode --- 字符串相乘</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/leetcode-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E4%B9%98/" class="article-date">
+  <time datetime="2020-05-23T11:01:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/multiply-strings/" target="_blank" rel="noopener">字符串相乘</a><br/><br>给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。<br>示例1:</p>
+<blockquote>
+</blockquote>
+<p>输入: num1 = “2”, num2 = “3”<br>输出: “6”</p>
+<p>示例2:</p>
+<blockquote>
+</blockquote>
+<p>输入: num1 = “123”, num2 = “456”<br>输出: “56088”</p>
 <p>说明:</p>
-<p>所有节点的值都是唯一的。<br>p、q 为不同节点且均存在于给定的二叉树中。</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"
+<blockquote>
+</blockquote>
+<p>num1 和 num2 的长度小于110。<br/><br>num1 和 num2 只包含数字 0-9。<br/><br>num1 和 num2 均不以零开头，除非是数字 0 本身。<br/><br>不能使用任何标准库的大数类型（比如 BigInteger）或直接将输入转换为整数来处理。<br/></p> 
+      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E4%B9%98/"
         >阅读更多...</a
       >
        
@@ -205,7 +657,7 @@
 
     
     <article
-  id="post-leetcode-寻找两个有序数组的中位数"
+  id="post-leetcode-最接近的三数之和"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -216,16 +668,16 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/"
-    >leetcode --- 寻找两个有序数组的中位数</a> 
+  <a class="article-title" href="/2020/05/23/leetcode-%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"
+    >leetcode --- 最接近的三数之和</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" class="article-date">
-  <time datetime="2020-05-23T09:50:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2020/05/23/leetcode-%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/" class="article-date">
+  <time datetime="2020-05-23T11:01:00.000Z" itemprop="datePublished">2020-05-23</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
@@ -235,194 +687,11 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p>给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。<br>请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。<br>你可以假设 nums1 和 nums2 不会同时为空。</p>
-<p>nums1 = [1, 3]<br>nums2 = [2]</p>
-<p>则中位数是 2.0</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-二叉搜索树的最近公共祖先"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"
-    >leetcode --- 二叉搜索树的最近公共祖先</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" class="article-date">
-  <time datetime="2020-05-23T09:29:44.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" target="_blank" rel="noopener">二叉搜索树的最近公共祖先</a></p>
-<p>给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。</p>
-<p>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
-<p>例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]</p>
-<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/pic/33.png" alt="1.png"></p>
-<p>示例 1:</p>
-<p>输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8</p>
-<p>输出: 6</p>
-<p>解释: 节点 2 和节点 8 的最近公共祖先是 6。</p>
-<p>示例 2:</p>
-<p>输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4<br>输出: 2</p>
-<p>解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。</p>
-<p>说明:</p>
-<p>所有节点的值都是唯一的。<br>p、q 为不同节点且均存在于给定的二叉搜索树中。</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-有效的括号-1"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7-1/"
-    >leetcode --- 有效的括号</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7-1/" class="article-date">
-  <time datetime="2020-05-23T09:27:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/valid-parentheses/" target="_blank" rel="noopener">有效的括号</a><br><br/><br>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串，判断字符串是否有效。</p>
-<p>有效字符串需满足：</p>
-<p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。<br>注意空字符串可被认为是有效字符串。</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7-1/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode --- 环形链表"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode%20---%20%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8/"
-    >leetcode --- 环形链表</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode%20---%20%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2020-05-23T09:16:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><a href="https://leetcode-cn.com/problems/linked-list-cycle/" target="_blank" rel="noopener">环形链表</a></p>
-<p>给定一个链表，判断链表中是否有环。</p>
-<p>为了表示给定链表中的环，我们使用整数 <code>pos</code> 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 <code>pos</code> 是 <code>-1</code>，则在该链表中没有环。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [3,2,0,-4], pos = 1</span><br><span class="line">输出：true</span><br><span class="line">解释：链表中有一个环，其尾部连接到第二个节点。</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [1,2], pos = 0</span><br><span class="line">输出：true</span><br><span class="line">解释：链表中有一个环，其尾部连接到第一个节点。</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/05/23/leetcode%20---%20%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8/"
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/3sum-closest/" target="_blank" rel="noopener">最接近的三数之和</a><br/><br>给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。</p>
+<blockquote>
+</blockquote>
+<p>例如，给定数组 nums = [-1，2，1，-4], 和 target = 1. 与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).</p> 
+      <a class="article-more-link" href="/2020/05/23/leetcode-%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"
         >阅读更多...</a
       >
        
@@ -450,7 +719,7 @@
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/8/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
+    <a class="extend prev" rel="prev" href="/page/8/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/">下一页</a>
   </nav>
   
 </section>

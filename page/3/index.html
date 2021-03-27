@@ -137,7 +137,7 @@
     
     
     <article
-  id="post-常见面试题之缓存雪崩、缓存穿透、缓存击穿"
+  id="post-leetcode-53-最大子序和"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -148,51 +148,121 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/11/08/%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B9%8B%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E3%80%81%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/"
-    >[转]常见面试题之缓存雪崩、缓存穿透、缓存击穿</a> 
+  <a class="article-title" href="/2021/03/27/leetcode-53-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/"
+    >leetcode --- 53. 最大子序和</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/11/08/%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B9%8B%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E3%80%81%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" class="article-date">
-  <time datetime="2020-11-08T12:44:00.000Z" itemprop="datePublished">2020-11-08</time>
+      <a href="/2021/03/27/leetcode-53-%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/" class="article-date">
+  <time datetime="2021-03-27T06:05:00.000Z" itemprop="datePublished">2021-03-27</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/redis/">redis</a>
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s?__biz=MzIzMDU0MTA3Nw==&mid=2247483988&idx=1&sn=3bd52650907867d65f1c4d5c3cff8f13&chksm=e8b0902edfc71938f7d7a29246d7278ac48e6c104ba27c684e12e840892252b0823de94b94c1&token=1558933779&lang=zh_CN#rd" target="_blank" rel="noopener">常见面试题之缓存雪崩、缓存穿透、缓存击穿</a></p>
-<h3 id="缓存应用"><a href="#缓存应用" class="headerlink" title="缓存应用"></a>缓存应用</h3><p>缓存在我们平常的项目中多多少少都会使用到，缓存使用的使用场景还是比较多的，缓存是分布式系统中的重要组件，主要解决高并发、大数据场景下，热点数据访问的性能问题。提高性能的数据快速访问。一提到缓存，这些是我们都能想到的一些缓存应用场景，但是我们是不太清楚缓存的本质思想是什么的。缓存的基本思想就是我们非常熟悉的空间换时间。缓存也并不是那么的高大上，虽然他可以为系统的性能进行提升。缓存的思想实际在操作系统或者其他地方都被大量用到。比如 「<strong>CPU Cache 缓存的是内存数据用于解决 CPU 处理速度和内存不匹配的问题，内存缓存的是硬盘数据用于解决硬盘访问速度过慢的问题。</strong>」 「<strong>再比如操作系统在 页表方案 基础之上引入了 快表 来加速虚拟地址到物理地址的转换。我们可以把快表理解为一种特殊的高速缓冲存储器（Cache）。</strong>」</p>
-<p>上面简单介绍了缓存的基本思想，现在回到业务系统来说：<strong>我们为了避免用户在请求数据的时候获取速度过于缓慢，所以我们在数据库之上增加了缓存这一层来弥补。</strong>画个图能更加方便大家的理解：</p>
-<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108204545.png" alt=""><br>简单点说当我们查询一条数据时，先去查询缓存，如果缓存有就直接返回，如果没有就去查询数据库，然后返回。这种情况下就可能会出现一些现象。</p>
-<h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><h4 id="什么是缓存雪崩"><a href="#什么是缓存雪崩" class="headerlink" title="什么是缓存雪崩"></a>什么是缓存雪崩</h4><p>这里我们通过一个例子进行分析。比如马老师的某宝，我们打开某宝的首页时，看到一些图片呀、推荐店铺信息呀等等，这些都属于热点数据，为什么他们会加载的那么快呢？因为使用到了缓存呗。这些热点数据都做了缓存，假设现在把这些热点数据的缓存失效时间为一样，现在我们马老师要做一个秒杀活动，假设在秒杀活动时每秒有8000个请求，本来有缓存我们是可以扛住每秒 6000 个请求，但是缓存当时所有的Key都失效了。此时 1 秒 8000 个请求全部落数据库，数据库必然扛不住，它会报一下警，真实情况可能DBA都没反应过来就直接挂了。此时，如果没用什么特别的方案来处理这个故障，DBA 很着急，重启数据库，但是数据库立马又被新的流量给打死了。上面造成缓存雪崩的原因是因为失效时间造成，还有一种可能是因为缓存服务宕机。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205054.png" alt=""></p>
-<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><p>这里分三个时间段进行进行分析</p>
-<h5 id="事前"><a href="#事前" class="headerlink" title="事前"></a>事前</h5><p>如果缓存雪崩造成的原因是因为缓存服务宕机造成的，可以将redis采用集群部署，可以使用 主从+哨兵 ，Redis Cluster 来避免 Redis 全盘崩溃的情况。若缓存雪崩是因为大量缓存因为失效时间而造成的，我们在批量往redis存数据的时候，把每个Key的失效时间都加个随机值就好了，这样可以保证数据不会在同一时间大面积失效，或者设置热点数据永远不过期，有更新操作就更新缓存就可以了。</p>
-<h5 id="事中"><a href="#事中" class="headerlink" title="事中"></a>事中</h5><p>如果我们之前没有考虑缓存雪崩的问题，那么在实际使用中真的发生缓存雪崩了，我们该怎么办呢？这时我们就要考虑使用其他方法避免出现这种情况了。我们可以使用ehcache 本地缓存 + Hystrix 限流&amp;降级 ,避免 MySQL 被打死的情况发生。<br>这里使用echache本地缓存的目的就是考虑在 Redis Cluster 完全不可用的时候，ehcache 本地缓存还能够支撑一阵。</p>
-<p>使用 Hystrix 进行 限流 &amp; 降级 ，比如一秒来了5000个请求，我们可以设置假设只能有一秒 2000 个请求能通过这个组件，那么其他剩余的 3000 请求就会走限流逻辑，然后去调用我们自己开发的降级组件（降级）。比如设置的一些默认值呀之类的。以此来保护最后的 MySQL 不会被大量的请求给打死。</p>
-<h5 id="事后"><a href="#事后" class="headerlink" title="事后"></a>事后</h5><p>如果缓存服务宕机了，这里我们可以开启「Redis」 持久化 「RDB」+「AOF」，一旦重启，自动从磁盘上加载数据，快速恢复缓存数据。</p>
-<p>综上所述，可画出如下图所示：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205219.png" alt=""></p>
-<h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><h4 id="什么是缓存穿透"><a href="#什么是缓存穿透" class="headerlink" title="什么是缓存穿透"></a>什么是缓存穿透</h4><p>在正常的情况下，用户查询数据都是存在的，但是在异常情况下，缓存与数据都没有数据，但是用户不断发起请求，这样每次请求都会打到数据库上面去，这时的用户很可能是攻击者，攻击会导致数据库压力过大，严重会击垮数据库。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205312.png" alt=""></p>
-<h4 id="解决办法-1"><a href="#解决办法-1" class="headerlink" title="解决办法"></a>解决办法</h4><h5 id="添加参数校验"><a href="#添加参数校验" class="headerlink" title="添加参数校验"></a>添加参数校验</h5><p>我刚入职的时候，我的老大就跟我说过，作为一名后端开发工程师，不要相信前端传来的东西，所以数据一定要在后端进行校验。我们可以在接口层添加校验，不合法的直接返回即可，没必要做后续的操作。</p>
-<h5 id="缓存空值"><a href="#缓存空值" class="headerlink" title="缓存空值"></a>缓存空值</h5><p>上面我们也介绍了，之所以会发生穿透，就是因为缓存中没有存储这些空数据的key。从而导致每次查询都到数据库去了。</p>
-<p>那么我们就可以为这些key 设置的值设置为null 丢到缓存里面去。后面再出现查询这个key 的请求的时候，直接返回null ,就不用在到 数据库中去走一圈了。但是别忘了设置过期时间。</p>
-<h5 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h5><p>redis的一个高级用法就是使用布隆过滤器（Bloom Filter），BloomFilter 类似于一个hase set 用来判断某个元素（key）是否存在于某个集合中。这个也能很好的防止缓存穿透的发生，他的原理也很简单就是利用高效的数据结构和算法快速判断出你这个Key是否在数据库中存在，不存在你return就好了，存在你就去查了DB刷新KV再return。</p>
-<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20201108205409.png" alt=""></p>
-<p>上面介绍了三种方法，用哪种方法最好呢？下面我们来分析一下：</p>
-<p>第一种方法，添加参数校验，这里是必须要添加，不过只能过滤掉一些特殊值，比如传的id为负数，如果传的正常id，这里参数校验就不起作用了。</p>
-<p>第二种方法，如果有一些恶意攻击，攻击会带来大量的ke y是不存在的，这样采用第二种方法就不合适了。所以针对这种key 异常多，请求重复率比较低的数据，我们就没有必要进行缓存，使用第三种方案直接过滤掉。</p>
-<p>如果对于空数据key有限的，重复率比较高的，我们则可以采用第二种方式进行缓存。</p>
-<h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><h4 id="什么是缓存击穿"><a href="#什么是缓存击穿" class="headerlink" title="什么是缓存击穿"></a>什么是缓存击穿</h4><p>我们在平常高并发的系统中，大量的请求同时查询一个key时，假设此时，这个key正好失效了，就会导致大量的请求都打到数据库上面去，这种现象我们称为击穿。</p>
-<p>这么看缓存击穿和缓存雪崩有点像，但是又有一点不一样，缓存雪崩是因为大面积的缓存失效，打崩了DB，而缓存击穿不同的是「缓存击穿」是指一个Key非常热点，在不停的扛着大并发，大并发集中对这一个点进行访问，当这个Key在失效的瞬间，持续的大并发就穿破缓存，直接请求数据库，就像在一个完好无损的桶上凿开了一个洞。</p>
-<p>缓存击穿带来的问题就是会造成某一时刻数据库请求量过大，压力剧增。</p>
-<h4 id="解决办法-2"><a href="#解决办法-2" class="headerlink" title="解决办法"></a>解决办法</h4><h5 id="不过期"><a href="#不过期" class="headerlink" title="不过期"></a>不过期</h5><p>我们简单粗暴点，直接让热点数据永远不过期，定时任务定期去刷新数据就可以了。不过这样设置需要区分场景，比如某宝首页可以这么做。</p>
-<h5 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h5><p>为了避免出现缓存击穿的情况，我们可以在第一个请求去查询数据库的时候对他加一个互斥锁，其余的查询请求都会被阻塞住，直到锁被释放，后面的线程进来发现已经有缓存了，就直接走缓存，从而保护数据库。但是也是由于它会阻塞其他的线程，此时系统吞吐量会下降。需要结合实际的业务去考虑是否要这么做。</p>
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/maximum-subarray" target="_blank" rel="noopener">最大子序和</a></p>
+<p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p>示例 1：</p>
+<blockquote>
+<p>输入：nums = [-2,1,-3,4,-1,2,1,-5,4]<br>输出：6<br>解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。</p>
+</blockquote>
+<blockquote>
+<p>示例 2：<br>输入：nums = [1]<br>输出：1</p>
+</blockquote>
+<blockquote>
+<p>示例 3：<br>输入：nums = [0]<br>输出：0</p>
+</blockquote>
+<blockquote>
+<p>示例 4：<br>输入：nums = [-1]<br>输出：-1</p>
+</blockquote>
+<p>示例 5：</p>
+<blockquote>
+<p>输入：nums = [-100000]<br>输出：-100000</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxSubArray</span><span class="params">(self, nums: list)</span> -&gt; int:</span></span><br><span class="line"></span><br><span class="line">        total = nums[<span class="number">0</span>]</span><br><span class="line">        temp = nums[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums[<span class="number">1</span>:]:</span><br><span class="line">            <span class="keyword">if</span> temp &lt; <span class="number">0</span>:</span><br><span class="line">                temp = <span class="number">0</span></span><br><span class="line">            temp += n</span><br><span class="line">            <span class="keyword">if</span> temp &gt; total:</span><br><span class="line">                total = temp</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> total</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nums = [<span class="number">-2</span>, <span class="number">1</span>, <span class="number">-3</span>, <span class="number">4</span>, <span class="number">-1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">-5</span>, <span class="number">4</span>]</span><br><span class="line">s = Solution()</span><br><span class="line">print(s.maxSubArray(nums))</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-38-外观数列"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/27/leetcode-38-%E5%A4%96%E8%A7%82%E6%95%B0%E5%88%97/"
+    >leetcode --- 38. 外观数列</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/27/leetcode-38-%E5%A4%96%E8%A7%82%E6%95%B0%E5%88%97/" class="article-date">
+  <time datetime="2021-03-27T05:11:00.000Z" itemprop="datePublished">2021-03-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/count-and-say" target="_blank" rel="noopener">外观数列</a></p>
+<p>给定一个正整数 n ，输出外观数列的第 n 项。</p>
+<p>「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。</p>
+<p>你可以将其视作是由递归公式定义的数字字符串序列：</p>
+<p>countAndSay(1) = “1”<br>countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。</p>
+<p>前五项如下<br/></p>
+<blockquote>
+<ol>
+<li>1</li>
+<li>11</li>
+<li>21</li>
+<li>1211</li>
+<li>111221<br>第一项是数字 1<br>描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 “11”<br>描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 “21”<br>描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 “1211”<br>描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 “111221”</li>
+</ol>
+</blockquote>
+<p>要 描述 一个数字字符串，首先要将字符串分割为 最小 数量的组，每个组都由连续的最多 相同字符 组成。然后对于每个组，先描述字符的数量，然后描述字符，形成一个描述组。要将描述转换为数字字符串，先将每组中的字符数量用数字替换，再将所有描述组连接起来。</p>
+<p>例如，数字字符串 “3322251” 的描述如下图：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327140225.png" alt=""></p>
+<p>示例 1：</p>
+<blockquote>
+<p>输入：n = 1<br>输出：”1”<br>解释：这是一个基本样例。</p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：n = 4<br>输出：”1211”<br>解释：<br>countAndSay(1) = “1”<br>countAndSay(2) = 读 “1” = 一 个 1 = “11”<br>countAndSay(3) = 读 “11” = 二 个 1 = “21”<br>countAndSay(4) = 读 “21” = 一 个 2 + 一 个 1 = “12” + “11” = “1211”</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countAndSay</span><span class="params">(self, n: int)</span> -&gt; str:</span></span><br><span class="line">        string = <span class="string">"1"</span></span><br><span class="line">        index = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> index &lt; n:</span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            rv = <span class="string">""</span></span><br><span class="line">            <span class="keyword">while</span> string:</span><br><span class="line">                start = string[<span class="number">0</span>]</span><br><span class="line">                tmp = string.lstrip(start)</span><br><span class="line">                count = len(string) - len(tmp)</span><br><span class="line">                string = tmp</span><br><span class="line">                rv += <span class="string">"%s%s"</span> % (count, start)</span><br><span class="line">            string = rv</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">n = <span class="number">4</span></span><br><span class="line">print(s.countAndSay(n))</span><br></pre></td></tr></table></figure>
+
  
       <!-- reward -->
       
@@ -213,7 +283,7 @@
 
     
     <article
-  id="post-golang-转-beego框架入门"
+  id="post-leetcode-35-搜索插入位置"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -224,94 +294,45 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/11/08/golang-%E8%BD%AC-beego%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8/"
-    >[转]golang - beego框架入门</a> 
+  <a class="article-title" href="/2021/03/27/leetcode-35-%E6%90%9C%E7%B4%A2%E6%8F%92%E5%85%A5%E4%BD%8D%E7%BD%AE/"
+    >leetcode --- 35. 搜索插入位置</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/11/08/golang-%E8%BD%AC-beego%E6%A1%86%E6%9E%B6%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2020-11-08T09:13:00.000Z" itemprop="datePublished">2020-11-08</time>
+      <a href="/2021/03/27/leetcode-35-%E6%90%9C%E7%B4%A2%E6%8F%92%E5%85%A5%E4%BD%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2021-03-27T05:01:00.000Z" itemprop="datePublished">2021-03-27</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p><a href="https://www.jianshu.com/u/4bede98c5ae5" target="_blank" rel="noopener">转载至Clown1995</a></p>
-<p><a href="https://www.jianshu.com/p/462e23ae402c" target="_blank" rel="noopener">Beego脱坑（一）Beego简介和安装</a></p>
-<p><a href="https://www.jianshu.com/p/5a586b06c55f" target="_blank" rel="noopener">Beego脱坑（二）新建Beego项目</a></p>
-<p><a href="https://www.jianshu.com/p/d0d1462113d4" target="_blank" rel="noopener">Beego脱坑（三）Router</a></p>
-<p><a href="https://www.jianshu.com/p/a0ece5f05ab9" target="_blank" rel="noopener">Beego脱坑（四）Controller</a></p>
-<p><a href="https://www.jianshu.com/p/fa3dbf8aa774" target="_blank" rel="noopener">Beego脱坑（五）使用模板获取数据</a></p>
-<p><a href="https://www.jianshu.com/p/69c8b3f8d58c" target="_blank" rel="noopener">Beego脱坑（六）多种格式数据输出</a></p>
-<p><a href="https://www.jianshu.com/p/43459409ec00" target="_blank" rel="noopener">Beego脱坑（七）获取表单数据并解析到结构体</a></p>
-<p><a href="https://www.jianshu.com/p/37abab5808bb" target="_blank" rel="noopener">Beego脱坑（八）表单数据验证</a></p>
-<p><a href="https://www.jianshu.com/p/9aee6d938c49" target="_blank" rel="noopener">Beego脱坑（九）Cookie和Session</a></p>
-<p><a href="https://www.jianshu.com/p/a519cf3ff3b7" target="_blank" rel="noopener">Beego脱坑（十）数据绑定</a></p>
-<p><a href="https://www.jianshu.com/p/a63953b32e60" target="_blank" rel="noopener">Beego脱坑（十一）文件上传、下载</a></p>
-<p><a href="https://www.jianshu.com/p/a65cad84a4b9" target="_blank" rel="noopener">Beego脱坑（十二）ORM介绍并创建第一个表</a></p>
-<p><a href="https://www.jianshu.com/p/d6bf1e3d6187" target="_blank" rel="noopener">Beego脱坑（十三）ORM基本增删改查</a></p>
-<p><a href="https://www.jianshu.com/p/6a1da3390615" target="_blank" rel="noopener">Beego脱坑（十四）ORM高级查询</a></p>
-<p><a href="https://www.jianshu.com/p/a0ffd74e7481" target="_blank" rel="noopener">Beego脱坑（十五）ORM关系查询</a></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/beego/" rel="tag">beego</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-golang-转-解密Go协程的栈内存管理"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/10/12/golang-%E8%BD%AC-%E8%A7%A3%E5%AF%86Go%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%A0%88%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"
-    >[转]golang - 解密Go协程的栈内存管理</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/10/12/golang-%E8%BD%AC-%E8%A7%A3%E5%AF%86Go%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%A0%88%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="article-date">
-  <time datetime="2020-10-12T10:12:00.000Z" itemprop="datePublished">2020-10-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>转载：<a href="https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&mid=2247485886&idx=1&sn=f29fe2ce95a485e2c2ef1c4cd33b5085&chksm=fa80d829cdf7513fdf45b16be023809d9725b150803b6482643c3dd84aa3c0090c2cb9efd3aa&token=940952510&lang=zh_CN#rd" target="_blank" rel="noopener">解密Go协程的栈内存管理</a></p>
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/search-insert-position" target="_blank" rel="noopener">搜索插入位置</a></p>
+<p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>你可以假设数组中无重复元素。</p>
+<p>示例 1:</p>
+<blockquote>
+<p>输入: [1,3,5,6], 5 <br/><br>输出: 2</p>
+</blockquote>
+<p>示例 2:</p>
+<blockquote>
+<p>输入: [1,3,5,6], 2 <br/><br>输出: 1</p>
+</blockquote>
+<p>示例 3:</p>
+<blockquote>
+<p>输入: [1,3,5,6], 7 <br/><br>输出: 4</p>
+</blockquote>
+<p>示例 4:</p>
+<blockquote>
+<p>输入: [1,3,5,6], 0 <br/><br>输出: 0</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">searchInsert</span><span class="params">(self, nums: list, target: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">for</span> index, value <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">            <span class="keyword">if</span> target &lt;= value:</span><br><span class="line">                <span class="keyword">return</span> index</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> len(nums)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">ns = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">print(s.searchInsert(ns, <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -332,7 +353,7 @@
 
     
     <article
-  id="post-golang-转-图解Go内存管理器的内存分配策略"
+  id="post-leetcode-21-合并两个有序链表"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -343,26 +364,111 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E8%A7%A3Go%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/"
-    >[转]golang - 图解Go内存管理器的内存分配策略</a> 
+  <a class="article-title" href="/2021/03/27/leetcode-21-%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"
+    >leetcode --- 21. 合并两个有序链表</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E8%A7%A3Go%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/" class="article-date">
-  <time datetime="2020-10-12T10:11:00.000Z" itemprop="datePublished">2020-10-12</time>
+      <a href="/2021/03/27/leetcode-21-%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/" class="article-date">
+  <time datetime="2021-03-27T04:58:00.000Z" itemprop="datePublished">2021-03-27</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p>转载：<a href="https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&mid=2247485736&idx=1&sn=921a9dfe3d638074b68a4fd072ea3cb9&chksm=fa80d8bfcdf751a948ea49ee620ca9d88ff0a62b4ad4e3a53321fee6813b8f90098fd72f7b11&token=940952510&lang=zh_CN#rd" target="_blank" rel="noopener">图解Go内存管理器的内存分配策略</a></p>
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="">合并两个有序链表</a></p>
+<p>将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 </p>
+<p>示例 1：</p>
+<blockquote>
+<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327125926.png" alt=""><br>输入：l1 = [1,2,4], l2 = [1,3,4] <br/><br>输出：[1,1,2,3,4,4]</p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：l1 = [], l2 = []<br>输出：[]</p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：l1 = [], l2 = [0]<br>输出：[0]</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val=<span class="number">0</span>, next=None)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.next = next</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mergeTwoLists</span><span class="params">(self, l1: ListNode, l2: ListNode)</span> -&gt; ListNode:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> l1 <span class="keyword">and</span> <span class="keyword">not</span> l2:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">elif</span> l1 <span class="keyword">and</span> <span class="keyword">not</span> l2:</span><br><span class="line">            <span class="keyword">return</span> l1</span><br><span class="line">        <span class="keyword">elif</span> <span class="keyword">not</span> l1 <span class="keyword">and</span> l2:</span><br><span class="line">            <span class="keyword">return</span> l2</span><br><span class="line"></span><br><span class="line">        cur = <span class="literal">None</span></span><br><span class="line">        head = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> l1 <span class="keyword">and</span> l2:</span><br><span class="line">            <span class="keyword">if</span> l1.val &lt;= l2.val:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">                    head = l1</span><br><span class="line">                    cur = head</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    cur.next = l1</span><br><span class="line">                    cur = cur.next</span><br><span class="line">                l1 = l1.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">                    head = l2</span><br><span class="line">                    cur = head</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    cur.next = l2</span><br><span class="line">                    cur = cur.next</span><br><span class="line">                l2 = l2.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> l1:</span><br><span class="line">            cur.next = l1</span><br><span class="line">        <span class="keyword">if</span> l2:</span><br><span class="line">            cur.next = l2</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">l1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br><span class="line">l2 = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">la1 = ListNode(<span class="number">1</span>)</span><br><span class="line">la2 = ListNode(<span class="number">2</span>)</span><br><span class="line">la3 = ListNode(<span class="number">4</span>)</span><br><span class="line">la1.next = la2</span><br><span class="line">la2.next = la3</span><br><span class="line"></span><br><span class="line">lb1 = ListNode(<span class="number">1</span>)</span><br><span class="line">lb2 = ListNode(<span class="number">3</span>)</span><br><span class="line">lb3 = ListNode(<span class="number">4</span>)</span><br><span class="line">lb1.next = lb2</span><br><span class="line">lb2.next = lb3</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">node = s.mergeTwoLists(la1, lb1)</span><br><span class="line"><span class="keyword">while</span> node:</span><br><span class="line">    print(node.val)</span><br><span class="line">    node = node.next</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-20-有效的括号"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/27/leetcode-20-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/"
+    >leetcode --- 20.有效的括号</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/27/leetcode-20-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/" class="article-date">
+  <time datetime="2021-03-27T04:55:00.000Z" itemprop="datePublished">2021-03-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/valid-parentheses" target="_blank" rel="noopener">有效的括号</a></p>
+<p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s ，判断字符串是否有效。</p>
+<p>有效字符串需满足：</p>
+<p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。</p>
+<p>示例 1：</p>
+<blockquote>
+<p>输入：s = “()”<br>输出：true</p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：s = “()[]{}”<br>输出：true</p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：s = “(]”<br>输出：false</p>
+</blockquote>
+<p>示例 4：<br>输入：s = “([)]”<br>输出：false</p>
+<p>示例 5：</p>
+<blockquote>
+<p>输入：s = “{[]}”<br>输出：true</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isValid</span><span class="params">(self, s: str)</span> -&gt; bool:</span></span><br><span class="line"></span><br><span class="line">        left_dict = &#123;</span><br><span class="line">            <span class="string">"("</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">"["</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="string">"&#123;"</span>: <span class="number">3</span></span><br><span class="line">        &#125;</span><br><span class="line">        right_dict = &#123;</span><br><span class="line">            <span class="string">")"</span>: <span class="number">-1</span>,</span><br><span class="line">            <span class="string">"]"</span>: <span class="number">-2</span>,</span><br><span class="line">            <span class="string">"&#125;"</span>: <span class="number">-3</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stack = list()</span><br><span class="line">        <span class="keyword">for</span> ss <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> ss <span class="keyword">in</span> left_dict.keys():</span><br><span class="line">                stack.append(ss)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> stack:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">                ch = stack.pop(<span class="number">-1</span>)</span><br><span class="line">                <span class="keyword">if</span> left_dict.get(ch, <span class="number">99</span>) + right_dict.get(ss, <span class="number">99</span>) == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> stack:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = <span class="string">"()[]&#123;&#125;"</span></span><br><span class="line">so = Solution()</span><br><span class="line">print(so.isValid(s))</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -383,7 +489,7 @@
 
     
     <article
-  id="post-golang-转-图文结合，白话Go的垃圾回收原理"
+  id="post-转-网络文章集合"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -394,91 +500,23 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E6%96%87%E7%BB%93%E5%90%88%EF%BC%8C%E7%99%BD%E8%AF%9DGo%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%8E%9F%E7%90%86/"
-    >[转]golang - 图文结合，白话Go的垃圾回收原理</a> 
+  <a class="article-title" href="/2021/03/26/%E8%BD%AC-%E7%BD%91%E7%BB%9C%E6%96%87%E7%AB%A0%E9%9B%86%E5%90%88/"
+    >[转]网络文章集合</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E6%96%87%E7%BB%93%E5%90%88%EF%BC%8C%E7%99%BD%E8%AF%9DGo%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%8E%9F%E7%90%86/" class="article-date">
-  <time datetime="2020-10-12T10:07:00.000Z" itemprop="datePublished">2020-10-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>转载: <a href="https://zhuanlan.zhihu.com/p/264789260" target="_blank" rel="noopener">图文结合，白话Go的垃圾回收原理</a></p>
-<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/v2-9515a7f1156f98371a25361572b25f0d_720w.jpg" alt=""></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-hello-world"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/09/21/hello-world/"
-    >Hello World</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/09/21/hello-world/" class="article-date">
-  <time datetime="2020-09-21T11:56:18.000Z" itemprop="datePublished">2020-09-21</time>
+      <a href="/2021/03/26/%E8%BD%AC-%E7%BD%91%E7%BB%9C%E6%96%87%E7%AB%A0%E9%9B%86%E5%90%88/" class="article-date">
+  <time datetime="2021-03-26T07:56:00.000Z" itemprop="datePublished">2021-03-26</time>
 </a>    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<h3 id="更换电脑后，如何更新博客"><a href="#更换电脑后，如何更新博客" class="headerlink" title="更换电脑后，如何更新博客"></a>更换电脑后，如何更新博客</h3><p><a href="https://www.zhihu.com/question/21193762/answer/79109280" target="_blank" rel="noopener">使用hexo，如果换了电脑怎么更新博客？</a></p>
-<h4 id="关于日常的改动流程"><a href="#关于日常的改动流程" class="headerlink" title="关于日常的改动流程"></a>关于日常的改动流程</h4><ol>
-<li>依次执行git add .、git commit -m “…”、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）</li>
-<li>然后才执行hexo g -d发布网站到master分支上</li>
-</ol>
+  <p><a href="https://mp.weixin.qq.com/s/jiPMUk6zUdOY6eKxAjNDbQ" target="_blank" rel="noopener">低并发编程 - 如果让你来设计网络</a></p>
+<p><a href="https://mp.weixin.qq.com/s/Uf42QEL6WUSHOwJ403FwOA" target="_blank" rel="noopener">低并发编程 - 图解 | 你管这破玩意儿叫TCP？</a></p>
  
       <!-- reward -->
       
@@ -499,7 +537,7 @@
 
     
     <article
-  id="post-golang-使用函数自定义排序"
+  id="post-leetcode-17.电话号码的字母组合"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -510,36 +548,42 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
-    >golang - 使用函数自定义排序</a> 
+  <a class="article-title" href="/2021/03/26/leetcode-17.%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/"
+    >leetcode --- 17.电话号码的字母组合</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time datetime="2020-06-06T08:48:00.000Z" itemprop="datePublished">2020-06-06</time>
+      <a href="/2021/03/26/leetcode-17.%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" class="article-date">
+  <time datetime="2021-03-25T16:51:00.000Z" itemprop="datePublished">2021-03-26</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h1 id="golang-使用函数自定义排序"><a href="#golang-使用函数自定义排序" class="headerlink" title="golang - 使用函数自定义排序"></a>golang - 使用函数自定义排序</h1><p>有时候我们想使用和集合的自然排序不同的方法对集合进行排序。 例如，我们想按照字母的长度而不是首字母顺序对字符串排序。 </p>
-<p>在golang自带的sort模块中, 可以先阅读下函数的代码:</p>
-<p><code>sort.Sort</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sort</span><span class="params">(data Interface)</span></span> &#123;</span><br><span class="line">    n := data.Len()</span><br><span class="line">    quickSort(data, <span class="number">0</span>, n, maxDepth(n))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>sort.quickSort</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickSort</span><span class="params">(data Interface, a, b, maxDepth <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> b-a &gt; <span class="number">12</span> &#123; <span class="comment">// Use ShellSort for slices &lt;= 12 elements</span></span><br><span class="line">        <span class="keyword">if</span> maxDepth == <span class="number">0</span> &#123;</span><br><span class="line">            heapSort(data, a, b)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        maxDepth--</span><br><span class="line">        mlo, mhi := doPivot(data, a, b)</span><br><span class="line">        <span class="comment">// Avoiding recursion on the larger subproblem guarantees</span></span><br><span class="line">        <span class="comment">// a stack depth of at most lg(b-a).</span></span><br><span class="line">        <span class="keyword">if</span> mlo-a &lt; b-mhi &#123;</span><br><span class="line">            quickSort(data, a, mlo, maxDepth)</span><br><span class="line">            a = mhi <span class="comment">// i.e., quickSort(data, mhi, b)</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            quickSort(data, mhi, b, maxDepth)</span><br><span class="line">            b = mlo <span class="comment">// i.e., quickSort(data, a, mlo)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> b-a &gt; <span class="number">1</span> &#123;</span><br><span class="line">        <span class="comment">// Do ShellSort pass with gap 6</span></span><br><span class="line">        <span class="comment">// It could be written in this simplified form cause b-a &lt;= 12</span></span><br><span class="line">        <span class="keyword">for</span> i := a + <span class="number">6</span>; i &lt; b; i++ &#123;</span><br><span class="line">            <span class="keyword">if</span> data.Less(i, i<span class="number">-6</span>) &#123;</span><br><span class="line">                data.Swap(i, i<span class="number">-6</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        insertionSort(data, a, b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
-        >阅读更多...</a
-      >
-       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener">电话号码的字母组合</a></p>
+<p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210326005238.png" alt=""></p>
+<p>示例 1：</p>
+<blockquote>
+<p>输入：digits = “23” <br/><br>输出：[“ad”,”ae”,”af”,”bd”,”be”,”bf”,”cd”,”ce”,”cf”] <br/></p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：digits = “” <br/><br>输出：[]</p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：digits = “2” <br/><br>输出：[“a”,”b”,”c”]</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">letterCombinations</span><span class="params">(self, digits: str)</span>:</span></span><br><span class="line">        number = &#123;</span><br><span class="line">            <span class="string">"2"</span>: [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>],</span><br><span class="line">            <span class="string">"3"</span>: [<span class="string">"d"</span>, <span class="string">"e"</span>, <span class="string">"f"</span>],</span><br><span class="line">            <span class="string">"4"</span>: [<span class="string">"g"</span>, <span class="string">"h"</span>, <span class="string">"i"</span>],</span><br><span class="line">            <span class="string">"5"</span>: [<span class="string">"j"</span>, <span class="string">"k"</span>, <span class="string">"l"</span>],</span><br><span class="line">            <span class="string">"6"</span>: [<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>],</span><br><span class="line">            <span class="string">"7"</span>: [<span class="string">"p"</span>, <span class="string">"q"</span>, <span class="string">"r"</span>, <span class="string">"s"</span>],</span><br><span class="line">            <span class="string">"8"</span>: [<span class="string">"t"</span>, <span class="string">"u"</span>, <span class="string">"v"</span>],</span><br><span class="line">            <span class="string">"9"</span>: [<span class="string">"w"</span>, <span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"z"</span>]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> digits <span class="keyword">or</span> digits == <span class="string">"1"</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ret = [<span class="string">""</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> digits:</span><br><span class="line">            ret = [r + n <span class="keyword">for</span> r <span class="keyword">in</span> ret <span class="keyword">for</span> n <span class="keyword">in</span> number[i]]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">d = <span class="string">"23"</span></span><br><span class="line">print(s.letterCombinations(d))</span><br></pre></td></tr></table></figure>
+ 
       <!-- reward -->
       
     </div>
@@ -559,7 +603,7 @@
 
     
     <article
-  id="post-转-golang-web-中间件介绍"
+  id="post-leetcode-15.三数之和"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -570,38 +614,41 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
-    >[转]golang - web - 中间件介绍</a> 
+  <a class="article-title" href="/2021/03/26/leetcode-15.%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"
+    >leetcode --- 15.三数之和</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/" class="article-date">
-  <time datetime="2020-06-06T04:13:00.000Z" itemprop="datePublished">2020-06-06</time>
+      <a href="/2021/03/26/leetcode-15.%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/" class="article-date">
+  <time datetime="2021-03-25T16:48:00.000Z" itemprop="datePublished">2021-03-26</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p>本章将对现在流行的Web框架中的中间件(middleware)技术原理进行分析，并介绍如何使用中间件技术将业务和非业务代码功能进行解耦。</p>
-<h3 id="代码泥潭"><a href="#代码泥潭" class="headerlink" title="代码泥潭"></a>代码泥潭</h3><p>先来看一段代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// middleware/hello.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(wr http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    wr.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    http.HandleFunc(<span class="string">"/"</span>, hello)</span><br><span class="line">    err := http.ListenAndServe(<span class="string">":8080"</span>, <span class="literal">nil</span>)</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一个典型的Web服务，挂载了一个简单的路由。我们的线上服务一般也是从这样简单的服务开始逐渐拓展开去的。</p>
-<p>现在突然来了一个新的需求，我们想要统计之前写的hello服务的处理耗时，需求很简单，我们对上面的程序进行少量修改：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// middleware/hello_with_time_elapse.go</span></span><br><span class="line"><span class="keyword">var</span> logger = log.New(os.Stdout, <span class="string">""</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(wr http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    timeStart := time.Now()</span><br><span class="line">    wr.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</span><br><span class="line">    timeElapsed := time.Since(timeStart)</span><br><span class="line">    logger.Println(timeElapsed)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样便可以在每次接收到http请求时，打印出当前请求所消耗的时间。</p> 
-      <a class="article-more-link" href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
-        >阅读更多...</a
-      >
-       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/3sum/" target="_blank" rel="noopener">三数之和</a></p>
+<p>给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。</p>
+<p>注意：答案中不可以包含重复的三元组。</p>
+<p>示例 1</p>
+<blockquote>
+<p>输入：nums = [-1,0,1,2,-1,-4] <br/><br>输出：[[-1,-1,2],[-1,0,1]] <br/></p>
+</blockquote>
+<p>示例 2</p>
+<blockquote>
+<p>输入：nums = [] <br/><br>输出：[] <br/></p>
+</blockquote>
+<p>示例 3</p>
+<blockquote>
+<p>输入：nums = [0] <br/><br>输出：[] <br/></p>
+</blockquote>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">threeSum</span><span class="params">(self, nums: list)</span> -&gt; list:</span></span><br><span class="line">        result = set()</span><br><span class="line">        nums = sorted(nums)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line"></span><br><span class="line">            m = nums[i]</span><br><span class="line">            <span class="keyword">if</span> m &gt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            left = i + <span class="number">1</span></span><br><span class="line">            right = len(nums) - <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right:</span><br><span class="line">                n = nums[left]</span><br><span class="line">                o = nums[right]</span><br><span class="line">                <span class="keyword">if</span> m + n + o == <span class="number">0</span>:</span><br><span class="line">                    result.add(tuple(sorted([m, n, o])))</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> m + n + o &gt; <span class="number">0</span>:</span><br><span class="line">                    right -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    left += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> [list(r) <span class="keyword">for</span> r <span class="keyword">in</span> result]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">ns = [<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-4</span>]</span><br><span class="line">print(s.threeSum(ns))</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
     </div>
@@ -621,7 +668,7 @@
 
     
     <article
-  id="post-[转]golang-发布订阅模型"
+  id="post-leetcode-3.无重复字符的最长子串"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -632,30 +679,40 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/06/04/%5B%E8%BD%AC%5Dgolang-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B/"
-    >[转]golang - 发布订阅模型</a> 
+  <a class="article-title" href="/2021/03/26/leetcode-3.%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/"
+    >leetcode --- 3.无重复字符的最长子串</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/06/04/%5B%E8%BD%AC%5Dgolang-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B/" class="article-date">
-  <time datetime="2020-06-04T11:56:00.000Z" itemprop="datePublished">2020-06-04</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
-  </div>
-   
+      <a href="/2021/03/26/leetcode-3.%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/" class="article-date">
+  <time datetime="2021-03-25T16:44:00.000Z" itemprop="datePublished">2021-03-26</time>
+</a>    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="发布订阅者"><a href="#发布订阅者" class="headerlink" title="发布订阅者"></a>发布订阅者</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pubsub</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"sync"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> (</span><br><span class="line">    <span class="comment">// 订阅者是一个管道</span></span><br><span class="line">    subscriber <span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">    <span class="comment">// 主题是一个过滤器</span></span><br><span class="line">    topicFunc <span class="function"><span class="keyword">func</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">bool</span></span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布者对象</span></span><br><span class="line"><span class="keyword">type</span> Publisher <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 读写锁</span></span><br><span class="line">    m sync.RWMutex</span><br><span class="line">    <span class="comment">// 订阅队列的缓存大小</span></span><br><span class="line">    buffer <span class="keyword">int</span></span><br><span class="line">    <span class="comment">// 发布的过期时间</span></span><br><span class="line">    timeout time.Duration</span><br><span class="line">    <span class="comment">// 订阅者信息</span></span><br><span class="line">    subscribers <span class="keyword">map</span>[subscriber]topicFunc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构建一个发布者, 设置超时时间和缓存队列长度</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewPublisher</span><span class="params">(publishTimeout time.Duration, buffer <span class="keyword">int</span>)</span> *<span class="title">Publisher</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;Publisher&#123;</span><br><span class="line">        buffer:      buffer,</span><br><span class="line">        timeout:     publishTimeout,</span><br><span class="line">        subscribers: <span class="built_in">make</span>(<span class="keyword">map</span>[subscriber]topicFunc),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加一个订阅者, 订阅过滤器筛选后的主题</span></span><br><span class="line"><span class="comment">// 添加订阅主题参数, 返回订阅者</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">SubscribeTopic</span><span class="params">(topic topicFunc)</span> <span class="title">chan</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;, p.buffer)</span><br><span class="line">    p.m.Lock()</span><br><span class="line">    p.subscribers[ch] = topic</span><br><span class="line">    p.m.Unlock()</span><br><span class="line">    <span class="keyword">return</span> ch</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅所有的主题</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Subscribe</span><span class="params">()</span> <span class="title">chan</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">    <span class="keyword">return</span> p.SubscribeTopic(<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//退订</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Evict</span><span class="params">(sub <span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    p.m.Lock()</span><br><span class="line">    <span class="keyword">defer</span> p.m.Unlock()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">delete</span>(p.subscribers, sub)</span><br><span class="line">    <span class="built_in">close</span>(sub)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送一个主题</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Publish</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    p.m.RLock()</span><br><span class="line">    <span class="keyword">defer</span> p.m.RUnlock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">    <span class="comment">// 遍历所有的订阅者, 一个个的发布</span></span><br><span class="line">    <span class="keyword">for</span> sub, topic := <span class="keyword">range</span> p.subscribers &#123;</span><br><span class="line">        wg.Add(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">go</span> p.sendTopic(sub, topic, v, &amp;wg)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实际上的发送函数</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">sub: 订阅者, chan</span></span><br><span class="line"><span class="comment">topic: 订阅主题, 即传进来的函数</span></span><br><span class="line"><span class="comment">v: 函数参数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">sendTopic</span><span class="params">(sub subscriber, topic topicFunc, v <span class="keyword">interface</span>&#123;&#125;, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.Done()</span><br><span class="line">    <span class="comment">// 该代码中, topic会返回true或者false, 如果返回false就表示没有订阅</span></span><br><span class="line">    <span class="comment">// 如果topic是nil, 就表示全订阅</span></span><br><span class="line">    <span class="keyword">if</span> topic != <span class="literal">nil</span> &amp;&amp; !topic(v) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> sub &lt;- v:	<span class="comment">// 将参数传递给了订阅者, 订阅者能打印, 则表示收到发布的内容</span></span><br><span class="line">    <span class="keyword">case</span> &lt;-time.After(p.timeout):	<span class="comment">// 超时时间</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭发布者对象, 同时关闭所有的订阅者管道</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Close</span><span class="params">()</span></span> &#123;</span><br><span class="line">    p.m.Lock()</span><br><span class="line">    <span class="keyword">defer</span> p.m.Unlock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> sub := <span class="keyword">range</span> p.subscribers &#123;</span><br><span class="line">        <span class="built_in">delete</span>(p.subscribers, sub)</span><br><span class="line">        <span class="built_in">close</span>(sub)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/06/04/%5B%E8%BD%AC%5Dgolang-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B/"
-        >阅读更多...</a
-      >
-       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">无重复字符的最长子串</a></p>
+<p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。</p>
+<p>示例 1</p>
+<blockquote>
+<p>输入: s = “abcabcbb”    <br/><br>输出: 3     <br/><br>解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。<br/></p>
+</blockquote>
+<p>示例 2</p>
+<blockquote>
+<p>输入: s = “bbbbb”<br/><br>输出: 1    <br/><br>解释: 因为无重复字符的最长子串是 “b”，所以其长度为 1。    <br/></p>
+</blockquote>
+<p>示例 3</p>
+<blockquote>
+<p>输入: s = “pwwkew”<br/><br>输出: 3    <br/><br>解释: 因为无重复字符的最长子串是 “wke”，所以其长度为 3。<br>     请注意，你的答案必须是 子串 的长度，”pwke” 是一个子序列，不是子串。<br/></p>
+</blockquote>
+<p>示例 4:</p>
+<blockquote>
+<p>输入: s = “” <br/><br>输出: 0</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        temp = <span class="string">""</span></span><br><span class="line">        length = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> ss <span class="keyword">in</span> s:</span><br><span class="line">            index = temp.find(ss)</span><br><span class="line">            <span class="keyword">if</span> index == <span class="number">-1</span>:</span><br><span class="line">                temp += ss</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                temp = temp[index + <span class="number">1</span>:] + ss</span><br><span class="line">            <span class="keyword">if</span> len(temp) &gt; length:</span><br><span class="line">                length = len(temp)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> length</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">string = <span class="string">"aabaab!bb"</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.lengthOfLongestSubstring(string))</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
     </div>
@@ -675,7 +732,7 @@
 
     
     <article
-  id="post-django-rest-framework-权限"
+  id="post-leetcode-1.两数之和"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -686,30 +743,44 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/django-rest-framework-%E6%9D%83%E9%99%90/"
-    >django-rest-framework --- 权限</a> 
+  <a class="article-title" href="/2021/03/26/leetcode-1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/"
+    >leetcode --- 1.两数之和</a> 
 </h2>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/05/23/django-rest-framework-%E6%9D%83%E9%99%90/" class="article-date">
-  <time datetime="2020-05-23T11:34:00.000Z" itemprop="datePublished">2020-05-23</time>
+      <a href="/2021/03/26/leetcode-1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="article-date">
+  <time datetime="2021-03-25T16:39:00.000Z" itemprop="datePublished">2021-03-26</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
   </div>
    
     </div>
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserInfo</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    USER_COMMON = <span class="number">0</span></span><br><span class="line">    USER_VIP = <span class="number">100</span></span><br><span class="line">    USER_SVIP = <span class="number">200</span></span><br><span class="line">    <span class="comment"># 用户类型</span></span><br><span class="line">    USER_TYPE = (</span><br><span class="line">        (USER_COMMON, <span class="string">'普通用户'</span>),</span><br><span class="line">        (USER_VIP, <span class="string">'VIP'</span>),</span><br><span class="line">        (USER_SVIP, <span class="string">'SVIP'</span>)</span><br><span class="line">    )</span><br><span class="line"> </span><br><span class="line">    user_type = models.IntegerField(choices=USER_TYPE, default=USER_COMMON)</span><br><span class="line">    <span class="comment"># 建立1对1关系模型</span></span><br><span class="line">    user = models.OneToOneField(User, on_delete=models.CASCADE,</span><br><span class="line">related_name=<span class="string">'userinfo'</span>)</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E6%9D%83%E9%99%90/"
-        >阅读更多...</a
-      >
-       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/two-sum/" target="_blank" rel="noopener">两数之和</a></p>
+<p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 的那 两个 整数，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<p>示例1</p>
+<blockquote>
+<p>输入：nums = [2,7,11,15], target = 9 <br/><br>输出：[0,1] <br/><br>解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。<br/></p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：nums = [3,2,4], target = 6 <br/><br>输出：[1,2]    <br/></p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：nums = [3,3], target = 6    <br/><br>输出：[0,1]    <br/></p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twoSum</span><span class="params">(self, nums: list, target: int)</span> -&gt; list:</span></span><br><span class="line">        numDict = dict()</span><br><span class="line">        <span class="keyword">for</span> index, n <span class="keyword">in</span> enumerate(nums):</span><br><span class="line">            numDict.setdefault(n, []).append(index)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">            tmp = target - n</span><br><span class="line">            values = numDict.get(tmp)</span><br><span class="line">            <span class="keyword">if</span> values:</span><br><span class="line">                <span class="keyword">if</span> tmp == n:</span><br><span class="line">                    <span class="keyword">if</span> len(values) &gt;= <span class="number">2</span>:</span><br><span class="line">                        <span class="keyword">return</span> values[:<span class="number">2</span>]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> [numDict[n][<span class="number">0</span>], numDict[tmp][<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ns = [<span class="number">3</span>, <span class="number">3</span>]</span><br><span class="line">target = <span class="number">6</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.twoSum(ns, target))</span><br></pre></td></tr></table></figure>
+
+ 
       <!-- reward -->
       
     </div>
@@ -719,8 +790,6 @@
     
     <footer class="article-footer">
        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
-
     </footer>
   </div>
 
@@ -736,7 +805,7 @@
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
   </nav>
   
 </section>
