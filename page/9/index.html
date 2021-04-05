@@ -137,6 +137,56 @@
     
     
     <article
+  id="post-python-四种单例模式写法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/python-%E5%9B%9B%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E5%86%99%E6%B3%95/"
+    >python 四种单例模式写法</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/python-%E5%9B%9B%E7%A7%8D%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E5%86%99%E6%B3%95/" class="article-date">
+  <time datetime="2020-05-23T11:11:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">通过单例模式，可以保证系统中的这个类只产生一个对象且容易被外界访问，方便控制个例个数以及节省资源</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls,*args,**kwargs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        确保每次通过__new__函数，返回的对象都是同一个即可</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(cls,<span class="string">'_instance'</span>):</span><br><span class="line">            <span class="comment">#orig = super(Singleton,cls)</span></span><br><span class="line">            <span class="comment">#cls._instance = orig.__new__(cls,*args,**kwargs)</span></span><br><span class="line">            <span class="comment"># or</span></span><br><span class="line">            cls._instance = super().__new__(cls,*args,**kwargs)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(Singleton)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">a1 = A()</span><br><span class="line">a2 = A()</span><br><span class="line">a3 = A()</span><br><span class="line"></span><br><span class="line">print(id(a1),id(a2),id(a3))</span><br><span class="line">a1.num = <span class="number">100</span></span><br><span class="line">print(a2.num,a3.num,A.num)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'-'</span> * <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#2</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton2</span><span class="params">(object)</span>:</span></span><br><span class="line">    _state = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls,*args,**kwargs)</span>:</span></span><br><span class="line">        single = super().__new__(cls,*args,**kwargs)</span><br><span class="line">        single.__dict__ = cls._state</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> single</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(Singleton2)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">b1 = B()</span><br><span class="line">b2 = B()</span><br><span class="line">b3 = B()</span><br><span class="line"><span class="comment"># 每次返回的对象都不一样</span></span><br><span class="line">print(id(b1),id(b2),id(b3))</span><br><span class="line"></span><br><span class="line">b1.num = <span class="number">100</span></span><br><span class="line">print(b2.num,b3.num,B.num)</span><br><span class="line"><span class="comment"># 但贡献了__dict__的魔法方法，即具有的属性，数据都是一样的，一个对象修改，其他对象跟着修改</span></span><br><span class="line">print(b1.__dict__,b2.__dict__,b3.__dict__)</span><br><span class="line">print(b1._state)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'-'</span> * <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">跟第一种方法效果一样，都是只生成一个对象</span></span><br><span class="line"><span class="string">使用一个dict存储类对象，在使用装饰器时先判断cls是否已经存在，如果存在则取出，否则创建存入再取出</span></span><br><span class="line"><span class="string">就能确保每次都是只使用同一个对象</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">singleton</span><span class="params">(cls)</span>:</span></span><br><span class="line">    instances = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getinstance</span><span class="params">(*args,**kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> instances:</span><br><span class="line">            instances[cls] = cls(*args,**kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> instances[cls]</span><br><span class="line">    <span class="keyword">return</span> getinstance</span><br><span class="line"></span><br><span class="line"><span class="meta">@singleton</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span></span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">c1 = C()</span><br><span class="line">c2 = C()</span><br><span class="line">c3 = C()</span><br><span class="line">print(id(c1),id(c2),id(c3))</span><br><span class="line"></span><br><span class="line">print(<span class="string">'-'</span> * <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">模块导入，在python中，模块是天然的单例模式</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># 在 single.py 中的类</span></span><br><span class="line"><span class="string">class Singleton4(object):</span></span><br><span class="line"><span class="string">    num = 0</span></span><br><span class="line"><span class="string">    def foo(self):</span></span><br><span class="line"><span class="string">        print(self.num)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">single = Singleton4()</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="keyword">from</span> single <span class="keyword">import</span> single,Singleton4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但仅限于把已经创建好的实例对象导入进来</span></span><br><span class="line">single.num = <span class="number">100</span></span><br><span class="line">single.foo()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果是导入了类，然后创建了实例对象，那么跟普通类没有区别</span></span><br><span class="line">s1 = Singleton4()</span><br><span class="line">s2 = Singleton4()</span><br><span class="line">s3 = Singleton4()</span><br><span class="line">print(id(s1),id(s2),id(s3))</span><br><span class="line"></span><br><span class="line">s1.num = <span class="number">500</span></span><br><span class="line">print(s2.num,s3.num,Singleton4.num)</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-装饰器的几种用法"
   class="article article-type-post"
   itemscope
@@ -635,63 +685,6 @@
 </blockquote>
 <p>num1 和 num2 的长度小于110。<br/><br>num1 和 num2 只包含数字 0-9。<br/><br>num1 和 num2 均不以零开头，除非是数字 0 本身。<br/><br>不能使用任何标准库的大数类型（比如 BigInteger）或直接将输入转换为整数来处理。<br/></p> 
       <a class="article-more-link" href="/2020/05/23/leetcode-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E4%B9%98/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-最接近的三数之和"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/leetcode-%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"
-    >leetcode --- 最接近的三数之和</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/leetcode-%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/" class="article-date">
-  <time datetime="2020-05-23T11:01:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/3sum-closest/" target="_blank" rel="noopener">最接近的三数之和</a><br/><br>给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。</p>
-<blockquote>
-</blockquote>
-<p>例如，给定数组 nums = [-1，2，1，-4], 和 target = 1. 与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).</p> 
-      <a class="article-more-link" href="/2020/05/23/leetcode-%E6%9C%80%E6%8E%A5%E8%BF%91%E7%9A%84%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"
         >阅读更多...</a
       >
        
