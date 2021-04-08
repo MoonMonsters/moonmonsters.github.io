@@ -5,7 +5,6 @@ categories:
   - python
 date: 2020-11-18 20:01:00
 ---
-
 ### 转载
 [求你了，别再用 print 调试代码了](https://mp.weixin.qq.com/s/wSmzU4cn0mTwlrtCSENeqg)
 
@@ -42,6 +41,8 @@ def main():
 
 main()
 ```
+
+<!-- more -->
 
 现在我使用终端命令行的方式来运行它
 ```shell
@@ -222,9 +223,3 @@ def demo_func():
 def demo_func():
     ...
 ```
-
-
-
-
-
-

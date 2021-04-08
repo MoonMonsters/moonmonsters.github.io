@@ -54,6 +54,7 @@ type LimiterIface interface {
 
 ```
 
+<!-- more -->
 
 
 ### 实现令牌桶的接口
@@ -235,4 +236,3 @@ func newLimiter() limiter.LimiterIface {
 ```go
 r.Use(middleware.RateLimiter(newLimiter()))
 ```
-

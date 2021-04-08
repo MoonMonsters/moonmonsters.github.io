@@ -40,6 +40,8 @@ Server:
   ListenAddress: ":8888"
 ```
 
+<!-- more -->
+
 ### 定义Setting结构体
 
 路径: pkg/settings/setting.go
@@ -118,4 +120,3 @@ func main() {
 }
 
 ```
-
