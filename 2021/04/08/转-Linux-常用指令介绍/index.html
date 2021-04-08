@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    [转]Linux --- 常用指令介绍 |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="MoonMonsters" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-转-Linux-常用指令介绍"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  [转]Linux --- 常用指令介绍
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/08/%E8%BD%AC-Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/" class="article-date">
+  <time datetime="2021-04-08T14:50:00.000Z" itemprop="datePublished">2021-04-08</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">6.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">26 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://thinkwon.blog.csdn.net/article/details/104588679" target="_blank" rel="noopener">Linux面试题（2020最新版）</a></p>
+<h3 id="文件管理命令"><a href="#文件管理命令" class="headerlink" title="文件管理命令"></a>文件管理命令</h3><h4 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h4><h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><p>cat 命令用于连接文件并打印到标准输出设备上。<br>cat 主要有三大功能：</p>
+<h6 id="一次显示整个文件"><a href="#一次显示整个文件" class="headerlink" title="一次显示整个文件"></a>一次显示整个文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat filename</span><br></pre></td></tr></table></figure>
+<h6 id="从键盘创建一个文件"><a href="#从键盘创建一个文件" class="headerlink" title="从键盘创建一个文件"></a>从键盘创建一个文件<br/></h6><p>只能创建新文件，不能编辑已有文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; filename</span><br></pre></td></tr></table></figure>
+<h6 id="将几个文件合并为一个文件"><a href="#将几个文件合并为一个文件" class="headerlink" title="将几个文件合并为一个文件 "></a>将几个文件合并为一个文件 <br/></h6><p>-b 对非空输出行号 <br/><br>-n 输出所有行号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat file1 file2 &gt; file</span><br></pre></td></tr></table></figure>
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><h6 id="把-log2012-log-的文件内容加上行号后输入-log2013-log-这个文件里"><a href="#把-log2012-log-的文件内容加上行号后输入-log2013-log-这个文件里" class="headerlink" title="把 log2012.log 的文件内容加上行号后输入 log2013.log 这个文件里"></a>把 log2012.log 的文件内容加上行号后输入 log2013.log 这个文件里</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat -n log2012.log log2013.log</span><br></pre></td></tr></table></figure>
+<h6 id="把-log2012-log-和-log2013-log-的文件内容加上行号（空白行不加）之后将内容附加到-log-log-里"><a href="#把-log2012-log-和-log2013-log-的文件内容加上行号（空白行不加）之后将内容附加到-log-log-里" class="headerlink" title="把 log2012.log 和 log2013.log 的文件内容加上行号（空白行不加）之后将内容附加到 log.log 里"></a>把 log2012.log 和 log2013.log 的文件内容加上行号（空白行不加）之后将内容附加到 log.log 里</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat -b log2012.log log2013.log log.log</span><br></pre></td></tr></table></figure>
+<h6 id="使用-here-doc-生成新文件"><a href="#使用-here-doc-生成新文件" class="headerlink" title="使用 here doc 生成新文件"></a>使用 here doc 生成新文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;log.txt &lt;&lt;EOF</span><br><span class="line">&gt;Hello</span><br><span class="line">&gt;World</span><br><span class="line">&gt;PWD&#x3D;$(pwd)</span><br><span class="line">&gt;EOF</span><br><span class="line">ls -l log.txt</span><br><span class="line">cat log.txt</span><br><span class="line">Hello</span><br><span class="line">World</span><br><span class="line">PWD&#x3D;&#x2F;opt&#x2F;soft&#x2F;test</span><br></pre></td></tr></table></figure>
+<h6 id="反向列示"><a href="#反向列示" class="headerlink" title="反向列示"></a>反向列示</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tac log.txt</span><br><span class="line">PWD&#x3D;&#x2F;opt&#x2F;soft&#x2F;test</span><br><span class="line">World</span><br><span class="line">Hello</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h4 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h4><h5 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h5><p>Linux/Unix 的文件调用权限分为三级 : 文件拥有者、群组、其他。利用 chmod 可以控制文件如何被他人所调用。</p>
+<p>用于改变 linux 系统文件或目录的访问权限。用它控制文件或目录的访问权限。该命令有两种用法。一种是包含字母和操作符表达式的文字设定法；另一种是包含数字的数字设定法。</p>
+<p>每一文件或目录的访问权限都有三组，每组用三位表示，分别为文件属主的读、写和执行权限；与属主同组的用户的读、写和执行权限；系统中其他用户的读、写和执行权限。可使用 ls -l test.txt 查找。</p>
+<p>以文件 log2012.log 为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw-r--r-- 1 root root 296K 11-13 06:03 log2012.log</span><br></pre></td></tr></table></figure>
+<p>第一列共有 10 个位置，第一个字符指定了文件类型。在通常意义上，一个目录也是一个文件。如果第一个字符是横线，表示是一个非目录的文件。如果是 d，表示是一个目录。从第二个字符开始到第十个 9 个字符，3 个字符一组，分别表示了 3 组用户对文件或者目录的权限。权限字符用横线代表空许可，r 代表只读，w 代表写，x 代表可执行。</p>
+<h6 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-c 当发生改变时，报告处理信息</span><br><span class="line">-R 处理指定目录以及其子目录下所有文件</span><br></pre></td></tr></table></figure>
+<h6 id="权限范围"><a href="#权限范围" class="headerlink" title="权限范围"></a>权限范围</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">u ：目录或者文件的当前的用户</span><br><span class="line">g ：目录或者文件的当前的群组</span><br><span class="line">o ：除了目录或者文件的当前用户或群组之外的用户或者群组</span><br><span class="line">a ：所有的用户及群组</span><br></pre></td></tr></table></figure>
+<h6 id="权限代号"><a href="#权限代号" class="headerlink" title="权限代号"></a>权限代号</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">r ：读权限，用数字4表示</span><br><span class="line">w ：写权限，用数字2表示</span><br><span class="line">x ：执行权限，用数字1表示</span><br><span class="line">- ：删除权限，用数字0表示</span><br><span class="line">s ：特殊权限</span><br></pre></td></tr></table></figure>
+<h5 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h5><h6 id="增加文件-t-log-所有用户可执行权限"><a href="#增加文件-t-log-所有用户可执行权限" class="headerlink" title="增加文件 t.log 所有用户可执行权限"></a>增加文件 t.log 所有用户可执行权限</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x t.log</span><br></pre></td></tr></table></figure>
+<h6 id="撤销原来所有的权限，然后使拥有者具有可读权限-并输出处理信息"><a href="#撤销原来所有的权限，然后使拥有者具有可读权限-并输出处理信息" class="headerlink" title="撤销原来所有的权限，然后使拥有者具有可读权限,并输出处理信息"></a>撤销原来所有的权限，然后使拥有者具有可读权限,并输出处理信息</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u&#x3D;r t.log -c</span><br></pre></td></tr></table></figure>
+<h6 id="给-file-的属主分配读、写、执行-7-的权限，给file的所在组分配读、执行-5-的权限，给其他用户分配执行-1-的权限"><a href="#给-file-的属主分配读、写、执行-7-的权限，给file的所在组分配读、执行-5-的权限，给其他用户分配执行-1-的权限" class="headerlink" title="给 file 的属主分配读、写、执行(7)的权限，给file的所在组分配读、执行(5)的权限，给其他用户分配执行(1)的权限"></a>给 file 的属主分配读、写、执行(7)的权限，给file的所在组分配读、执行(5)的权限，给其他用户分配执行(1)的权限</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 751 t.log -c（或者：chmod u&#x3D;rwx,g&#x3D;rx,o&#x3D;x t.log -c)</span><br></pre></td></tr></table></figure>
+<h6 id="将-test-目录及其子目录所有文件添加可读权限"><a href="#将-test-目录及其子目录所有文件添加可读权限" class="headerlink" title="将 test 目录及其子目录所有文件添加可读权限"></a>将 test 目录及其子目录所有文件添加可读权限</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+r,g+r,o+r -R text&#x2F; -c</span><br></pre></td></tr></table></figure>
+
+<h4 id="chown"><a href="#chown" class="headerlink" title="chown"></a>chown</h4><h5 id="介绍-2"><a href="#介绍-2" class="headerlink" title="介绍"></a>介绍</h5><p>chown 将指定文件的拥有者改为指定的用户或组，用户可以是用户名或者用户 ID；组可以是组名或者组 ID；文件是以空格分开的要改变权限的文件列表，支持通配符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-c 显示更改的部分的信息</span><br><span class="line">-R 处理指定目录及子目录</span><br></pre></td></tr></table></figure>
+<h5 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h5><h6 id="改变拥有者和群组-并显示改变信息"><a href="#改变拥有者和群组-并显示改变信息" class="headerlink" title="改变拥有者和群组 并显示改变信息"></a>改变拥有者和群组 并显示改变信息</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -c mail:mail log2012.log</span><br></pre></td></tr></table></figure>
+<h6 id="改变文件群组"><a href="#改变文件群组" class="headerlink" title="改变文件群组"></a>改变文件群组</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -c :mail t.log</span><br></pre></td></tr></table></figure>
+<h6 id="改变文件夹及子文件目录属主及属组为-mail"><a href="#改变文件夹及子文件目录属主及属组为-mail" class="headerlink" title="改变文件夹及子文件目录属主及属组为 mail"></a>改变文件夹及子文件目录属主及属组为 mail</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -cR mail: test&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h4 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h4><h5 id="介绍-3"><a href="#介绍-3" class="headerlink" title="介绍"></a>介绍</h5><p>将源文件复制至目标文件，或将多个源文件复制至目标目录。</p>
+<p>注意：命令行复制，如果目标文件已经存在会提示是否覆盖，而在 shell 脚本中，如果不加 -i 参数，则不会提示，而是直接覆盖！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-i 提示</span><br><span class="line">-r 复制目录及目录内所有项目</span><br><span class="line">-a 复制的文件与原文件时间一样</span><br></pre></td></tr></table></figure>
+<h5 id="实例-3"><a href="#实例-3" class="headerlink" title="实例"></a>实例</h5><h6 id="复制-a-txt-到-test-目录下，保持原文件时间，如果原文件存在提示是否覆盖。"><a href="#复制-a-txt-到-test-目录下，保持原文件时间，如果原文件存在提示是否覆盖。" class="headerlink" title="复制 a.txt 到 test 目录下，保持原文件时间，如果原文件存在提示是否覆盖。"></a>复制 a.txt 到 test 目录下，保持原文件时间，如果原文件存在提示是否覆盖。</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -ai a.txt test</span><br></pre></td></tr></table></figure>
+<h6 id="为-a-txt-建议一个链接（快捷方式）"><a href="#为-a-txt-建议一个链接（快捷方式）" class="headerlink" title="为 a.txt 建议一个链接（快捷方式）"></a>为 a.txt 建议一个链接（快捷方式）</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -s a.txt link_a.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="find"><a href="#find" class="headerlink" title="find"></a>find</h4><h5 id="介绍-4"><a href="#介绍-4" class="headerlink" title="介绍"></a>介绍</h5><p>用于在文件树中查找文件，并作出相应的处理。</p>
+<h6 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find pathname -options [-print -exec -ok ...]</span><br></pre></td></tr></table></figure>
+
+<h6 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pathname: find命令所查找的目录路径。例如用.来表示当前目录，用&#x2F;来表示系统根目录。</span><br><span class="line">-print： find命令将匹配的文件输出到标准输出。</span><br><span class="line">-exec： find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为&#39;command&#39; &#123;  &#125; \;，注意&#123;   &#125;和\；之间的空格。</span><br><span class="line">-ok： 和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</span><br></pre></td></tr></table></figure>
+<h6 id="命令选项"><a href="#命令选项" class="headerlink" title="命令选项"></a>命令选项</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-name 按照文件名查找文件</span><br><span class="line">-perm 按文件权限查找文件</span><br><span class="line">-user 按文件属主查找文件</span><br><span class="line">-group  按照文件所属的组来查找文件。</span><br><span class="line">-type  查找某一类型的文件，诸如：</span><br><span class="line">     b - 块设备文件</span><br><span class="line">     d - 目录</span><br><span class="line">     c - 字符设备文件</span><br><span class="line">     l - 符号链接文件</span><br><span class="line">     p - 管道文件</span><br><span class="line">     f - 普通文件</span><br></pre></td></tr></table></figure>
+<h5 id="实例-4"><a href="#实例-4" class="headerlink" title="实例"></a>实例</h5><h6 id="查找-48-小时内修改过的文件"><a href="#查找-48-小时内修改过的文件" class="headerlink" title="查找 48 小时内修改过的文件"></a>查找 48 小时内修改过的文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find -atime -2</span><br></pre></td></tr></table></figure>
+<h6 id="在当前目录查找-以-log-结尾的文件。-代表当前目录"><a href="#在当前目录查找-以-log-结尾的文件。-代表当前目录" class="headerlink" title="在当前目录查找 以 .log 结尾的文件。 . 代表当前目录"></a>在当前目录查找 以 .log 结尾的文件。 . 代表当前目录</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find .&#x2F; -name &#39;*.log&#39;</span><br></pre></td></tr></table></figure>
+<h6 id="查找-opt-目录下-权限为-777-的文件"><a href="#查找-opt-目录下-权限为-777-的文件" class="headerlink" title="查找 /opt 目录下 权限为 777 的文件"></a>查找 /opt 目录下 权限为 777 的文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find &#x2F;opt -perm 777</span><br></pre></td></tr></table></figure>
+<h6 id="查找大于-1K-的文件"><a href="#查找大于-1K-的文件" class="headerlink" title="查找大于 1K 的文件"></a>查找大于 1K 的文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find -size +1000c</span><br></pre></td></tr></table></figure>
+<h6 id="查找等于-1000-字符的文件"><a href="#查找等于-1000-字符的文件" class="headerlink" title="查找等于 1000 字符的文件"></a>查找等于 1000 字符的文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find -size 1000c</span><br></pre></td></tr></table></figure>
+
+<h4 id="head"><a href="#head" class="headerlink" title="head"></a>head</h4><h5 id="介绍-5"><a href="#介绍-5" class="headerlink" title="介绍"></a>介绍</h5><p>head 用来显示档案的开头至标准输出中，默认 head 命令打印其相应文件的开头 10 行。</p>
+<h6 id="常用参数-1"><a href="#常用参数-1" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-n&lt;行数&gt; 显示的行数（行数为负数表示从最后向前数）</span><br></pre></td></tr></table></figure>
+<h5 id="实例-5"><a href="#实例-5" class="headerlink" title="实例"></a>实例</h5><h6 id="显示-1-log-文件中前-20-行"><a href="#显示-1-log-文件中前-20-行" class="headerlink" title="显示 1.log 文件中前 20 行"></a>显示 1.log 文件中前 20 行</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head 1.log -n 20</span><br></pre></td></tr></table></figure>
+<h6 id="显示-1-log-文件前-20-字节"><a href="#显示-1-log-文件前-20-字节" class="headerlink" title="显示 1.log 文件前 20 字节"></a>显示 1.log 文件前 20 字节</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -c 20 log2014.log</span><br></pre></td></tr></table></figure>
+<h6 id="显示-t-log最后-10-行"><a href="#显示-t-log最后-10-行" class="headerlink" title="显示 t.log最后 10 行"></a>显示 t.log最后 10 行</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -n -10 t.log</span><br></pre></td></tr></table></figure>
+
+<h4 id="less"><a href="#less" class="headerlink" title="less"></a>less</h4><h5 id="介绍-6"><a href="#介绍-6" class="headerlink" title="介绍"></a>介绍</h5><p>less 与 more 类似，但使用 less 可以随意浏览文件，而 more 仅能向前移动，却不能向后移动，而且 less 在查看之前不会加载整个文件。</p>
+<h6 id="常用命令参数"><a href="#常用命令参数" class="headerlink" title="常用命令参数"></a>常用命令参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-i  忽略搜索时的大小写</span><br><span class="line">-N  显示每行的行号</span><br><span class="line">-o  &lt;文件名&gt; 将less 输出的内容在指定文件中保存起来</span><br><span class="line">-s  显示连续空行为一行</span><br><span class="line">&#x2F;字符串：向下搜索“字符串”的功能</span><br><span class="line">?字符串：向上搜索“字符串”的功能</span><br><span class="line">n：重复前一个搜索（与 &#x2F; 或 ? 有关）</span><br><span class="line">N：反向重复前一个搜索（与 &#x2F; 或 ? 有关）</span><br><span class="line">-x &lt;数字&gt; 将“tab”键显示为规定的数字空格</span><br><span class="line">b  向后翻一页</span><br><span class="line">d  向后翻半页</span><br><span class="line">h  显示帮助界面</span><br><span class="line">Q  退出less 命令</span><br><span class="line">u  向前滚动半页</span><br><span class="line">y  向前滚动一行</span><br><span class="line">空格键 滚动一行</span><br><span class="line">回车键 滚动一页</span><br><span class="line">[pagedown]： 向下翻动一页</span><br><span class="line">[pageup]：   向上翻动一页</span><br></pre></td></tr></table></figure>
+<h5 id="实例-6"><a href="#实例-6" class="headerlink" title="实例"></a>实例</h5><h6 id="ps-查看进程信息并通过-less-分页显示"><a href="#ps-查看进程信息并通过-less-分页显示" class="headerlink" title="ps 查看进程信息并通过 less 分页显示"></a>ps 查看进程信息并通过 less 分页显示</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux | less -N</span><br></pre></td></tr></table></figure>
+<h6 id="查看多个文件"><a href="#查看多个文件" class="headerlink" title="查看多个文件"></a>查看多个文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less 1.log 2.log</span><br></pre></td></tr></table></figure>
+<p>可以使用 n 查看下一个，使用 p 查看前一个。</p>
+<h4 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h4><h5 id="介绍-7"><a href="#介绍-7" class="headerlink" title="介绍"></a>介绍</h5><p>功能是为文件在另外一个位置建立一个同步的链接，当在不同目录需要该问题时，就不需要为每一个目录创建同样的文件，通过 ln 创建的链接（link）减少磁盘占用量。<br>链接分类：软件链接及硬链接</p>
+<h6 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h6><pre><code>- 软链接，以路径的形式存在。类似于Windows操作系统中的快捷方式
+- 软链接可以 跨文件系统 ，硬链接不可以
+- 软链接可以对一个不存在的文件名进行链接
+- 软链接可以对目录进行链接</code></pre><h6 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接:"></a>硬链接:</h6><pre><code>- 硬链接，以文件副本的形式存在。但不占用实际空间。
+- 不允许给目录创建硬链接
+- 硬链接只有在同一个文件系统中才能创建</code></pre><h6 id="需要注意："><a href="#需要注意：" class="headerlink" title="需要注意："></a>需要注意：</h6><pre><code>- ln命令会保持每一处链接文件的同步性，也就是说，不论你改动了哪一处，其它的文件都会发生相同的变化；
+- ln的链接又分软链接和硬链接两种，软链接就是ln –s 源文件 目标文件，它只会在你选定的位置上生成一个文件的镜像，不会占用磁盘空间，硬链接 ln 源文件 目标文件，没有参数-s， 它会在你选定的位置上生成一个和源文件大小相同的文件，无论是软链接还是硬链接，文件都保持同步变化。
+- ln指令用在链接文件或目录，如同时指定两个以上的文件或目录，且最后的目的地是一个已经存在的目录，则会把前面指定的所有文件或目录复制到该目录中。若同时指定多个文件或目录，且最后的目的地并非是一个已存在的目录，则会出现错误信息。</code></pre><h6 id="常用参数-2"><a href="#常用参数-2" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-b 删除，覆盖以前建立的链接</span><br><span class="line">-s 软链接（符号链接）</span><br><span class="line">-v 显示详细处理过程</span><br></pre></td></tr></table></figure>
+<h5 id="实例-7"><a href="#实例-7" class="headerlink" title="实例"></a>实例</h5><h6 id="给文件创建软链接，并显示操作信息"><a href="#给文件创建软链接，并显示操作信息" class="headerlink" title="给文件创建软链接，并显示操作信息"></a>给文件创建软链接，并显示操作信息</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sv source.log link.log</span><br></pre></td></tr></table></figure>
+<h6 id="给文件创建硬链接，并显示操作信息"><a href="#给文件创建硬链接，并显示操作信息" class="headerlink" title="给文件创建硬链接，并显示操作信息"></a>给文件创建硬链接，并显示操作信息</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -v source.log link1.log</span><br></pre></td></tr></table></figure>
+<h6 id="给目录创建软链接"><a href="#给目录创建软链接" class="headerlink" title="给目录创建软链接"></a>给目录创建软链接</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sv &#x2F;opt&#x2F;soft&#x2F;test&#x2F;test3 &#x2F;opt&#x2F;soft&#x2F;test&#x2F;test5</span><br></pre></td></tr></table></figure>
+
+<h4 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h4><h5 id="介绍-8"><a href="#介绍-8" class="headerlink" title="介绍"></a>介绍</h5><p>locate 通过搜寻系统内建文档数据库达到快速找到档案，数据库由 updatedb 程序来更新，updatedb 是由 cron daemon 周期性调用的。默认情况下 locate 命令在搜寻数据库时比由整个由硬盘资料来搜寻资料来得快，但较差劲的是 locate 所找到的档案若是最近才建立或 刚更名的，可能会找不到，在内定值中，updatedb 每天会跑一次，可以由修改 crontab 来更新设定值 (etc/crontab)。</p>
+<p>locate 与 find 命令相似，可以使用如 *、? 等进行正则匹配查找</p>
+<h6 id="常用参数-3"><a href="#常用参数-3" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-l num（要显示的行数）</span><br><span class="line">-f   将特定的档案系统排除在外，如将proc排除在外</span><br><span class="line">-r   使用正则运算式做为寻找条件</span><br></pre></td></tr></table></figure>
+<h5 id="实例-8"><a href="#实例-8" class="headerlink" title="实例"></a>实例</h5><h6 id="查找和-pwd-相关的所有文件-文件名中包含-pwd）"><a href="#查找和-pwd-相关的所有文件-文件名中包含-pwd）" class="headerlink" title="查找和 pwd 相关的所有文件(文件名中包含 pwd）"></a>查找和 pwd 相关的所有文件(文件名中包含 pwd）</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate pwd</span><br></pre></td></tr></table></figure>
+<h6 id="搜索-etc-目录下所有以-sh-开头的文件"><a href="#搜索-etc-目录下所有以-sh-开头的文件" class="headerlink" title="搜索 etc 目录下所有以 sh 开头的文件"></a>搜索 etc 目录下所有以 sh 开头的文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate &#x2F;etc&#x2F;sh</span><br></pre></td></tr></table></figure>
+<h6 id="查找-var-目录下，以-reason-结尾的文件"><a href="#查找-var-目录下，以-reason-结尾的文件" class="headerlink" title="查找 /var 目录下，以 reason 结尾的文件"></a>查找 /var 目录下，以 reason 结尾的文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate -r &#39;^&#x2F;var.*reason$&#39;（其中.表示一个字符，*表示任务多个；.*表示任意多个字符）</span><br></pre></td></tr></table></figure>
+
+<h4 id="whereis"><a href="#whereis" class="headerlink" title="whereis"></a>whereis</h4><h5 id="介绍-9"><a href="#介绍-9" class="headerlink" title="介绍"></a>介绍</h5><p>whereis 命令只能用于程序名的搜索，而且只搜索二进制文件（参数-b）、man说明文件（参数-m）和源代码文件（参数-s）。如果省略参数，则返回所有信息。whereis 及 locate 都是基于系统内建的数据库进行搜索，因此效率很高，而find则是遍历硬盘查找文件。</p>
+<h6 id="常用参数-4"><a href="#常用参数-4" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-b   定位可执行文件。</span><br><span class="line">-m   定位帮助文件。</span><br><span class="line">-s   定位源代码文件。</span><br><span class="line">-u   搜索默认路径下除可执行文件、源代码文件、帮助文件以外的其它文件。</span><br></pre></td></tr></table></figure>
+<h5 id="实例-9"><a href="#实例-9" class="headerlink" title="实例"></a>实例</h5><h6 id="查找-locate-程序相关文件"><a href="#查找-locate-程序相关文件" class="headerlink" title="查找 locate 程序相关文件"></a>查找 locate 程序相关文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis locate</span><br></pre></td></tr></table></figure>
+<h6 id="查找-locate-的源码文件"><a href="#查找-locate-的源码文件" class="headerlink" title="查找 locate 的源码文件"></a>查找 locate 的源码文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis -s locate</span><br></pre></td></tr></table></figure>
+<h6 id="查找-lcoate-的帮助文件"><a href="#查找-lcoate-的帮助文件" class="headerlink" title="查找 lcoate 的帮助文件"></a>查找 lcoate 的帮助文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whereis -m locate</span><br></pre></td></tr></table></figure>
+
+<h4 id="which"><a href="#which" class="headerlink" title="which"></a>which</h4><h5 id="介绍-10"><a href="#介绍-10" class="headerlink" title="介绍"></a>介绍</h5><p>在 linux 要查找某个文件，但不知道放在哪里了，可以使用下面的一些命令来搜索：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">which     查看可执行文件的位置。</span><br><span class="line">whereis 查看文件的位置。</span><br><span class="line">locate  配合数据库查看文件位置。</span><br><span class="line">find        实际搜寻硬盘查询文件名称。</span><br></pre></td></tr></table></figure>
+<p>which 是在 PATH 就是指定的路径中，搜索某个系统命令的位置，并返回第一个搜索结果。使用 which 命令，就可以看到某个系统命令是否存在，以及执行的到底是哪一个位置的命令。</p>
+<h6 id="常用参数-5"><a href="#常用参数-5" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-n 　指定文件名长度，指定的长度必须大于或等于所有文件中最长的文件名。</span><br></pre></td></tr></table></figure>
+<h5 id="实例-10"><a href="#实例-10" class="headerlink" title="实例"></a>实例</h5><h6 id="查看-ls-命令是否存在，执行哪个"><a href="#查看-ls-命令是否存在，执行哪个" class="headerlink" title="查看 ls 命令是否存在，执行哪个"></a>查看 ls 命令是否存在，执行哪个</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which ls</span><br></pre></td></tr></table></figure>
+<h6 id="查看-which"><a href="#查看-which" class="headerlink" title="查看 which"></a>查看 which</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which which</span><br></pre></td></tr></table></figure>
+<h6 id="查看-cd"><a href="#查看-cd" class="headerlink" title="查看 cd"></a>查看 cd</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which cd（显示不存在，因为 cd 是内建命令，而 which 查找显示是 PATH 中的命令）</span><br></pre></td></tr></table></figure>
+<h6 id="查看当前-PATH-配置："><a href="#查看当前-PATH-配置：" class="headerlink" title="查看当前 PATH 配置："></a>查看当前 PATH 配置：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $PATH</span><br></pre></td></tr></table></figure>
+<p>或使用 env 查看所有环境变量及对应值</p>
+<h3 id="文档编辑命令"><a href="#文档编辑命令" class="headerlink" title="文档编辑命令"></a>文档编辑命令</h3><h4 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h4><h5 id="介绍-11"><a href="#介绍-11" class="headerlink" title="介绍"></a>介绍</h5><p>强大的文本搜索命令，grep(Global Regular Expression Print) 全局正则表达式搜索。</p>
+<p>grep 的工作方式是这样的，它在一个或多个文件中搜索字符串模板。如果模板包括空格，则必须被引用，模板后的所有字符串被看作文件名。搜索的结果被送到标准输出，不影响原文件内容。</p>
+<h6 id="命令格式-1"><a href="#命令格式-1" class="headerlink" title="命令格式"></a>命令格式</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep [option] pattern file|dir</span><br></pre></td></tr></table></figure>
+<h6 id="常用参数-6"><a href="#常用参数-6" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-A n --after-context显示匹配字符后n行</span><br><span class="line">-B n --before-context显示匹配字符前n行</span><br><span class="line">-C n --context 显示匹配字符前后n行</span><br><span class="line">-c --count 计算符合样式的列数</span><br><span class="line">-i 忽略大小写</span><br><span class="line">-l 只列出文件内容符合指定的样式的文件名称</span><br><span class="line">-f 从文件中读取关键词</span><br><span class="line">-n 显示匹配内容的所在文件中行数</span><br><span class="line">-R 递归查找文件夹</span><br></pre></td></tr></table></figure>
+<h6 id="grep-的规则表达式"><a href="#grep-的规则表达式" class="headerlink" title="grep 的规则表达式"></a>grep 的规则表达式</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">^  #锚定行的开始 如：&#39;^grep&#39;匹配所有以grep开头的行。 </span><br><span class="line">$  #锚定行的结束 如：&#39;grep$&#39;匹配所有以grep结尾的行。 </span><br><span class="line">.  #匹配一个非换行符的字符 如：&#39;gr.p&#39;匹配gr后接一个任意字符，然后是p。  </span><br><span class="line">*  #匹配零个或多个先前字符 如：&#39;*grep&#39;匹配所有一个或多个空格后紧跟grep的行。</span><br><span class="line">.*   #一起用代表任意字符。  </span><br><span class="line">[]   #匹配一个指定范围内的字符，如&#39;[Gg]rep&#39;匹配Grep和grep。 </span><br><span class="line">[^]  #匹配一个不在指定范围内的字符，如：&#39;[^A-FH-Z]rep&#39;匹配不包含A-R和T-Z的一个字母开头，紧跟rep的行。  </span><br><span class="line">\(..\)  #标记匹配字符，如&#39;\(love\)&#39;，love被标记为1。   </span><br><span class="line">\&lt;      #锚定单词的开始，如:&#39;\&lt;grep&#39;匹配包含以grep开头的单词的行。</span><br><span class="line">\&gt;      #锚定单词的结束，如&#39;grep\&gt;&#39;匹配包含以grep结尾的单词的行。</span><br><span class="line">x\&#123;m\&#125;  #重复字符x，m次，如：&#39;0\&#123;5\&#125;&#39;匹配包含5个o的行。 </span><br><span class="line">x\&#123;m,\&#125;  #重复字符x,至少m次，如：&#39;o\&#123;5,\&#125;&#39;匹配至少有5个o的行。  </span><br><span class="line">x\&#123;m,n\&#125;  #重复字符x，至少m次，不多于n次，如：&#39;o\&#123;5,10\&#125;&#39;匹配5--10个o的行。  </span><br><span class="line">\w    #匹配文字和数字字符，也就是[A-Za-z0-9]，如：&#39;G\w*p&#39;匹配以G后跟零个或多个文字或数字字符，然后是p。  </span><br><span class="line">\W    #\w的反置形式，匹配一个或多个非单词字符，如点号句号等。  </span><br><span class="line">\b    #单词锁定符，如: &#39;\bgrep\b&#39;只匹配grep。</span><br></pre></td></tr></table></figure>
+<h5 id="实例-11"><a href="#实例-11" class="headerlink" title="实例"></a>实例</h5><h6 id="查找指定进程"><a href="#查找指定进程" class="headerlink" title="查找指定进程"></a>查找指定进程</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep svn</span><br></pre></td></tr></table></figure>
+<h6 id="查找指定进程个数"><a href="#查找指定进程个数" class="headerlink" title="查找指定进程个数"></a>查找指定进程个数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep svn -c</span><br></pre></td></tr></table></figure>
+<h6 id="从文件中读取关键词"><a href="#从文件中读取关键词" class="headerlink" title="从文件中读取关键词"></a>从文件中读取关键词</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat test1.txt | grep -f key.log</span><br></pre></td></tr></table></figure>
+<h6 id="从文件夹中递归查找以grep开头的行，并只列出文件"><a href="#从文件夹中递归查找以grep开头的行，并只列出文件" class="headerlink" title="从文件夹中递归查找以grep开头的行，并只列出文件"></a>从文件夹中递归查找以grep开头的行，并只列出文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -lR &#39;^grep&#39; &#x2F;tmp</span><br></pre></td></tr></table></figure>
+<h6 id="查找非x开关的行内容"><a href="#查找非x开关的行内容" class="headerlink" title="查找非x开关的行内容"></a>查找非x开关的行内容</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#39;^[^x]&#39; test.txt</span><br></pre></td></tr></table></figure>
+<h6 id="显示包含-ed-或者-at-字符的内容行"><a href="#显示包含-ed-或者-at-字符的内容行" class="headerlink" title="显示包含 ed 或者 at 字符的内容行"></a>显示包含 ed 或者 at 字符的内容行</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E &#39;ed|at&#39; test.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="wc"><a href="#wc" class="headerlink" title="wc"></a>wc</h4><h5 id="介绍-12"><a href="#介绍-12" class="headerlink" title="介绍"></a>介绍</h5><p>wc(word count)功能为统计指定的文件中字节数、字数、行数，并将统计结果输出</p>
+<h6 id="命令格式-2"><a href="#命令格式-2" class="headerlink" title="命令格式"></a>命令格式</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wc [option] file..</span><br></pre></td></tr></table></figure>
+<h6 id="命令参数-1"><a href="#命令参数-1" class="headerlink" title="命令参数"></a>命令参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-c 统计字节数</span><br><span class="line">-l 统计行数</span><br><span class="line">-m 统计字符数</span><br><span class="line">-w 统计词数，一个字被定义为由空白、跳格或换行字符分隔的字符串</span><br></pre></td></tr></table></figure>
+<h5 id="实例-12"><a href="#实例-12" class="headerlink" title="实例"></a>实例</h5><h6 id="查找文件的-行数-单词数-字节数-文件名"><a href="#查找文件的-行数-单词数-字节数-文件名" class="headerlink" title="查找文件的 行数 单词数 字节数 文件名"></a>查找文件的 行数 单词数 字节数 文件名</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wc text.txt</span><br></pre></td></tr></table></figure>
+<h6 id="统计输出结果的行数"><a href="#统计输出结果的行数" class="headerlink" title="统计输出结果的行数"></a>统计输出结果的行数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat test.txt | wc -l</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="网络通讯命令"><a href="#网络通讯命令" class="headerlink" title="网络通讯命令"></a>网络通讯命令</h3><h4 id="ifconfig"><a href="#ifconfig" class="headerlink" title="ifconfig"></a>ifconfig</h4><ul>
+<li>ifconfig 用于查看和配置 Linux 系统的网络接口。<br/></li>
+<li>查看所有网络接口及其状态：<code>ifconfig -a</code> 。</li>
+<li>使用 up 和 down 命令启动或停止某个接口：<code>ifconfig eth0 up</code> 和 <code>ifconfig eth0 down</code> 。</li>
+</ul>
+<h4 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h4><p>iptables ，是一个配置 Linux 内核防火墙的命令行工具。功能非常强大，对于我们开发来说，主要掌握如何开放端口即可。例如：</p>
+<ul>
+<li><p>把来源 IP 为 192.168.1.101 访问本机 80 端口的包直接拒绝：iptables -I INPUT -s 192.168.1.101 -p tcp –dport 80 -j REJECT 。</p>
+</li>
+<li><p>开启 80 端口，因为web对外都是这个端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp --dport 80 -j ACCEP</span><br></pre></td></tr></table></figure></li>
+<li><p>另外，要注意使用 iptables save 命令，进行保存。否则，服务器重启后，配置的规则将丢失。</p>
+</li>
+</ul>
+<h4 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h4><h5 id="介绍-13"><a href="#介绍-13" class="headerlink" title="介绍"></a>介绍</h5><p>Linux netstat命令用于显示网络状态。<br>利用netstat指令可让你得知整个Linux系统的网络情况。</p>
+<h6 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat [-acCeFghilMnNoprstuvVwx][-A&lt;网络类型&gt;][--ip]</span><br></pre></td></tr></table></figure>
+<h6 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-a或–all 显示所有连线中的Socket。</span><br><span class="line">-A&lt;网络类型&gt;或–&lt;网络类型&gt; 列出该网络类型连线中的相关地址。</span><br><span class="line">-c或–continuous 持续列出网络状态。</span><br><span class="line">-C或–cache 显示路由器配置的快取信息。</span><br><span class="line">-e或–extend 显示网络其他相关信息。</span><br><span class="line">-F或–fib 显示FIB。</span><br><span class="line">-g或–groups 显示多重广播功能群组组员名单。</span><br><span class="line">-h或–help 在线帮助。</span><br><span class="line">-i或–interfaces 显示网络界面信息表单。</span><br><span class="line">-l或–listening 显示监控中的服务器的Socket。</span><br><span class="line">-M或–masquerade 显示伪装的网络连线。</span><br><span class="line">-n或–numeric 直接使用IP地址，而不通过域名服务器。</span><br><span class="line">-N或–netlink或–symbolic 显示网络硬件外围设备的符号连接名称。</span><br><span class="line">-o或–timers 显示计时器。</span><br><span class="line">-p或–programs 显示正在使用Socket的程序识别码和程序名称。</span><br><span class="line">-r或–route 显示Routing Table。</span><br><span class="line">-s或–statistice 显示网络工作信息统计表。</span><br><span class="line">-t或–tcp 显示TCP传输协议的连线状况。</span><br><span class="line">-u或–udp 显示UDP传输协议的连线状况。</span><br><span class="line">-v或–verbose 显示指令执行过程。</span><br><span class="line">-V或–version 显示版本信息。</span><br><span class="line">-w或–raw 显示RAW传输协议的连线状况。</span><br><span class="line">-x或–unix 此参数的效果和指定&quot;-A unix&quot;参数相同。</span><br><span class="line">–ip或–inet 此参数的效果和指定&quot;-A inet&quot;参数相同。</span><br></pre></td></tr></table></figure>
+<h5 id="实例-13"><a href="#实例-13" class="headerlink" title="实例"></a>实例</h5><h6 id="如何查看系统都开启了哪些端口？"><a href="#如何查看系统都开启了哪些端口？" class="headerlink" title="如何查看系统都开启了哪些端口？"></a>如何查看系统都开启了哪些端口？</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -lnp</span><br></pre></td></tr></table></figure>
+<h6 id="如何查看网络连接状况？"><a href="#如何查看网络连接状况？" class="headerlink" title="如何查看网络连接状况？"></a>如何查看网络连接状况？</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -an</span><br></pre></td></tr></table></figure>
+<h6 id="如何统计系统当前进程连接数？"><a href="#如何统计系统当前进程连接数？" class="headerlink" title="如何统计系统当前进程连接数？"></a>如何统计系统当前进程连接数？</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入命令 netstat -an | grep ESTABLISHED | wc -l 。</span><br><span class="line">输出结果 177 。一共有 177 连接数。</span><br></pre></td></tr></table></figure>
+<h6 id="用-netstat-命令配合其他命令，按照源-IP-统计所有到-80-端口的-ESTABLISHED-状态链接的个数？"><a href="#用-netstat-命令配合其他命令，按照源-IP-统计所有到-80-端口的-ESTABLISHED-状态链接的个数？" class="headerlink" title="用 netstat 命令配合其他命令，按照源 IP 统计所有到 80 端口的 ESTABLISHED 状态链接的个数？"></a>用 netstat 命令配合其他命令，按照源 IP 统计所有到 80 端口的 ESTABLISHED 状态链接的个数？</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -an|grep ESTABLISHED</span><br></pre></td></tr></table></figure>
+
+<h4 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h4><p>Linux ping命令用于检测主机。</p>
+<p>执行ping指令会使用ICMP传输协议，发出要求回应的信息，若远端主机的网络功能没有问题，就会回应该信息，因而得知该主机运作正常。</p>
+<p>指定接收包的次数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping -c 2 www.baidu.com</span><br></pre></td></tr></table></figure>
+
+<h4 id="telnet"><a href="#telnet" class="headerlink" title="telnet"></a>telnet</h4><p>Linux telnet命令用于远端登入。<br>执行telnet指令开启终端机阶段作业，并登入远端主机。</p>
+<h6 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet [-8acdEfFKLrx][-b&lt;主机别名&gt;][-e&lt;脱离字符&gt;][-k&lt;域名&gt;][-l&lt;用户名称&gt;][-n&lt;记录文件&gt;][-S&lt;服务类型&gt;][-X&lt;认证形态&gt;][主机名称或IP地址&lt;通信端口&gt;]</span><br></pre></td></tr></table></figure>
+<h6 id="参数说明-1"><a href="#参数说明-1" class="headerlink" title="参数说明"></a>参数说明</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-8 允许使用8位字符资料，包括输入与输出。</span><br><span class="line">-a 尝试自动登入远端系统。</span><br><span class="line">-b&lt;主机别名&gt; 使用别名指定远端主机名称。</span><br><span class="line">-c 不读取用户专属目录里的.telnetrc文件。</span><br><span class="line">-d 启动排错模式。</span><br><span class="line">-e&lt;脱离字符&gt; 设置脱离字符。</span><br><span class="line">-E 滤除脱离字符。</span><br><span class="line">-f 此参数的效果和指定&quot;-F&quot;参数相同。</span><br><span class="line">-F 使用Kerberos V5认证时，加上此参数可把本地主机的认证数据上传到远端主机。</span><br><span class="line">-k&lt;域名&gt; 使用Kerberos认证时，加上此参数让远端主机采用指定的领域名，而非该主机的域名。</span><br><span class="line">-K 不自动登入远端主机。</span><br><span class="line">-l&lt;用户名称&gt; 指定要登入远端主机的用户名称。</span><br><span class="line">-L 允许输出8位字符资料。</span><br><span class="line">-n&lt;记录文件&gt; 指定文件记录相关信息。</span><br><span class="line">-r 使用类似rlogin指令的用户界面。</span><br><span class="line">-S&lt;服务类型&gt; 设置telnet连线所需的IP TOS信息。</span><br><span class="line">-x 假设主机有支持数据加密的功能，就使用它。</span><br><span class="line">-X&lt;认证形态&gt; 关闭指定的认证形态。</span><br></pre></td></tr></table></figure>
+<h6 id="登录远程主机"><a href="#登录远程主机" class="headerlink" title="登录远程主机"></a>登录远程主机</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 登录IP为 192.168.0.5 的远程主机</span><br><span class="line">telnet 192.168.0.5</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="系统管理命令"><a href="#系统管理命令" class="headerlink" title="系统管理命令"></a>系统管理命令</h3><h4 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h4><p>发送指定的信号到相应进程。不指定型号将发送SIGTERM（15）终止指定进程。如果任无法终止该程序可用”-KILL” 参数，其发送的信号为SIGKILL(9) ，将强制结束进程，使用ps命令或者jobs 命令可以查看进程号。root用户将影响用户的进程，非root用户只能影响自己的进程。</p>
+<h6 id="常用参数-7"><a href="#常用参数-7" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-l  信号，若果不加信号的编号参数，则使用“-l”参数会列出全部的信号名称</span><br><span class="line">-a  当处理当前进程时，不限制命令名和进程号的对应关系</span><br><span class="line">-p  指定kill 命令只打印相关进程的进程号，而不发送任何信号</span><br><span class="line">-s  指定发送信号</span><br><span class="line">-u  指定用户</span><br></pre></td></tr></table></figure>
+<h6 id="先使用ps查找进程pro1，然后用kill杀掉"><a href="#先使用ps查找进程pro1，然后用kill杀掉" class="headerlink" title="先使用ps查找进程pro1，然后用kill杀掉"></a>先使用ps查找进程pro1，然后用kill杀掉</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill -9 $(ps -ef | grep pro1)</span><br></pre></td></tr></table></figure>
+
+<h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><h5 id="介绍-14"><a href="#介绍-14" class="headerlink" title="介绍"></a>介绍</h5><p>ps(process status)，用来查看当前运行的进程状态，一次性查看，如果需要动态连续结果使用 top</p>
+<p>linux上进程有5种状态:</p>
+<ul>
+<li>运行(正在运行或在运行队列中等待)</li>
+<li>中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)</li>
+<li>不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)</li>
+<li>僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)</li>
+<li>停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行)<h6 id="ps-工具标识进程的5种状态码"><a href="#ps-工具标识进程的5种状态码" class="headerlink" title="ps 工具标识进程的5种状态码"></a>ps 工具标识进程的5种状态码</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">D 不可中断 uninterruptible sleep (usually IO)</span><br><span class="line">R 运行 runnable (on run queue)</span><br><span class="line">S 中断 sleeping</span><br><span class="line">T 停止 traced or stopped</span><br><span class="line">Z 僵死 a defunct (”zombie”) process</span><br></pre></td></tr></table></figure>
+<h6 id="命令参数-2"><a href="#命令参数-2" class="headerlink" title="命令参数"></a>命令参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-A 显示所有进程</span><br><span class="line">a 显示所有进程</span><br><span class="line">-a 显示同一终端下所有进程</span><br><span class="line">c 显示进程真实名称</span><br><span class="line">e 显示环境变量</span><br><span class="line">f 显示进程间的关系</span><br><span class="line">r 显示当前终端运行的进程</span><br><span class="line">-aux 显示所有包含其它使用的进程</span><br></pre></td></tr></table></figure>
+<h5 id="实例-14"><a href="#实例-14" class="headerlink" title="实例"></a>实例</h5><h6 id="显示当前所有进程环境变量及进程间关系"><a href="#显示当前所有进程环境变量及进程间关系" class="headerlink" title="显示当前所有进程环境变量及进程间关系"></a>显示当前所有进程环境变量及进程间关系</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></table></figure>
+<h6 id="显示当前所有进程"><a href="#显示当前所有进程" class="headerlink" title="显示当前所有进程"></a>显示当前所有进程</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -A</span><br></pre></td></tr></table></figure>
+<h6 id="与grep联用查找某进程"><a href="#与grep联用查找某进程" class="headerlink" title="与grep联用查找某进程"></a>与grep联用查找某进程</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux | grep apache</span><br></pre></td></tr></table></figure>
+<h6 id="找出与-cron-与-syslog-这两个服务有关的-PID-号码"><a href="#找出与-cron-与-syslog-这两个服务有关的-PID-号码" class="headerlink" title="找出与 cron 与 syslog 这两个服务有关的 PID 号码"></a>找出与 cron 与 syslog 这两个服务有关的 PID 号码</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep &#39;(cron|syslog)&#39;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><h5 id="介绍-15"><a href="#介绍-15" class="headerlink" title="介绍"></a>介绍</h5><p>显示当前系统正在执行的进程的相关信息，包括进程 ID、内存占用率、CPU 占用率等</p>
+<h6 id="常用参数-8"><a href="#常用参数-8" class="headerlink" title="常用参数"></a>常用参数</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-c 显示完整的进程命令</span><br><span class="line">-s 保密模式</span><br><span class="line">-p &lt;进程号&gt; 指定进程显示</span><br><span class="line">-n &lt;次数&gt;循环显示次数</span><br></pre></td></tr></table></figure>
+<h5 id="实例-15"><a href="#实例-15" class="headerlink" title="实例"></a>实例</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">top - 14:06:23 up 70 days, 16:44,  2 users,  load average: 1.25, 1.32, 1.35</span><br><span class="line">Tasks: 206 total,   1 running, 205 sleeping,   0 stopped,   0 zombie</span><br><span class="line">Cpu(s):  5.9%us,  3.4%sy,  0.0%ni, 90.4%id,  0.0%wa,  0.0%hi,  0.2%si,  0.0%st</span><br><span class="line">Mem:  32949016k total, 14411180k used, 18537836k free,   169884k buffers</span><br><span class="line">Swap: 32764556k total,        0k used, 32764556k free,  3612636k cached</span><br><span class="line">PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND  </span><br><span class="line">28894 root      22   0 1501m 405m  10m S 52.2  1.3   2534:16 java</span><br></pre></td></tr></table></figure>
+<p>前五行是当前系统情况整体的统计信息区。</p>
+<p><code>第一行</code>，任务队列信息，同 uptime 命令的执行结果，具体参数说明情况如下：</p>
+<p>14:06:23 — 当前系统时间</p>
+<p>up 70 days, 16:44 — 系统已经运行了70天16小时44分钟（在这期间系统没有重启过的吆！）</p>
+<p>2 users — 当前有2个用户登录系统</p>
+<p>load average: 1.15, 1.42, 1.44 — load average后面的三个数分别是1分钟、5分钟、15分钟的负载情况。</p>
+<p>load average数据是每隔5秒钟检查一次活跃的进程数，然后按特定算法计算出的数值。如果这个数除以逻辑CPU的数量，结果高于5的时候就表明系统在超负荷运转了。</p>
+<p><code>第二行</code>，Tasks — 任务（进程），具体信息说明如下：</p>
+<p>系统现在共有206个进程，其中处于运行中的有1个，205个在休眠（sleep），stoped状态的有0个，zombie状态（僵尸）的有0个。</p>
+<p><code>第三行</code>，cpu状态信息，具体属性说明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">5.9%us — 用户空间占用CPU的百分比。</span><br><span class="line">3.4% sy — 内核空间占用CPU的百分比。</span><br><span class="line">0.0% ni — 改变过优先级的进程占用CPU的百分比</span><br><span class="line">90.4% id — 空闲CPU百分比</span><br><span class="line">0.0% wa — IO等待占用CPU的百分比</span><br><span class="line">0.0% hi — 硬中断（Hardware IRQ）占用CPU的百分比</span><br><span class="line">0.2% si — 软中断（Software Interrupts）占用CPU的百分比</span><br></pre></td></tr></table></figure>
+<p>备注：在这里CPU的使用比率和windows概念不同，需要理解linux系统用户空间和内核空间的相关知识！<br><code>第四行</code>，内存状态，具体信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">32949016k total — 物理内存总量（32GB）</span><br><span class="line">14411180k used — 使用中的内存总量（14GB）</span><br><span class="line">18537836k free — 空闲内存总量（18GB）</span><br><span class="line">169884k buffers — 缓存的内存量 （169M）</span><br></pre></td></tr></table></figure>
+<p><code>第五行</code>，swap交换分区信息，具体信息说明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">32764556k total — 交换区总量（32GB）</span><br><span class="line">0k used — 使用的交换区总量（0K）</span><br><span class="line">32764556k free — 空闲交换区总量（32GB）</span><br><span class="line">3612636k cached — 缓冲的交换区总量（3.6GB）</span><br></pre></td></tr></table></figure>
+<p><code>第六行</code>，空行。</p>
+<p><code>第七行</code>以下：各进程（任务）的状态监控，项目列信息说明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PID — 进程id</span><br><span class="line">USER — 进程所有者</span><br><span class="line">PR — 进程优先级</span><br><span class="line">NI — nice值。负值表示高优先级，正值表示低优先级</span><br><span class="line">VIRT — 进程使用的虚拟内存总量，单位kb。VIRT&#x3D;SWAP+RES</span><br><span class="line">RES — 进程使用的、未被换出的物理内存大小，单位kb。RES&#x3D;CODE+DATA</span><br><span class="line">SHR — 共享内存大小，单位kb</span><br><span class="line">S — 进程状态。D&#x3D;不可中断的睡眠状态 R&#x3D;运行 S&#x3D;睡眠 T&#x3D;跟踪&#x2F;停止 Z&#x3D;僵尸进程</span><br><span class="line">%CPU — 上次更新到现在的CPU时间占用百分比</span><br><span class="line">%MEM — 进程使用的物理内存百分比</span><br><span class="line">TIME+ — 进程使用的CPU时间总计，单位1&#x2F;100秒</span><br><span class="line">COMMAND — 进程名称（命令名&#x2F;命令行）</span><br></pre></td></tr></table></figure>
+<h6 id="top交互命令"><a href="#top交互命令" class="headerlink" title="top交互命令"></a>top交互命令</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">h 显示top交互命令帮助信息</span><br><span class="line">c 切换显示命令名称和完整命令行</span><br><span class="line">m 以内存使用率排序</span><br><span class="line">P 根据CPU使用百分比大小进行排序</span><br><span class="line">T 根据时间&#x2F;累计时间进行排序</span><br><span class="line">W 将当前设置写入~&#x2F;.toprc文件中</span><br><span class="line">o或者O 改变显示项目的顺序</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2021/04/08/%E8%BD%AC-Linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/04/05/leetcode-199-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%8F%B3%E8%A7%86%E5%9B%BE/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">leetcode --- 199. 二叉树的右视图</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "WsTe7qzqb4a2pxJVBdPy6FI5-gzGzoHsz",
+    app_key: "EACB4Omi8LuM9N2KVXA81Am0",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2021
+        <i class="ri-heart-fill heart_icon"></i> _Tao
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="MoonMonsters"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2020/11/15/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5">链接</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
