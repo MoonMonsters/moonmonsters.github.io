@@ -137,6 +137,52 @@
     
     
     <article
+  id="post-数据结构-优先队列"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/01/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/"
+    >数据结构 - 优先队列</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/01/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="article-date">
+  <time datetime="2021-01-26T14:48:21.000Z" itemprop="datePublished">2021-01-26</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PriorityQueue</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    优先队列</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.array = list()</span><br><span class="line">        self.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span><span class="params">(self, element)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        入队</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.array.append(element)</span><br><span class="line">        self.size += <span class="number">1</span></span><br><span class="line">        self.up_adjust()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">up_adjust</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        向上调整</span></span><br><span class="line"><span class="string">        插入元素后, 放在最末尾</span></span><br><span class="line"><span class="string">        需要往上调整, 变成最大堆</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 插入的元素的位置</span></span><br><span class="line">        child_index = self.size - <span class="number">1</span></span><br><span class="line">        parent_index = (child_index - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">        <span class="comment"># 插入的元素, 一直往上移动</span></span><br><span class="line">        tmp = self.array[child_index]</span><br><span class="line">        <span class="comment"># 直到移动到第一个根节点, 或者比父节点小</span></span><br><span class="line">        <span class="keyword">while</span> child_index &gt; <span class="number">0</span> <span class="keyword">and</span> tmp &gt; self.array[parent_index]:</span><br><span class="line">            <span class="comment"># tmp往上移动, 将父节点赋值给子节点</span></span><br><span class="line">            self.array[child_index] = self.array[parent_index]</span><br><span class="line">            <span class="comment"># 往上移动一层</span></span><br><span class="line">            child_index = parent_index</span><br><span class="line">            parent_index = (child_index - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">        <span class="comment"># 移动到最终位置</span></span><br><span class="line">        self.array[child_index] = tmp</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        获取优先队列的最大优先值</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.size &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">"队列为空"</span>)</span><br><span class="line">        <span class="comment"># 返回最大优先值</span></span><br><span class="line">        head = self.array[<span class="number">0</span>]</span><br><span class="line">        <span class="comment"># 将最后一个节点移动到根节点位置</span></span><br><span class="line">        self.array[<span class="number">0</span>] = self.array[self.size - <span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 自顶向下移动</span></span><br><span class="line">        self.down_adjust()</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">down_adjust</span><span class="params">(self)</span>:</span></span><br><span class="line">        parent_index = <span class="number">0</span></span><br><span class="line">        tmp = self.array[parent_index]</span><br><span class="line">        child_index = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> child_index &lt; self.size:</span><br><span class="line">            <span class="comment"># 如果有右孩子节点, 并且值大于左孩子节点, 那么父节点往右孩子节点移动</span></span><br><span class="line">            <span class="comment"># 需要构建最大堆, 所以需要保证父节点要大于子节点</span></span><br><span class="line">            <span class="keyword">if</span> child_index + <span class="number">1</span> &lt; self.size <span class="keyword">and</span> self.array[child_index + <span class="number">1</span>] &gt; self.array[child_index]:</span><br><span class="line">                child_index += <span class="number">1</span></span><br><span class="line">            <span class="comment"># 父节点并最大子节点都大, 那么退出</span></span><br><span class="line">            <span class="keyword">if</span> tmp &gt;= self.array[child_index]:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="comment"># 将最大子节点移动到父节点位置</span></span><br><span class="line">            self.array[parent_index] = self.array[child_index]</span><br><span class="line">            <span class="comment"># 移动到子节点位置</span></span><br><span class="line">            parent_index = child_index</span><br><span class="line">            <span class="comment"># 判断左孩子节点</span></span><br><span class="line">            child_index = <span class="number">2</span> * child_index + <span class="number">1</span></span><br><span class="line">        self.array[parent_index] = tmp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    queue = PriorityQueue()</span><br><span class="line">    queue.enqueue(<span class="number">3</span>)</span><br><span class="line">    queue.enqueue(<span class="number">20</span>)</span><br><span class="line">    queue.enqueue(<span class="number">30</span>)</span><br><span class="line">    queue.enqueue(<span class="number">50</span>)</span><br><span class="line">    queue.enqueue(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    print(queue.dequeue())</span><br><span class="line">    print(queue.dequeue())</span><br><span class="line">    print(queue.dequeue())</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-django-LocMemCache源码分析"
   class="article article-type-post"
   itemscope
@@ -726,57 +772,6 @@
        
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/beego/" rel="tag">beego</a></li></ul>
 
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-golang-转-解密Go协程的栈内存管理"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/10/12/golang-%E8%BD%AC-%E8%A7%A3%E5%AF%86Go%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%A0%88%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"
-    >[转]golang - 解密Go协程的栈内存管理</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/10/12/golang-%E8%BD%AC-%E8%A7%A3%E5%AF%86Go%E5%8D%8F%E7%A8%8B%E7%9A%84%E6%A0%88%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="article-date">
-  <time datetime="2020-10-12T10:12:00.000Z" itemprop="datePublished">2020-10-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>转载：<a href="https://mp.weixin.qq.com/s?__biz=MzUzNTY5MzU2MA==&mid=2247485886&idx=1&sn=f29fe2ce95a485e2c2ef1c4cd33b5085&chksm=fa80d829cdf7513fdf45b16be023809d9725b150803b6482643c3dd84aa3c0090c2cb9efd3aa&token=940952510&lang=zh_CN#rd" target="_blank" rel="noopener">解密Go协程的栈内存管理</a></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
     </footer>
   </div>
 

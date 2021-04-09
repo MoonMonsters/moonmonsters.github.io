@@ -137,6 +137,62 @@
     
     
     <article
+  id="post-leetcode-77-组合"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/27/leetcode-77-%E7%BB%84%E5%90%88/"
+    >leetcode --- 77. 组合</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/27/leetcode-77-%E7%BB%84%E5%90%88/" class="article-date">
+  <time datetime="2021-03-27T06:23:00.000Z" itemprop="datePublished">2021-03-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/combinations" target="_blank" rel="noopener">组合</a></p>
+<p>给定两个整数 n 和 k，返回 1 … n 中所有可能的 k 个数的组合。</p>
+<p>示例:</p>
+<blockquote>
+<p>输入: n = 4, k = 2<br>输出:<br>[<br>  [2,4],<br>  [3,4],<br>  [2,3],<br>  [1,2],<br>  [1,3],<br>  [1,4],<br>]</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">combine</span><span class="params">(self, n: int, k: int)</span>:</span></span><br><span class="line">        <span class="keyword">import</span> itertools</span><br><span class="line">        nums = range(<span class="number">1</span>, n + <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> list(itertools.combinations(nums, k))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.combine(<span class="number">4</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-leetcode-71-简化路径"
   class="article article-type-post"
   itemscope
@@ -710,72 +766,6 @@
        
   <p><a href="https://mp.weixin.qq.com/s/jiPMUk6zUdOY6eKxAjNDbQ" target="_blank" rel="noopener">低并发编程 - 如果让你来设计网络</a></p>
 <p><a href="https://mp.weixin.qq.com/s/Uf42QEL6WUSHOwJ403FwOA" target="_blank" rel="noopener">低并发编程 - 图解 | 你管这破玩意儿叫TCP？</a></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-17.电话号码的字母组合"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/26/leetcode-17.%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/"
-    >leetcode --- 17.电话号码的字母组合</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/26/leetcode-17.%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" class="article-date">
-  <time datetime="2021-03-25T16:51:00.000Z" itemprop="datePublished">2021-03-26</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener">电话号码的字母组合</a></p>
-<p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
-<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210326005238.png" alt=""></p>
-<p>示例 1：</p>
-<blockquote>
-<p>输入：digits = “23” <br/><br>输出：[“ad”,”ae”,”af”,”bd”,”be”,”bf”,”cd”,”ce”,”cf”] <br/></p>
-</blockquote>
-<p>示例 2：</p>
-<blockquote>
-<p>输入：digits = “” <br/><br>输出：[]</p>
-</blockquote>
-<p>示例 3：</p>
-<blockquote>
-<p>输入：digits = “2” <br/><br>输出：[“a”,”b”,”c”]</p>
-</blockquote>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">letterCombinations</span><span class="params">(self, digits: str)</span>:</span></span><br><span class="line">        number = &#123;</span><br><span class="line">            <span class="string">"2"</span>: [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>],</span><br><span class="line">            <span class="string">"3"</span>: [<span class="string">"d"</span>, <span class="string">"e"</span>, <span class="string">"f"</span>],</span><br><span class="line">            <span class="string">"4"</span>: [<span class="string">"g"</span>, <span class="string">"h"</span>, <span class="string">"i"</span>],</span><br><span class="line">            <span class="string">"5"</span>: [<span class="string">"j"</span>, <span class="string">"k"</span>, <span class="string">"l"</span>],</span><br><span class="line">            <span class="string">"6"</span>: [<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>],</span><br><span class="line">            <span class="string">"7"</span>: [<span class="string">"p"</span>, <span class="string">"q"</span>, <span class="string">"r"</span>, <span class="string">"s"</span>],</span><br><span class="line">            <span class="string">"8"</span>: [<span class="string">"t"</span>, <span class="string">"u"</span>, <span class="string">"v"</span>],</span><br><span class="line">            <span class="string">"9"</span>: [<span class="string">"w"</span>, <span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"z"</span>]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> digits <span class="keyword">or</span> digits == <span class="string">"1"</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ret = [<span class="string">""</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> digits:</span><br><span class="line">            ret = [r + n <span class="keyword">for</span> r <span class="keyword">in</span> ret <span class="keyword">for</span> n <span class="keyword">in</span> number[i]]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">d = <span class="string">"23"</span></span><br><span class="line">print(s.letterCombinations(d))</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       

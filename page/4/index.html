@@ -137,6 +137,72 @@
     
     
     <article
+  id="post-leetcode-17.电话号码的字母组合"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/26/leetcode-17.%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/"
+    >leetcode --- 17.电话号码的字母组合</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/26/leetcode-17.%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" class="article-date">
+  <time datetime="2021-03-25T16:51:00.000Z" itemprop="datePublished">2021-03-26</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/" target="_blank" rel="noopener">电话号码的字母组合</a></p>
+<p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210326005238.png" alt=""></p>
+<p>示例 1：</p>
+<blockquote>
+<p>输入：digits = “23” <br/><br>输出：[“ad”,”ae”,”af”,”bd”,”be”,”bf”,”cd”,”ce”,”cf”] <br/></p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：digits = “” <br/><br>输出：[]</p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：digits = “2” <br/><br>输出：[“a”,”b”,”c”]</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">letterCombinations</span><span class="params">(self, digits: str)</span>:</span></span><br><span class="line">        number = &#123;</span><br><span class="line">            <span class="string">"2"</span>: [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>],</span><br><span class="line">            <span class="string">"3"</span>: [<span class="string">"d"</span>, <span class="string">"e"</span>, <span class="string">"f"</span>],</span><br><span class="line">            <span class="string">"4"</span>: [<span class="string">"g"</span>, <span class="string">"h"</span>, <span class="string">"i"</span>],</span><br><span class="line">            <span class="string">"5"</span>: [<span class="string">"j"</span>, <span class="string">"k"</span>, <span class="string">"l"</span>],</span><br><span class="line">            <span class="string">"6"</span>: [<span class="string">"m"</span>, <span class="string">"n"</span>, <span class="string">"o"</span>],</span><br><span class="line">            <span class="string">"7"</span>: [<span class="string">"p"</span>, <span class="string">"q"</span>, <span class="string">"r"</span>, <span class="string">"s"</span>],</span><br><span class="line">            <span class="string">"8"</span>: [<span class="string">"t"</span>, <span class="string">"u"</span>, <span class="string">"v"</span>],</span><br><span class="line">            <span class="string">"9"</span>: [<span class="string">"w"</span>, <span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"z"</span>]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> digits <span class="keyword">or</span> digits == <span class="string">"1"</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ret = [<span class="string">""</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> digits:</span><br><span class="line">            ret = [r + n <span class="keyword">for</span> r <span class="keyword">in</span> ret <span class="keyword">for</span> n <span class="keyword">in</span> number[i]]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">d = <span class="string">"23"</span></span><br><span class="line">print(s.letterCombinations(d))</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-leetcode-15.三数之和"
   class="article article-type-post"
   itemscope
@@ -704,52 +770,6 @@
        
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
 
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-数据结构-优先队列"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/01/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/"
-    >数据结构 - 优先队列</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/01/26/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="article-date">
-  <time datetime="2021-01-26T14:48:21.000Z" itemprop="datePublished">2021-01-26</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PriorityQueue</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    优先队列</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.array = list()</span><br><span class="line">        self.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">enqueue</span><span class="params">(self, element)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        入队</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.array.append(element)</span><br><span class="line">        self.size += <span class="number">1</span></span><br><span class="line">        self.up_adjust()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">up_adjust</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        向上调整</span></span><br><span class="line"><span class="string">        插入元素后, 放在最末尾</span></span><br><span class="line"><span class="string">        需要往上调整, 变成最大堆</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment"># 插入的元素的位置</span></span><br><span class="line">        child_index = self.size - <span class="number">1</span></span><br><span class="line">        parent_index = (child_index - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">        <span class="comment"># 插入的元素, 一直往上移动</span></span><br><span class="line">        tmp = self.array[child_index]</span><br><span class="line">        <span class="comment"># 直到移动到第一个根节点, 或者比父节点小</span></span><br><span class="line">        <span class="keyword">while</span> child_index &gt; <span class="number">0</span> <span class="keyword">and</span> tmp &gt; self.array[parent_index]:</span><br><span class="line">            <span class="comment"># tmp往上移动, 将父节点赋值给子节点</span></span><br><span class="line">            self.array[child_index] = self.array[parent_index]</span><br><span class="line">            <span class="comment"># 往上移动一层</span></span><br><span class="line">            child_index = parent_index</span><br><span class="line">            parent_index = (child_index - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">        <span class="comment"># 移动到最终位置</span></span><br><span class="line">        self.array[child_index] = tmp</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dequeue</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        获取优先队列的最大优先值</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.size &lt;= <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">"队列为空"</span>)</span><br><span class="line">        <span class="comment"># 返回最大优先值</span></span><br><span class="line">        head = self.array[<span class="number">0</span>]</span><br><span class="line">        <span class="comment"># 将最后一个节点移动到根节点位置</span></span><br><span class="line">        self.array[<span class="number">0</span>] = self.array[self.size - <span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 自顶向下移动</span></span><br><span class="line">        self.down_adjust()</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">down_adjust</span><span class="params">(self)</span>:</span></span><br><span class="line">        parent_index = <span class="number">0</span></span><br><span class="line">        tmp = self.array[parent_index]</span><br><span class="line">        child_index = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> child_index &lt; self.size:</span><br><span class="line">            <span class="comment"># 如果有右孩子节点, 并且值大于左孩子节点, 那么父节点往右孩子节点移动</span></span><br><span class="line">            <span class="comment"># 需要构建最大堆, 所以需要保证父节点要大于子节点</span></span><br><span class="line">            <span class="keyword">if</span> child_index + <span class="number">1</span> &lt; self.size <span class="keyword">and</span> self.array[child_index + <span class="number">1</span>] &gt; self.array[child_index]:</span><br><span class="line">                child_index += <span class="number">1</span></span><br><span class="line">            <span class="comment"># 父节点并最大子节点都大, 那么退出</span></span><br><span class="line">            <span class="keyword">if</span> tmp &gt;= self.array[child_index]:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="comment"># 将最大子节点移动到父节点位置</span></span><br><span class="line">            self.array[parent_index] = self.array[child_index]</span><br><span class="line">            <span class="comment"># 移动到子节点位置</span></span><br><span class="line">            parent_index = child_index</span><br><span class="line">            <span class="comment"># 判断左孩子节点</span></span><br><span class="line">            child_index = <span class="number">2</span> * child_index + <span class="number">1</span></span><br><span class="line">        self.array[parent_index] = tmp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    queue = PriorityQueue()</span><br><span class="line">    queue.enqueue(<span class="number">3</span>)</span><br><span class="line">    queue.enqueue(<span class="number">20</span>)</span><br><span class="line">    queue.enqueue(<span class="number">30</span>)</span><br><span class="line">    queue.enqueue(<span class="number">50</span>)</span><br><span class="line">    queue.enqueue(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    print(queue.dequeue())</span><br><span class="line">    print(queue.dequeue())</span><br><span class="line">    print(queue.dequeue())</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
     </footer>
   </div>
 
