@@ -137,6 +137,65 @@
     
     
     <article
+  id="post-转-TCP和UDP是否可以绑定同一端口进行通信"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/12/%E8%BD%AC-TCP%E5%92%8CUDP%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E7%BB%91%E5%AE%9A%E5%90%8C%E4%B8%80%E7%AB%AF%E5%8F%A3%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1/"
+    >[转]TCP和UDP是否可以绑定同一端口进行通信</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/12/%E8%BD%AC-TCP%E5%92%8CUDP%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E7%BB%91%E5%AE%9A%E5%90%8C%E4%B8%80%E7%AB%AF%E5%8F%A3%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1/" class="article-date">
+  <time datetime="2021-04-12T10:01:00.000Z" itemprop="datePublished">2021-04-12</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://blog.csdn.net/m0_37564426/article/details/89294852" target="_blank" rel="noopener">TCP和UDP是否可以绑定同一端口进行通信</a></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p>TCP、UDP可以绑定同一端口来进行通信： </p>
+<p>网络中可以被命名和寻址的通信端口，是操作系统可分配的一种资源。 </p>
+<p>按照OSI七层协议的描述，传输层与网络层在功能上的最大区别是传输层提供进程通信能力。从这个意义上讲，网络通信的最终地址就不仅仅是主机地址了，还包括可以描述进程的某种标识符。为此，TCP/IP协议提出了协议端口（protocol   port，简称端口）的概念，用于标识通信的进程。 </p>
+<p>端口是一种抽象的软件结构（包括一些数据结构和I/O缓冲区）。应用程序（即进程）通过系统调用与某端口建立连接（binding）后，传输层传给该端口的数据都被相应进程所接收，相应进程发给传输层的数据都通过该端口输出。在TCP/IP协议的实现中，端口操作类似于一般的I/O操作，进程获取一个端口，相当于获取本地唯一的I/O文件，可以用一般的读写原语访问之。 </p>
+<p>类似于文件描述符，每个端口都拥有一个叫端口号（port   number）的整数型标识符，用于区别不同端口。由于TCP/IP传输层的两个协议TCP和UDP是完全独立的两个软件模块，因此各自的端口号也相互独立，如TCP有一个255号端口，UDP也可以有一个255号端口，二者并不冲突。 </p>
+<p>端口号的分配是一个重要问题。有两种基本分配方式：第一种叫全局分配，这是一种集中控制方式，由一个公认的中央机构根据用户需要进行统一分配，并将结果公布于众。第二种是本地分配，又称动态连接，即进程需要访问传输层服务时，向本地操作系统提出申请，操作系统返回一个本地唯一的端口号，进程再通过合适的系统调用将自己与该端口号联系起来（绑扎）。TCP/IP端口号的分配中综合了上述两种方式。TCP/IP将端口号分为两部分，少量的作为保留端口，以全局方式分配给服务进程。因此，每一个标准服务器都拥有一个全局公认的端口（即周知口，well-known   port），即使在不同机器上，其端口号也相同。剩余的为自由端口，以本地方式进行分配。TCP和UDP均规定，小于256的端口号才能作保留端口。</p>
+<p>· 再讨论一下，一个服务器监控一个端口，比如80端口，它为什么可以建立上成千上万的连接？</p>
+<p>首先， 一个TCP连接需要由四元组来形成，即(src_ip,src_port,dst_ip,dst_port)。当一个连接请求过来的时候，服务端调用accept函数，新生成一个socket，这个socket所占用的本地端口依然是80端口。由四元组就很容易分析到了，同一个(src_ip,src_port)，它所对应的(dst_ip,dst_port)可以无穷变化，这样就可以建立很多个客户端的请求了。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-数据结构-使用数组保存层序遍历二叉树并后续遍历输出"
   class="article article-type-post"
   itemscope
@@ -626,65 +685,6 @@
 <p>输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1 <br/><br>输出：3 <br/><br>解释：节点 5 和节点 1 的最近公共祖先是节点 3 。<br/></p>
 </blockquote>
 <h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span><span class="params">(self, root: TreeNode, p: TreeNode, q: TreeNode)</span> -&gt; TreeNode:</span></span><br><span class="line"></span><br><span class="line">        node_dict = self._traverse(root)</span><br><span class="line">        <span class="comment"># 需要加入自身节点</span></span><br><span class="line">        qSet = &#123;q&#125;</span><br><span class="line">        pSet = &#123;p&#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="comment"># 若有重合节点, 则重合的节点就是返回值</span></span><br><span class="line">            result = qSet &amp; pSet</span><br><span class="line">            <span class="keyword">if</span> len(result) &gt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> result.pop()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 获取父节点</span></span><br><span class="line">            qParent = node_dict.get(q.val)</span><br><span class="line">            pParent = node_dict.get(p.val)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 将父节点加入到搜索路径中</span></span><br><span class="line">            <span class="keyword">if</span> qParent:</span><br><span class="line">                qSet.add(qParent)</span><br><span class="line">                q = qParent</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> pParent:</span><br><span class="line">                pSet.add(pParent)</span><br><span class="line">                p = pParent</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_traverse</span><span class="params">(self, root: TreeNode)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        构建字典, &#123;子节点val: 父节点&#125;的形式, 因为题目中提到val不会重复</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        q: list = [root]</span><br><span class="line">        node_dict = &#123;&#125;</span><br><span class="line">        <span class="keyword">while</span> q:</span><br><span class="line">            node = q.pop(<span class="number">0</span>)</span><br><span class="line">            left = node.left</span><br><span class="line">            right = node.right</span><br><span class="line">            <span class="keyword">if</span> left:</span><br><span class="line">                q.append(left)</span><br><span class="line">                node_dict[left.val] = node</span><br><span class="line">            <span class="keyword">if</span> right:</span><br><span class="line">                q.append(right)</span><br><span class="line">                node_dict[right.val] = node</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> node_dict</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n3 = TreeNode(<span class="number">3</span>)</span><br><span class="line">n5 = TreeNode(<span class="number">5</span>)</span><br><span class="line">n1 = TreeNode(<span class="number">1</span>)</span><br><span class="line">n6 = TreeNode(<span class="number">6</span>)</span><br><span class="line">n0 = TreeNode(<span class="number">0</span>)</span><br><span class="line">n7 = TreeNode(<span class="number">7</span>)</span><br><span class="line">n2 = TreeNode(<span class="number">2</span>)</span><br><span class="line">n8 = TreeNode(<span class="number">8</span>)</span><br><span class="line">n4 = TreeNode(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">n3.left = n5</span><br><span class="line">n3.right = n1</span><br><span class="line">n5.left = n6</span><br><span class="line">n5.right = n2</span><br><span class="line">n1.left = n0</span><br><span class="line">n1.right = n8</span><br><span class="line">n2.left = n7</span><br><span class="line">n2.right = n4</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">node = s.lowestCommonAncestor(n3, n5, n4)</span><br><span class="line">print(node.val)</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-232-用栈实现队列"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-232-%E7%94%A8%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97/"
-    >leetcode --- 232. 用栈实现队列</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-232-%E7%94%A8%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97/" class="article-date">
-  <time datetime="2021-03-27T06:56:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/implement-queue-using-stacks" target="_blank" rel="noopener">用栈实现队列</a></p>
-<p>请你仅使用两个栈实现先入先出队列。队列应当支持一般队列支持的所有操作（push、pop、peek、empty）：</p>
-<p>实现 MyQueue 类：</p>
-<ul>
-<li>void push(int x) 将元素 x 推到队列的末尾</li>
-<li>int pop() 从队列的开头移除并返回元素</li>
-<li>int peek() 返回队列开头的元素</li>
-<li>boolean empty() 如果队列为空，返回 true ；否则，返回 false</li>
-</ul>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyQueue</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Initialize your data structure here.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self._in = list()</span><br><span class="line">        self._out = list()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, x: int)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Push element x to the back of queue.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        self._in.append(x)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_transfer</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> self._in:</span><br><span class="line">            x = self._in.pop()</span><br><span class="line">            self._out.append(x)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Removes the element from in front of queue and returns that element.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self._out:</span><br><span class="line">            self._transfer()</span><br><span class="line">        <span class="keyword">return</span> self._out.pop()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Get the front element.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self._out:</span><br><span class="line">            self._transfer()</span><br><span class="line">        <span class="keyword">return</span> self._out[<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">empty</span><span class="params">(self)</span> -&gt; bool:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Returns whether the queue is empty.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> len(self._in) == <span class="number">0</span> <span class="keyword">and</span> len(self._out) == <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Your MyQueue object will be instantiated and called as such:</span></span><br><span class="line">obj = MyQueue()</span><br><span class="line">print(obj.empty())</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
     </div>
