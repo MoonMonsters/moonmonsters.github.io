@@ -137,6 +137,118 @@
     
     
     <article
+  id="post-leetcode-144-二叉树的前序遍历"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/18/leetcode-144-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/"
+    >leetcode --- 144. 二叉树的前序遍历</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/18/leetcode-144-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/" class="article-date">
+  <time datetime="2021-04-18T08:54:00.000Z" itemprop="datePublished">2021-04-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal/" target="_blank" rel="noopener">二叉树的前序遍历</a></p>
+<p>给你二叉树的根节点 root ，返回它节点值的 前序 遍历。</p>
+<p>示例 1：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210418165503.png" alt=""></p>
+<blockquote>
+<p>输入：root = [1,null,2,3]<br/><br>输出：[1,2,3]</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val=<span class="number">0</span>, left=None, right=None)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorderTraversal</span><span class="params">(self, root: TreeNode)</span> -&gt; list:</span></span><br><span class="line">        rv = list()</span><br><span class="line">        self._pre2(root, rv)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> rv</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_pre</span><span class="params">(self, root, rv)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        递归做法</span></span><br><span class="line"><span class="string">        leetcode运行时间:40ms, 内存消耗:14.9mb</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> root:</span><br><span class="line">            rv.append(root.val)</span><br><span class="line">            self._pre(root.left, rv)</span><br><span class="line">            self._pre(root.right, rv)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_pre2</span><span class="params">(self, root, rv: list)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        非递归做法</span></span><br><span class="line"><span class="string">        运行时间:36ms, 内存消耗: 14.9mb</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        stack = []</span><br><span class="line">        n = root</span><br><span class="line">        <span class="keyword">while</span> n <span class="keyword">or</span> stack:</span><br><span class="line">            <span class="keyword">while</span> n:</span><br><span class="line">                rv.append(n.val)</span><br><span class="line">                stack.append(n)</span><br><span class="line">                n = n.left</span><br><span class="line">            <span class="keyword">if</span> stack:</span><br><span class="line">                t = stack.pop()</span><br><span class="line">                n = t.right</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">t1 = TreeNode(<span class="number">1</span>)</span><br><span class="line">t2 = TreeNode(<span class="number">2</span>)</span><br><span class="line">t3 = TreeNode(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">t1.right = t2</span><br><span class="line">t2.left = t3</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.preorderTraversal(t1))</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-2-两数相加"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/18/leetcode-2-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/"
+    >leetcode --- 2. 两数相加</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/18/leetcode-2-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/" class="article-date">
+  <time datetime="2021-04-18T06:06:00.000Z" itemprop="datePublished">2021-04-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/add-two-numbers/" target="_blank" rel="noopener">两数相加</a></p>
+<p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 <code>一位</code> 数字。<br>请你将两个数相加，并以相同形式返回一个表示和的链表。<br>你可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
+<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210418140849.png" alt=""></p>
+<blockquote>
+<p>输入：l1 = [2,4,3], l2 = [5,6,4] <br/><br>输出：[7,0,8]    <br/><br>解释：342 + 465 = 807.</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val=<span class="number">0</span>, next=None)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.next = next</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addTwoNumbers</span><span class="params">(self, l1: ListNode, l2: ListNode)</span> -&gt; ListNode:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> l1:</span><br><span class="line">            <span class="keyword">return</span> l2</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> l2:</span><br><span class="line">            <span class="keyword">return</span> l1</span><br><span class="line"></span><br><span class="line">        head = <span class="literal">None</span></span><br><span class="line">        tail = <span class="literal">None</span></span><br><span class="line">        tmp = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> l1 <span class="keyword">and</span> l2:</span><br><span class="line">            val = l1.val + l2.val + tmp</span><br><span class="line">            tmp = val // <span class="number">10</span></span><br><span class="line">            l1 = l1.next</span><br><span class="line">            l2 = l2.next</span><br><span class="line"></span><br><span class="line">            n = ListNode(val % <span class="number">10</span>)</span><br><span class="line">            <span class="keyword">if</span> head <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                head = n</span><br><span class="line">                tail = n</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tail.next = n</span><br><span class="line">                tail = n</span><br><span class="line"></span><br><span class="line">        m = l1 <span class="keyword">if</span> l1 <span class="keyword">else</span> l2</span><br><span class="line">        <span class="keyword">while</span> m:</span><br><span class="line">            val = m.val + tmp</span><br><span class="line">            n = ListNode(val % <span class="number">10</span>)</span><br><span class="line">            tail.next = n</span><br><span class="line">            tail = n</span><br><span class="line">            tmp = val // <span class="number">10</span></span><br><span class="line">            m = m.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> tmp &gt; <span class="number">0</span>:</span><br><span class="line">            n = ListNode(tmp)</span><br><span class="line">            tail.next = n</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># l1_2 = ListNode(2)</span></span><br><span class="line"><span class="comment"># l1_4 = ListNode(4)</span></span><br><span class="line"><span class="comment"># l1_3 = ListNode(3)</span></span><br><span class="line"><span class="comment"># l1_2.next = l1_4</span></span><br><span class="line"><span class="comment"># l1_4.next = l1_3</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># l2_5 = ListNode(5)</span></span><br><span class="line"><span class="comment"># l2_6 = ListNode(6)</span></span><br><span class="line"><span class="comment"># l2_4 = ListNode(4)</span></span><br><span class="line"><span class="comment"># l2_5.next = l2_6</span></span><br><span class="line"><span class="comment"># l2_6.next = l2_4</span></span><br><span class="line"></span><br><span class="line">l1_1 = ListNode(<span class="number">9</span>)</span><br><span class="line">l1_2 = ListNode(<span class="number">9</span>)</span><br><span class="line">l1_3 = ListNode(<span class="number">1</span>)</span><br><span class="line">l1_1.next = l1_2</span><br><span class="line">l1_2.next = l1_3</span><br><span class="line"></span><br><span class="line">l2_1 = ListNode(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">cur = s.addTwoNumbers(l1_1, l2_1)</span><br><span class="line"><span class="keyword">while</span> cur:</span><br><span class="line">    print(<span class="string">"cur: %s"</span> % cur.val)</span><br><span class="line">    cur = cur.next</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-转-TCP和UDP是否可以绑定同一端口进行通信"
   class="article article-type-post"
   itemscope
@@ -571,120 +683,6 @@
   <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/add-strings/" target="_blank" rel="noopener">字符串相加</a></p>
 <p>给定两个字符串形式的非负整数 num1 和num2 ，计算它们的和。</p>
 <h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addStrings</span><span class="params">(self, num1: str, num2: str)</span> -&gt; str:</span></span><br><span class="line">        num1 = num1[::<span class="number">-1</span>]</span><br><span class="line">        num2 = num2[::<span class="number">-1</span>]</span><br><span class="line">        length = min(len(num1), len(num2))</span><br><span class="line">        result = <span class="string">""</span></span><br><span class="line">        tmp = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(length):</span><br><span class="line">            r = int(num1[index]) + int(num2[index]) + tmp</span><br><span class="line">            result += str(r % <span class="number">10</span>)</span><br><span class="line">            tmp = r // <span class="number">10</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> length == len(num1):</span><br><span class="line">            num = num2</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            num = num1</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(length, len(num)):</span><br><span class="line">            r = int(num[index]) + tmp</span><br><span class="line">            result += str(r % <span class="number">10</span>)</span><br><span class="line">            tmp = r // <span class="number">10</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> tmp != <span class="number">0</span>:</span><br><span class="line">            result += str(tmp)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result[::<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n1 = <span class="string">"123458888"</span></span><br><span class="line">n2 = <span class="string">"2232342358233289"</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.addStrings(n1, n2))</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-268-丢失的数字"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-268-%E4%B8%A2%E5%A4%B1%E7%9A%84%E6%95%B0%E5%AD%97/"
-    >leetcode --- 268. 丢失的数字</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-268-%E4%B8%A2%E5%A4%B1%E7%9A%84%E6%95%B0%E5%AD%97/" class="article-date">
-  <time datetime="2021-03-27T07:04:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/missing-number" target="_blank" rel="noopener">丢失的数字</a></p>
-<p>给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。</p>
-<p>示例 </p>
-<blockquote>
-<p>输入：nums = [3,0,1] <br/><br>输出：2 <br/><br>解释：n = 3，因为有 3 个数字，所以所有的数字都在范围 [0,3] 内。2 是丢失的数字，因为它没有出现在 nums 中。<br/></p>
-</blockquote>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">missingNumber</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        n = len(nums)</span><br><span class="line">        <span class="keyword">if</span> n % <span class="number">2</span> != <span class="number">0</span>:</span><br><span class="line">            n = n + <span class="number">1</span></span><br><span class="line">        <span class="comment"># 计算该数字如果存在的总和</span></span><br><span class="line">        total = (<span class="number">1</span> + n) * (n // <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span> n != len(nums):</span><br><span class="line">            total -= n</span><br><span class="line">        <span class="comment"># 完整数组的总和 - 当前总和</span></span><br><span class="line">        <span class="keyword">return</span> total - sum(nums)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">nums = [<span class="number">0</span>]</span><br><span class="line">print(s.missingNumber(nums))</span><br></pre></td></tr></table></figure>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-236-二叉树的最近公共祖先"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-236-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"
-    >leetcode --- 236. 二叉树的最近公共祖先</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-236-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" class="article-date">
-  <time datetime="2021-03-27T06:58:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree" target="_blank" rel="noopener">二叉树的最近公共祖先</a></p>
-<p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
-<p>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
-<p>示例<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327145858.png" alt=""></p>
-<blockquote>
-<p>输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1 <br/><br>输出：3 <br/><br>解释：节点 5 和节点 1 的最近公共祖先是节点 3 。<br/></p>
-</blockquote>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span><span class="params">(self, root: TreeNode, p: TreeNode, q: TreeNode)</span> -&gt; TreeNode:</span></span><br><span class="line"></span><br><span class="line">        node_dict = self._traverse(root)</span><br><span class="line">        <span class="comment"># 需要加入自身节点</span></span><br><span class="line">        qSet = &#123;q&#125;</span><br><span class="line">        pSet = &#123;p&#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="comment"># 若有重合节点, 则重合的节点就是返回值</span></span><br><span class="line">            result = qSet &amp; pSet</span><br><span class="line">            <span class="keyword">if</span> len(result) &gt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> result.pop()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 获取父节点</span></span><br><span class="line">            qParent = node_dict.get(q.val)</span><br><span class="line">            pParent = node_dict.get(p.val)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 将父节点加入到搜索路径中</span></span><br><span class="line">            <span class="keyword">if</span> qParent:</span><br><span class="line">                qSet.add(qParent)</span><br><span class="line">                q = qParent</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> pParent:</span><br><span class="line">                pSet.add(pParent)</span><br><span class="line">                p = pParent</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_traverse</span><span class="params">(self, root: TreeNode)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        构建字典, &#123;子节点val: 父节点&#125;的形式, 因为题目中提到val不会重复</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        q: list = [root]</span><br><span class="line">        node_dict = &#123;&#125;</span><br><span class="line">        <span class="keyword">while</span> q:</span><br><span class="line">            node = q.pop(<span class="number">0</span>)</span><br><span class="line">            left = node.left</span><br><span class="line">            right = node.right</span><br><span class="line">            <span class="keyword">if</span> left:</span><br><span class="line">                q.append(left)</span><br><span class="line">                node_dict[left.val] = node</span><br><span class="line">            <span class="keyword">if</span> right:</span><br><span class="line">                q.append(right)</span><br><span class="line">                node_dict[right.val] = node</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> node_dict</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n3 = TreeNode(<span class="number">3</span>)</span><br><span class="line">n5 = TreeNode(<span class="number">5</span>)</span><br><span class="line">n1 = TreeNode(<span class="number">1</span>)</span><br><span class="line">n6 = TreeNode(<span class="number">6</span>)</span><br><span class="line">n0 = TreeNode(<span class="number">0</span>)</span><br><span class="line">n7 = TreeNode(<span class="number">7</span>)</span><br><span class="line">n2 = TreeNode(<span class="number">2</span>)</span><br><span class="line">n8 = TreeNode(<span class="number">8</span>)</span><br><span class="line">n4 = TreeNode(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">n3.left = n5</span><br><span class="line">n3.right = n1</span><br><span class="line">n5.left = n6</span><br><span class="line">n5.right = n2</span><br><span class="line">n1.left = n0</span><br><span class="line">n1.right = n8</span><br><span class="line">n2.left = n7</span><br><span class="line">n2.right = n4</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">node = s.lowestCommonAncestor(n3, n5, n4)</span><br><span class="line">print(node.val)</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
     </div>
