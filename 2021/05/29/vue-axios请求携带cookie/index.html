@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Tag: bug |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+    Vue -- axios请求携带cookie |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -49,55 +49,205 @@
       
     <main class="content on">
       <section class="outer">
-  
-  <article class="articles">
+  <article
+  id="post-vue-axios请求携带cookie"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
     
-    
-    <h1 class="page-type-title">#&nbspbug</h1>
-    
-    
-  
-  
-  
-  
-  
-  
-  <div class="archives-wrap">
-    <div class="archive-year-wrap">
-      <a href="/archives/2020" class="archive-year">2020</a>
-    </div>
-    <div class="archives">
-      
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/23/django-%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BD%BF%E7%94%A8%E5%A4%96%E9%94%AE%E9%94%99%E8%AF%AF/" class="archive-article-date">
-  <time datetime="2020-05-23T11:21:00.000Z" itemprop="datePublished">05/23</time>
-</a>
+    <header class="article-header">
        
-<h2 itemprop="name">
-  <a class="archive-article-title" href="/2020/05/23/django-%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BD%BF%E7%94%A8%E5%A4%96%E9%94%AE%E9%94%99%E8%AF%AF/"
-    >django --- 多数据库使用外键错误</a> 
-</h2>
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Vue -- axios请求携带cookie
+</h1>
  
 
     </header>
-    
-    
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bug/" rel="tag">bug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-
-    
+     
+    <div class="article-meta">
+      <a href="/2021/05/29/vue-axios%E8%AF%B7%E6%B1%82%E6%90%BA%E5%B8%A6cookie/" class="article-date">
+  <time datetime="2021-05-29T06:08:00.000Z" itemprop="datePublished">2021-05-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Vue/">Vue</a>
   </div>
-</article>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">267</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">1 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
       
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="修改vue-config-js文件"><a href="#修改vue-config-js文件" class="headerlink" title="修改vue.config.js文件"></a>修改vue.config.js文件</h3><p>在该文件中, 添加<code>disableHostCheck: true</code>, 不需要host检查</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ...</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    port: port,</span><br><span class="line">    open: <span class="literal">true</span>,</span><br><span class="line">    overlay: &#123;</span><br><span class="line">      warnings: <span class="literal">false</span>,</span><br><span class="line">      errors: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    proxy: <span class="string">'http://localhost:5000'</span>,</span><br><span class="line">    disableHostCheck: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="封装axios时-加上withCredentials"><a href="#封装axios时-加上withCredentials" class="headerlink" title="封装axios时, 加上withCredentials"></a>封装axios时, 加上withCredentials</h3><p>在封装axios时, 加上<code>withCredentials: true</code><br/><br>跨源请求不提供凭据(cookie、HTTP认证及客户端SSL证明等)。通过将withCredentials属性设置为true，可以指定某个请求应该发送凭据。<br/><br>默认值为false。<br/><br>true：在跨域请求时，会携带用户凭证<br/><br>false：在跨域请求时，不会携带用户凭证；返回的 response 里也会忽略 cookie<br/></p>
+<h3 id="后端返回的数据中-修改请求头"><a href="#后端返回的数据中-修改请求头" class="headerlink" title="后端返回的数据中, 修改请求头"></a>后端返回的数据中, 修改请求头</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_cors_response</span><span class="params">(response, status=<span class="number">200</span>)</span>:</span></span><br><span class="line">    resp = make_response(response, status)</span><br><span class="line">    resp.headers[<span class="string">'Access-Control-Allow-Credentials'</span>] = <span class="string">'true'</span></span><br><span class="line">    resp.headers[<span class="string">'Access-Control-Allow-Origin'</span>] = <span class="string">'http://key-ui.oa.zego.im:9528'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> resp</span><br></pre></td></tr></table></figure>
+<p>需要注意的是:</p>
+<ol>
+<li>传入的是<code>true</code>字符串, 不是<code>True</code>布尔类型</li>
+<li>origin不能是<code>*</code>, 必须是完整的域名</li>
+<li>可以修改hosts文件, 来将<code>127.0.0.1</code>指向测试的域名</li>
+<li>正式环境中, 这部分操作将由nginx完成, 不在代码中写死</li>
+</ol>
+ 
+      <!-- reward -->
       
     </div>
-  </div>
-  
-  
+    
 
-  
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2021/05/29/vue-axios%E8%AF%B7%E6%B1%82%E6%90%BA%E5%B8%A6cookie/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/05/29/%E8%BD%AC-vue-axios%E6%8B%A6%E6%88%AA%E5%99%A8/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            [转]Vue -- axios拦截器
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/05/29/%E8%BD%AC-%E4%BA%92%E8%81%94%E7%BD%91%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">[转]网络 --- 互联网网络协议</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "WsTe7qzqb4a2pxJVBdPy6FI5-gzGzoHsz",
+    app_key: "EACB4Omi8LuM9N2KVXA81Am0",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
 </section>
       <footer class="footer">
   <div class="outer">
@@ -243,6 +393,23 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
