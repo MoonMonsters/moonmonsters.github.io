@@ -1,9 +1,9 @@
-title: '[转]golang - beego框架入门'
+title: '[转]Golang --- beego框架入门'
 author: _Tao
 tags:
   - beego
 categories:
-  - golang
+  - Golang
 date: 2020-11-08 17:13:00
 ---
 

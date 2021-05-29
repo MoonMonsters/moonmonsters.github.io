@@ -1,9 +1,9 @@
-title: django --- 中间件介绍
+title: Django --- 中间件介绍
 author: _Tao
 tags:
   - django
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:16:00
 ---
 ### 概念

@@ -1,8 +1,8 @@
-title: leetcode --- 169. 多数元素
+title: Leetcode --- 169. 多数元素
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:52:00
 ---
 ### 题目

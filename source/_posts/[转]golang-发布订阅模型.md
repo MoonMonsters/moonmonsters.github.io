@@ -1,8 +1,8 @@
-title: '[转]golang - 发布订阅模型'
+title: '[转]Golang --- 发布订阅模型'
 author: _Tao
 tags: []
 categories:
-  - golang
+  - Golang
 date: 2020-06-04 19:56:00
 ---
 ### 发布订阅者

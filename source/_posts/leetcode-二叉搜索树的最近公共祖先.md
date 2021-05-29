@@ -1,9 +1,9 @@
-title: leetcode --- 二叉搜索树的最近公共祖先
+title: Leetcode --- 二叉搜索树的最近公共祖先
 author: _Tao
-date: 2020-05-23 17:29:44
 tags: []
-categories: 
-	- leetcode
+categories:
+  - Leetcode
+date: 2020-05-23 17:29:00
 ---
 [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 

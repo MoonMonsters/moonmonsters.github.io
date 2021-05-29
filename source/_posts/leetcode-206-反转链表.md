@@ -1,8 +1,8 @@
-title: leetcode --- 206. 反转链表
+title: Leetcode --- 206. 反转链表
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:54:00
 ---
 ### 题目

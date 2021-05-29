@@ -1,8 +1,8 @@
-title: python属性描述符和属性查找过程
+title: Python --- 属性描述符和属性查找过程
 author: _Tao
 tags: []
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:34:00
 ---
 ### 对象的自省机制

@@ -1,9 +1,9 @@
-title: django --- 多数据库及分库实现
+title: Django --- 多数据库及分库实现
 author: _Tao
 tags:
   - django
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:19:00
 ---
 在django项目中, 一个工程中存在多个APP应用很常见. 有时候希望不同的APP连接不同的数据库，这个时候需要建立多个数据库连接。

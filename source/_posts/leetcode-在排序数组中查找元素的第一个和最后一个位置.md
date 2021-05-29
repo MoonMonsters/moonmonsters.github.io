@@ -1,8 +1,8 @@
-title: leetcode --- 在排序数组中查找元素的第一个和最后一个位置
+title: Leetcode --- 在排序数组中查找元素的第一个和最后一个位置
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 18:58:00
 ---
 ### 题目

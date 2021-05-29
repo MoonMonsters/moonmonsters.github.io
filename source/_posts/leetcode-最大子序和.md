@@ -1,8 +1,8 @@
-title: leetcode --- 最大子序和
+title: Leetcode --- 最大子序和
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 19:02:00
 ---
 ### 题目

@@ -1,10 +1,10 @@
-title: '[转]DRF中使用缓存drf-extensions'
+title: '[转]Django-rest-framework --- 使用缓存drf-extensions'
 author: _Tao
 tags:
   - django
   - django-rest-framework
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:25:00
 ---
 (这个库很简单,直接转发别人的了.)<br/>

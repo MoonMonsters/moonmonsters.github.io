@@ -1,8 +1,9 @@
 title: leetcode --- 有效的括号
 author: _Tao
 tags: []
-categories: 
-	- leetcode
+categories:
+  - Leetcode
+  - ''
 date: 2020-05-23 17:27:00
 ---
 [有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)

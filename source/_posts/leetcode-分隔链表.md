@@ -1,8 +1,8 @@
-title: leetcode ---  分隔链表
+title: Leetcode ---  分隔链表
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 19:03:00
 ---
 ### 题目

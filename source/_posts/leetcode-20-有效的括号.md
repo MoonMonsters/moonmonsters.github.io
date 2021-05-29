@@ -1,8 +1,8 @@
-title: leetcode --- 20.有效的括号
+title: Leetcode --- 20.有效的括号
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 12:55:00
 ---
 ### 题目

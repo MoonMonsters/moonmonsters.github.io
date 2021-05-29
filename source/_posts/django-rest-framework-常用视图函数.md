@@ -1,10 +1,10 @@
-title: django-rest-framework 常用视图函数
+title: Django-rest-framework -- 常用视图函数
 author: _Tao
 tags:
   - django
   - django-rest-framework
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:10:00
 ---
 ### settings.py

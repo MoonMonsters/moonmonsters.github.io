@@ -1,9 +1,9 @@
-title: django --- 设置缓存的几种方式
+title: Django --- 设置缓存的几种方式
 author: _Tao
 tags:
   - django
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:22:00
 ---
 ### 缓存类型

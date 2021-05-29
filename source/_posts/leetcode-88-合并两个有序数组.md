@@ -1,8 +1,8 @@
-title: leetcode --- 88. 合并两个有序数组
+title: Leetcode --- 88. 合并两个有序数组
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:30:00
 ---
 ### 题目

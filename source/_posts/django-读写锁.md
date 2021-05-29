@@ -1,9 +1,9 @@
----
-title: django - 读写锁
-date: 2021-01-23 13:13:37
-tags: [django]
+title: Django --- 读写锁
+tags:
+  - django
 categories:
-  - python
+  - Python
+date: 2021-01-23 13:13:00
 ---
 
 ### 代码来源

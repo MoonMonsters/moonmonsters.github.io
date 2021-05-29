@@ -1,8 +1,8 @@
-title: 使用gevent实现并发请求网络链接
+title: Python --- 使用gevent实现并发请求网络链接
 author: _Tao
 tags: []
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:23:00
 ---
 #### 正常访问

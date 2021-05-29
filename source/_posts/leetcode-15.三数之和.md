@@ -1,8 +1,8 @@
-title: leetcode --- 15.三数之和
+title: Leetcode --- 15.三数之和
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-26 00:48:00
 ---
 

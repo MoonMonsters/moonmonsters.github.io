@@ -1,8 +1,8 @@
-title: leetcode --- 整数反转
+title: Leetcode --- 整数反转
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 17:55:00
 ---
 [整数反转](https://leetcode-cn.com/problems/reverse-integer/)

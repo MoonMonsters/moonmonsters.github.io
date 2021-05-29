@@ -1,8 +1,8 @@
-title: python 四种单例模式写法
+title: Python -- 四种单例模式写法
 author: _Tao
 tags: []
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:11:00
 ---
 ```python

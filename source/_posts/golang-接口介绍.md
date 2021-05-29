@@ -1,8 +1,8 @@
-title: golang --- 接口介绍
+title: Golang --- 接口介绍
 author: _Tao
 tags: []
 categories:
-  - golang
+  - Golang
 date: 2020-05-23 19:26:00
 ---
 Go语言的主要设计者之一罗布·派克（Rob Pike）曾经说过，如果只能选择一个Go语言的特 性移植到其他语言中，他会选择接口。

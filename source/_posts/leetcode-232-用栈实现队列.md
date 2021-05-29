@@ -1,8 +1,8 @@
-title: leetcode --- 232. 用栈实现队列
+title: Leetcode --- 232. 用栈实现队列
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:56:00
 ---
 ### 题目

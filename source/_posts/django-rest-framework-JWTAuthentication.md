@@ -1,10 +1,10 @@
-title: django-rest-framework --- JWTAuthentication
+title: Django-rest-framework --- JWTAuthentication
 author: _Tao
 tags:
   - django
   - django-rest-framework
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:31:00
 ---
 ### 介绍

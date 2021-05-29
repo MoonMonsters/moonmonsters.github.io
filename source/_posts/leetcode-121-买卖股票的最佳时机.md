@@ -1,8 +1,8 @@
-title: leetcode --- 121. 买卖股票的最佳时机
+title: Leetcode --- 121. 买卖股票的最佳时机
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:38:00
 ---
 ### 题目

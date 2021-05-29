@@ -1,8 +1,8 @@
-title: leetcode --- 合并两个有序链表
+title: Leetcode --- 合并两个有序链表
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 18:54:00
 ---
 [合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)

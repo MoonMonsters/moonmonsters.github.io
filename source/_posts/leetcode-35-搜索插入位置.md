@@ -1,8 +1,8 @@
-title: leetcode --- 35. 搜索插入位置
+title: Leetcode --- 35. 搜索插入位置
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 13:01:00
 ---
 ### 题目

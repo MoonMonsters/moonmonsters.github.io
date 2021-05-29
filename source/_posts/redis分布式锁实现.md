@@ -1,7 +1,8 @@
-title: redis分布式锁实现
+title: Redis --- 分布式锁实现
 author: _Tao
 tags: []
-categories: []
+categories:
+  - Redis
 date: 2021-02-24 23:16:00
 ---
 ### 什么是分布式锁

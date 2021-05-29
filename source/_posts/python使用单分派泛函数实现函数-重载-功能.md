@@ -1,8 +1,8 @@
-title: python使用单分派泛函数实现函数`重载`功能
+title: Python -- 使用单分派泛函数实现函数`重载`功能
 author: _Tao
 tags: []
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:06:00
 ---
 众所周知,python中没有类似Java中的函数重载功能,当定义多个函数名一样但参数不一样的函数时,最后一个会前面前的同名函数覆盖.

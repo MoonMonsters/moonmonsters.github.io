@@ -1,8 +1,8 @@
-title: leetcode --- 61. 旋转链表
+title: Leetcode --- 61. 旋转链表
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:11:00
 ---
 

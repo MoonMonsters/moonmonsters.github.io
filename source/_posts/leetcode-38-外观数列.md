@@ -1,8 +1,8 @@
-title: leetcode --- 38. 外观数列
+title: Leetcode --- 38. 外观数列
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 13:11:00
 ---
 ### 题目

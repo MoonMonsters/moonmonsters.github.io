@@ -1,8 +1,8 @@
-title: leetcode --- 盛最多水的容器
+title: Leetcode --- 盛最多水的容器
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 17:56:00
 ---
 [盛最多水的容器](https://leetcode-cn.com/problems/container-with-most-water/)

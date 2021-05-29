@@ -1,9 +1,9 @@
-title: '[转]django - QuerySet特性及高级使用技巧，如何减少数据库的访问'
+title: '[转]Django --- QuerySet特性及高级使用技巧，如何减少数据库的访问'
 author: _Tao
 tags:
   - django
 categories:
-  - python
+  - Python
 date: 2021-01-30 16:34:00
 ---
 

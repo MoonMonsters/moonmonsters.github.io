@@ -2,7 +2,8 @@ title: '[转]Linux --- 常用指令介绍'
 author: _Tao
 tags: []
 categories:
-  - linux
+  - Linux
+  - ''
 date: 2021-04-08 22:50:00
 ---
 ### 转载

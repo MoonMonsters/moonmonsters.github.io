@@ -1,10 +1,10 @@
-title: django-rest-framework --- 限流
+title: Django-rest-framework --- 限流
 author: _Tao
 tags:
   - django
   - django-rest-framework
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:13:00
 ---
 ### 简介

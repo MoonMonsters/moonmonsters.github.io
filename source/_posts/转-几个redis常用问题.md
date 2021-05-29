@@ -1,8 +1,8 @@
-title: '[转]几个redis常用问题'
+title: '[转]Redis --- 几个redis常用问题'
 author: _Tao
 tags: []
 categories:
-  - redis
+  - Redis
 date: 2020-05-23 19:28:00
 ---
 ### 缓存雪崩

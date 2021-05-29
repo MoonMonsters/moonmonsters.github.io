@@ -1,7 +1,8 @@
-title: golang - 解析yaml配置文件
+title: Golang --- 解析yaml配置文件
 author: _Tao
 tags: []
-categories: []
+categories:
+  - Golang
 date: 2020-12-14 21:09:00
 ---
 # golang - 解析yaml配置文件

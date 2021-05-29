@@ -1,10 +1,10 @@
-title: django-rest-framework --- mixin模式
+title: Django-rest-framework --- mixin模式
 author: _Tao
 tags:
   - django
   - django-rest-framework
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:08:00
 ---
 假设存在这个三个类，Bird, Fish, Animal，分别具有不同的功能，像fly, swim, run等。现有某种虚拟Animal具有以上三种功能，那么便使用继承就可实现 。

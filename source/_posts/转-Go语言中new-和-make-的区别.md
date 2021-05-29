@@ -1,8 +1,8 @@
-title: '[转]Go语言中new()和 make()的区别'
+title: '[转]Golang --- Go语言中new()和 make()的区别'
 author: _Tao
 tags: []
 categories:
-  - golang
+  - Golang
 date: 2020-05-23 19:27:00
 ---
 ### 概述

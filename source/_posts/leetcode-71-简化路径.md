@@ -1,8 +1,8 @@
-title: leetcode --- 71. 简化路径
+title: Leetcode --- 71. 简化路径
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:19:00
 ---
 ### 题目

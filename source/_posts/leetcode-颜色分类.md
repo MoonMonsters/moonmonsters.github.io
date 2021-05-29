@@ -1,8 +1,8 @@
-title: leetcode ---  颜色分类
+title: Leetcode ---  颜色分类
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 19:03:00
 ---
 ### 题目

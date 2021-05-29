@@ -1,8 +1,8 @@
-title: leetcode --- 返回删除节点后的森林中的每棵树
+title: Leetcode --- 返回删除节点后的森林中的每棵树
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 18:59:00
 ---
 ### 题目

@@ -1,9 +1,9 @@
-title: django --- 日志配置
+title: Django --- 日志配置
 author: _Tao
 tags:
   - django
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:18:00
 ---
 ### 常用配置

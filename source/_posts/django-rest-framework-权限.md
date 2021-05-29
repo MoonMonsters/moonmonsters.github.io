@@ -1,10 +1,10 @@
-title: django-rest-framework --- 权限
+title: Django-rest-framework --- 权限
 author: _Tao
 tags:
   - django
   - django-rest-framework
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:34:00
 ---
 ### 模型

@@ -1,8 +1,8 @@
-title: leetcode --- 1.两数之和
+title: Leetcode --- 1.两数之和
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-26 00:39:00
 ---
 

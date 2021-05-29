@@ -1,8 +1,8 @@
-title: leetcode --- 最长公共前缀
+title: Leetcode --- 最长公共前缀
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 17:58:00
 ---
 编写一个函数来查找字符串数组中的最长公共前缀。

@@ -1,9 +1,9 @@
-title: django - LocMemCache源码分析
+title: Django --- LocMemCache源码分析
 author: _Tao
 tags:
   - django
 categories:
-  - python
+  - Python
 date: 2021-01-24 09:04:00
 ---
 ```python

@@ -1,8 +1,8 @@
-title: leetcode --- 268. 丢失的数字
+title: Leetcode --- 268. 丢失的数字
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 15:04:00
 ---
 ### 题目

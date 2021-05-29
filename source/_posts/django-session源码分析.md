@@ -1,10 +1,10 @@
-title: django --- session源码分析
+title: Django --- session源码分析
 author: _Tao
 tags:
   - django
   - 源码
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:29:00
 ---
 ### cookie和seesion的区别

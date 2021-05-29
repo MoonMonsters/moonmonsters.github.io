@@ -1,8 +1,8 @@
-title: leetcode --- 最小栈
+title: Leetcode --- 最小栈
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 19:00:00
 ---
 ### 题目

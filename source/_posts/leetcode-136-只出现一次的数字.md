@@ -1,8 +1,8 @@
-title: leetcode --- 136. 只出现一次的数字
+title: Leetcode --- 136. 只出现一次的数字
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:40:00
 ---
 ### 题目

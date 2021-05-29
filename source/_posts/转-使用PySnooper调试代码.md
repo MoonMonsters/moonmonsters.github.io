@@ -1,8 +1,8 @@
-title: '[转]使用PySnooper调试代码'
+title: '[转]Python --- 使用PySnooper调试代码'
 author: _Tao
 tags: []
 categories:
-  - python
+  - Python
 date: 2020-11-18 20:01:00
 ---
 ### 转载

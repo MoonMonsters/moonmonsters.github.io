@@ -1,8 +1,8 @@
-title: leetcode --- 704. 二分查找
+title: Leetcode --- 704. 二分查找
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 15:10:00
 ---
 ### 题目

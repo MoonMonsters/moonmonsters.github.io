@@ -1,17 +1,11 @@
-title: leetcode --- 199. 二叉树的右视图
+title: Leetcode --- 199. 二叉树的右视图
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-04-05 23:22:00
 ---
-199. 二叉树的右视图
-author: _Tao
-tags: []
-categories:
-  - leetcode
-date: 2021-04-05 23:22:00
----
+
 ### 题目
 
 [二叉树的右视图](https://leetcode-cn.com/problems/binary-tree-right-side-view)

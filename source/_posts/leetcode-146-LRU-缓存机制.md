@@ -1,8 +1,8 @@
-title: leetcode --- 146. LRU 缓存机制
+title: Leetcode --- 146. LRU 缓存机制
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:46:00
 ---
 ### 题目

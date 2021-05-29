@@ -1,8 +1,8 @@
-title: leetcode — 括号生成
+title: Leetcode --- 括号生成
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 17:57:00
 ---
 [括号生成](https://leetcode-cn.com/problems/generate-parentheses/)

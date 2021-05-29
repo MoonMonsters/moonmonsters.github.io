@@ -1,8 +1,8 @@
-title: 使用faker库随机产生虚拟数据
+title: Python --- 使用faker库随机产生虚拟数据
 author: _Tao
 tags: []
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:24:00
 ---
 安装:<br/>

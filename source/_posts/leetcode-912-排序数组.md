@@ -1,8 +1,8 @@
-title: leetcode --- 912. 排序数组
+title: Leetcode --- 912. 排序数组
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 15:12:00
 ---
 ### 题目

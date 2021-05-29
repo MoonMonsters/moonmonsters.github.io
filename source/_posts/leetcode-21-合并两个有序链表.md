@@ -1,8 +1,8 @@
-title: leetcode --- 21. 合并两个有序链表
+title: Leetcode --- 21. 合并两个有序链表
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 12:58:00
 ---
 ### 题目

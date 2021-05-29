@@ -1,8 +1,8 @@
-title: leetcode --- LRU缓存机制
+title: Leetcode --- LRU缓存机制
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 17:54:00
 ---
 [LRU缓存机制](https://leetcode-cn.com/problems/lru-cache/)

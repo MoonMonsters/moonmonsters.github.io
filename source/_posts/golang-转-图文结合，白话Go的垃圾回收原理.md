@@ -1,8 +1,8 @@
-title: '[转]golang - 图文结合，白话Go的垃圾回收原理'
+title: '[转]Golang --- 图文结合，白话Go的垃圾回收原理'
 author: _Tao
 tags: []
 categories:
-  - golang
+  - Golang
 date: 2020-10-12 18:07:00
 ---
 转载: [图文结合，白话Go的垃圾回收原理](https://zhuanlan.zhihu.com/p/264789260)

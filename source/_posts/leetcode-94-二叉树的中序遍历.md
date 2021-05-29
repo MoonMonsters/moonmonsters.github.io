@@ -1,8 +1,8 @@
-title: leetcode --- 94. 二叉树的中序遍历
+title: Leetcode --- 94. 二叉树的中序遍历
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-04-05 22:27:00
 ---
 ### 题目

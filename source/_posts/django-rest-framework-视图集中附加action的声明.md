@@ -1,10 +1,10 @@
-title: django-rest-framework --- 视图集中附加action的声明
+title: Django-rest-framework --- 视图集中附加action的声明
 author: _Tao
 tags:
   - django
   - django-rest-framework
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:16:00
 ---
 在视图集(`ViewSet`)中，如果想要让Router自动帮助我们为自定义的动作生成路由信息，需要使用rest_framework.decorators.action装饰器。

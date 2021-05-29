@@ -1,8 +1,8 @@
-title: leetcode --- 实现 Trie (前缀树)
+title: Leetcode --- 实现 Trie (前缀树)
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 18:56:00
 ---
 [前缀树](https://leetcode-cn.com/problems/implement-trie-prefix-tree)

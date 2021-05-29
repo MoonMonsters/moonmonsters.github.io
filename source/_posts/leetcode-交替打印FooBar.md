@@ -1,8 +1,8 @@
-title: leetcode --- 交替打印FooBar
+title: Leetcode --- 交替打印FooBar
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 18:58:00
 ---
 ### 题目

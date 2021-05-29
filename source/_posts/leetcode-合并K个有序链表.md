@@ -1,8 +1,8 @@
-title: leetcode --- 合并K个有序链表
+title: Leetcode --- 合并K个有序链表
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2020-05-23 17:51:00
 ---
 [合并K个有序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/)

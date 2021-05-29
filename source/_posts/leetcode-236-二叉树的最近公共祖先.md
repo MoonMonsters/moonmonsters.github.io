@@ -1,8 +1,8 @@
-title: leetcode --- 236. 二叉树的最近公共祖先
+title: Leetcode --- 236. 二叉树的最近公共祖先
 author: _Tao
 tags: []
 categories:
-  - leetcode
+  - Leetcode
 date: 2021-03-27 14:58:00
 ---
 ### 题目

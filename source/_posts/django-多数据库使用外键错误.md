@@ -1,10 +1,9 @@
-title: django --- 多数据库使用外键错误
+title: Bug --- 多数据库使用外键错误
 author: _Tao
 tags:
   - django
-  - bug
 categories:
-  - python
+  - Bug
 date: 2020-05-23 19:21:00
 ---
 ### 前提

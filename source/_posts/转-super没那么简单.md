@@ -1,8 +1,8 @@
-title: '[转]super没那么简单'
+title: '[转]Python --- super没那么简单'
 author: _Tao
 tags: []
 categories:
-  - python
+  - Python
 date: 2020-05-23 19:24:00
 ---
 说到 super， 大家可能觉得很简单呀，不就是用来调用父类方法的嘛。如果真的这么简单的话也就不会有这篇文章了，且听我细细道来。?
