@@ -137,6 +137,58 @@
     
     
     <article
+  id="post-转-网络"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/30/%E8%BD%AC-%E7%BD%91%E7%BB%9C/"
+    >[转]网络 --- 网络排查工具 MTR 介绍</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/30/%E8%BD%AC-%E7%BD%91%E7%BB%9C/" class="article-date">
+  <time datetime="2021-05-30T07:34:00.000Z" itemprop="datePublished">2021-05-30</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s/pwjC33dHluktpZPxSNZ-BQ" target="_blank" rel="noopener">网络排查工具 MTR 介绍</a></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210530153209.png" alt=""></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-转-vue-Vue项目启动代码执行流程分析"
   class="article article-type-post"
   itemscope
@@ -664,61 +716,6 @@
     
     <footer class="article-footer">
        
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-bug-vue-add-axios报错"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/05/02/bug-vue-add-axios%E6%8A%A5%E9%94%99/"
-    >Bug --- vue add axios报错</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/05/02/bug-vue-add-axios%E6%8A%A5%E9%94%99/" class="article-date">
-  <time datetime="2021-05-02T12:08:00.000Z" itemprop="datePublished">2021-05-02</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Bug/">Bug</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">🚀  Invoking generator for vue-cli-plugin-axios...</span><br><span class="line">⠋  Running completion hooks...error: &#39;options&#39; is defined but never used (no-unused-vars) at src&#x2F;plugins&#x2F;axios.js:42:32:</span><br><span class="line">  40 | );</span><br><span class="line">  41 |</span><br><span class="line">&gt; 42 | Plugin.install &#x3D; function(Vue, options) &#123;</span><br><span class="line">     |                                ^</span><br><span class="line">  43 |   Vue.axios &#x3D; _axios;</span><br><span class="line">  44 |   window.axios &#x3D; _axios;</span><br><span class="line">  45 |   Object.defineProperties(Vue.prototype, &#123;</span><br></pre></td></tr></table></figure>
-
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>原因:该项目安装了<code>eslint</code>规范，<code>ESLint</code> 是在 ECMAScript/JavaScript 代码中识别和报告模式匹配的工具，它的目标是保证代码的一致性和避免错误。但有时也会由于过于严谨,导致错误提醒<br>解决方案:<br>在package.json文件中添加如下代码</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"rules": &#123;</span><br><span class="line">    "generator-star-spacing": "off",</span><br><span class="line">    "no-tabs":"off",</span><br><span class="line">    "no-unused-vars":"off",</span><br><span class="line">    "no-console":"off",</span><br><span class="line">    "no-irregular-whitespace":"off",</span><br><span class="line">    "no-debugger": "off"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/" rel="tag">vue</a></li></ul>
-
     </footer>
   </div>
 

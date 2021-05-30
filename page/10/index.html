@@ -137,6 +137,62 @@
     
     
     <article
+  id="post-django-日志配置"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/"
+    >Django --- 日志配置</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2020-05-23T11:18:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="常用配置"><a href="#常用配置" class="headerlink" title="常用配置"></a>常用配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">import datetime</span><br><span class="line"></span><br><span class="line">LOGGING &#x3D; &#123;</span><br><span class="line">    # 指明dictConnfig的版本</span><br><span class="line">    &#39;version&#39;: 1,</span><br><span class="line">    # 是否禁用所有的已经存在的日志配置</span><br><span class="line">    &#39;disable_existing_loggers&#39;: True,</span><br><span class="line">    &#39;formatters&#39;: &#123;</span><br><span class="line">        &#39;standard&#39;: &#123;</span><br><span class="line">            # 配置打印log格式</span><br><span class="line">            &#39;format&#39;: &#39;%(asctime)s [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s] %(message)s&#39;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    # 过滤器</span><br><span class="line">    &#39;filters&#39;: &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    # 用来定义具体处理日志的方式，可以定义多种</span><br><span class="line">    &#39;handlers&#39;: &#123;</span><br><span class="line">        &#39;mail_admins&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;django.utils.log.AdminEmailHandler&#39;,</span><br><span class="line">            &#39;include_html&#39;: True,</span><br><span class="line">        &#125;,</span><br><span class="line">        # 默认类型</span><br><span class="line">        &#39;default&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            # 保存的文件</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;QWebFX_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),  # 日志输出文件</span><br><span class="line">            # 文件大小</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            # 备份份数</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            # 使用哪种formatters日志格式</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;django_backends&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            # 保存的文件</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;backends_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),  # 日志输出文件</span><br><span class="line">            # 文件大小</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            # 备份份数</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            # 使用哪种formatters日志格式</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;error&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Error&#x2F;QWebFX_Error_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        # 打印log到控制台</span><br><span class="line">        &#39;console&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.StreamHandler&#39;,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;request_handler&#39;: &#123;</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Request&#x2F;QWebFX_Request_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;scripts_handler&#39;: &#123;</span><br><span class="line">            # 只有INFO及以上级别的log才会写入文件中</span><br><span class="line">            &#39;level&#39;: &#39;INFO&#39;,</span><br><span class="line">            &#39;class&#39;: &#39;logging.handlers.RotatingFileHandler&#39;,</span><br><span class="line">            &#39;filename&#39;: &#39;&#123;&#125;&#x2F;Log&#x2F;Script&#x2F;QWebFX_Script_&#123;&#125;.log&#39;.format(BASE_DIR, datetime.datetime.now().date()),</span><br><span class="line">            &#39;maxBytes&#39;: 1024 * 1024 * 5,</span><br><span class="line">            &#39;backupCount&#39;: 5,</span><br><span class="line">            &#39;formatter&#39;: &#39;standard&#39;,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#39;loggers&#39;: &#123;</span><br><span class="line">        # django 表示就是django本身默认的控制台输出，就是原本在控制台里面输出的内容</span><br><span class="line">        &#39;django&#39;: &#123;</span><br><span class="line">            # 使用default类型的处理器进行处理</span><br><span class="line">            &#39;handlers&#39;: [&#39;default&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: False</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;django.request&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;request_handler&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: False,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;scripts&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;scripts_handler&#39;],</span><br><span class="line">            # 只有INFO及以上级别的消息才会调用此handler</span><br><span class="line">            &#39;level&#39;: &#39;INFO&#39;,</span><br><span class="line">            &#39;propagate&#39;: False</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;console&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;console&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        # API&#x2F;Views 模块的日志处理</span><br><span class="line">        &#39;views&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;default&#39;, &#39;error&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;util&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;error&#39;],</span><br><span class="line">            &#39;level&#39;: &#39;ERROR&#39;,</span><br><span class="line">            &#39;propagate&#39;: True</span><br><span class="line">        &#125;,</span><br><span class="line">        # 保存所有的数据库操作</span><br><span class="line">        &#39;django.db.backends&#39;: &#123;</span><br><span class="line">            &#39;handlers&#39;: [&#39;django_backends&#39;],  # 指定file handler处理器，表示只写入到文件</span><br><span class="line">            &#39;level&#39;: &#39;DEBUG&#39;,</span><br><span class="line">            &#39;propagate&#39;: True,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/django-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-django-rest-framework-视图集中附加action的声明"
   class="article article-type-post"
   itemscope
@@ -618,63 +674,6 @@
        
   <h3 id="settings-py"><a href="#settings-py" class="headerlink" title="settings.py"></a>settings.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 设置分页</span></span><br><span class="line">    <span class="string">'DEFAULT_PAGINATION_CLASS'</span>: <span class="string">'rest_framework.pagination.PageNumberPagination'</span>,</span><br><span class="line">    <span class="string">'DEFAULT_VERSIONING_CLASS'</span>: <span class="string">'rest_framework.versioning.NamespaceVersioning'</span>,</span><br><span class="line">    <span class="string">'DEFAULT_PERMISSOIN_CLASSES'</span>:[</span><br><span class="line">        <span class="string">'rest_framework.permissions.IsAdminUser'</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment"># 每一页数量</span></span><br><span class="line">    <span class="string">'PAGE_SIZE'</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
       <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E5%B8%B8%E7%94%A8%E8%A7%86%E5%9B%BE%E5%87%BD%E6%95%B0/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-django-rest-framework-mixin模式"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/django-rest-framework-mixin%E6%A8%A1%E5%BC%8F/"
-    >Django-rest-framework --- mixin模式</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/django-rest-framework-mixin%E6%A8%A1%E5%BC%8F/" class="article-date">
-  <time datetime="2020-05-23T11:08:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>假设存在这个三个类，Bird, Fish, Animal，分别具有不同的功能，像fly, swim, run等。现有某种虚拟Animal具有以上三种功能，那么便使用继承就可实现 。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bird</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fly</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'can fly'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fish</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swim</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'can swim'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'can run'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VirtualAnimal</span><span class="params">(Bird, Fish, Animal)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">can</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.fly()</span><br><span class="line">        self.swim()</span><br><span class="line">        self.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">va = VirtualAnimal()</span><br><span class="line">va.can()</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/05/23/django-rest-framework-mixin%E6%A8%A1%E5%BC%8F/"
         >阅读更多...</a
       >
        

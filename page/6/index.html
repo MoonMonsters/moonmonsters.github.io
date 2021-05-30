@@ -137,6 +137,72 @@
     
     
     <article
+  id="post-转-利用-Linux-指令分析-Web-日志"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/02/24/%E8%BD%AC-%E5%88%A9%E7%94%A8-Linux-%E6%8C%87%E4%BB%A4%E5%88%86%E6%9E%90-Web-%E6%97%A5%E5%BF%97/"
+    >[转]Linux --- 利用 Linux 指令分析 Web 日志</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/02/24/%E8%BD%AC-%E5%88%A9%E7%94%A8-Linux-%E6%8C%87%E4%BB%A4%E5%88%86%E6%9E%90-Web-%E6%97%A5%E5%BF%97/" class="article-date">
+  <time datetime="2021-02-24T14:08:00.000Z" itemprop="datePublished">2021-02-24</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://kaiwu.lagou.com/course/courseInfo.htm?courseId=478#/detail/pc?id=4617" target="_blank" rel="noopener">高级技巧之日志分析：利用 Linux 指令分析 Web 日志</a></p>
+<h3 id="第一步：能不能这样做？"><a href="#第一步：能不能这样做？" class="headerlink" title="第一步：能不能这样做？"></a>第一步：能不能这样做？</h3><p>当我们想要分析一个线上文件的时候，首先要思考，能不能这样做？ 这里你可以先用<code>htop</code>指令看一下当前的负载。如果你的机器上没有<code>htop</code>，可以考虑用<code>yum</code>或者<code>apt</code>去安装。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210224220935.png" alt=""></p>
+<p>如上图所示，我的机器上 8 个 CPU 都是 0 负载，2G的内存用了一半多，还有富余。 我们用<code>wget</code>将目标文件下载到本地（如果你没有 wget，可以用yum或者apt安装）。</p>
+<blockquote>
+<pre><code>wget 某网址（自己替代）</code></pre></blockquote>
+<p>然后我们用ls查看文件大小。发现这只是一个 7M 的文件，因此对线上的影响可以忽略不计。如果文件太大，建议你用scp指令将文件拷贝到闲置服务器再分析。下图中我使用了<code>--block-size</code>让<code>ls</code>以<code>M</code>为单位显示文件大小。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210224221141.png" alt=""><br>确定了当前机器的CPU和内存允许我进行分析后，我们就可以开始第二步操作了。</p>
+<h3 id="第二步：LESS-日志文件"><a href="#第二步：LESS-日志文件" class="headerlink" title="第二步：LESS 日志文件"></a>第二步：LESS 日志文件</h3><p>在分析日志前，给你提个醒，记得要<code>less</code>一下，看看日志里面的内容。之前我们说过，尽量使用<code>less</code>这种不需要读取全部文件的指令，因为在线上执行<code>cat</code>是一件非常危险的事情，这可能导致线上服务器资源不足。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210224221407.png" alt=""><br>如上图所示，我们看到<code>nginx</code>的<code>access_log</code>每一行都是一次用户的访问，从左到右依次是：</p>
+<ul>
+<li>IP 地址；</li>
+<li>时间；</li>
+<li>HTTP 请求的方法、路径和协议版本、返回的状态码；</li>
+<li>User Agent。</li>
+</ul> 
+      <a class="article-more-link" href="/2021/02/24/%E8%BD%AC-%E5%88%A9%E7%94%A8-Linux-%E6%8C%87%E4%BB%A4%E5%88%86%E6%9E%90-Web-%E6%97%A5%E5%BF%97/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-leetcode-合并区间"
   class="article article-type-post"
   itemscope
@@ -666,71 +732,6 @@
         >阅读更多...</a
       >
        
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-友情链接"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/11/15/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/"
-    >友情链接</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/11/15/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/" class="article-date">
-  <time datetime="2020-11-15T08:32:00.000Z" itemprop="datePublished">2020-11-15</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="官方网站"><a href="#官方网站" class="headerlink" title="官方网站"></a>官方网站</h3><p><a href="https://docs.python.org/zh-cn/3/index.html" target="_blank" rel="noopener">Python3官方文档</a></p>
-<p><a href="https://docs.djangoproject.com/en/2.2/" target="_blank" rel="noopener">Django官方文档</a></p>
-<p><a href="http://djangobook.py3k.cn/2.0/" target="_blank" rel="noopener">Django中文版</a></p>
-<p><a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener">rest-framework官方文档</a></p>
-<p><a href="http://drf.jiuyou.info/#/" target="_blank" rel="noopener">rest-framework文档中文版</a></p>
-<p><a href="https://redis-py.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">python-redis官方文档</a></p>
-<p><a href="https://django-redis-chs.readthedocs.io/zh_CN/latest/#id8" target="_blank" rel="noopener">django-redis 中文文档</a></p>
-<p><a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener">RabbitMQ官方文档</a></p>
-<h3 id="Python学习"><a href="#Python学习" class="headerlink" title="Python学习"></a>Python学习</h3><p><a href="https://www.the5fire.com" target="_blank" rel="noopener">the5fire: Django企业开发实战作者</a></p>
-<p><a href="https://github.com/MoonMonsters/eat_pyspark_in_10_days" target="_blank" rel="noopener">如何用10天吃掉pyspark</a></p>
-<h3 id="Golang学习"><a href="#Golang学习" class="headerlink" title="Golang学习"></a>Golang学习</h3><p><a href="https://lailin.xyz/post/go-design-pattern.html" target="_blank" rel="noopener">golang设计模式</a></p>
-<p><a href="https://wskdsgcf.gitbook.io/mastering-go-zh-cn/" target="_blank" rel="noopener">mastering-go-zh-cn: golang入门</a></p>
-<p><a href="https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md" target="_blank" rel="noopener">the-way-to-go_ZH_CN: golang入门</a></p>
-<p><a href="https://github.com/geektutu/7days-golang" target="_blank" rel="noopener">从零开始系列…</a></p>
-<p><a href="https://chai2010.cn/advanced-go-programming-book/" target="_blank" rel="noopener">Go语言高级编程(Advanced Go Programming)</a></p>
-<p><a href="https://draveness.me/golang/" target="_blank" rel="noopener">Go 语言设计与实现</a></p>
-<p><a href="https://geektutu.com" target="_blank" rel="noopener">极客兔兔</a></p>
-<h3 id="常用软件"><a href="#常用软件" class="headerlink" title="常用软件"></a>常用软件</h3><p><a href="https://gitee.com/qishibo/AnotherRedisDesktopManager" target="_blank" rel="noopener">Redis可视化客户端</a></p>
-<p><a href="https://dbeaver.io/download/" target="_blank" rel="noopener">数据库客户端</a></p>
- 
       <!-- reward -->
       
     </div>

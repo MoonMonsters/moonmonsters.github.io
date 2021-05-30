@@ -137,6 +137,61 @@
     
     
     <article
+  id="post-bug-vue-add-axios报错"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/02/bug-vue-add-axios%E6%8A%A5%E9%94%99/"
+    >Bug --- vue add axios报错</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/02/bug-vue-add-axios%E6%8A%A5%E9%94%99/" class="article-date">
+  <time datetime="2021-05-02T12:08:00.000Z" itemprop="datePublished">2021-05-02</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Bug/">Bug</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">🚀  Invoking generator for vue-cli-plugin-axios...</span><br><span class="line">⠋  Running completion hooks...error: &#39;options&#39; is defined but never used (no-unused-vars) at src&#x2F;plugins&#x2F;axios.js:42:32:</span><br><span class="line">  40 | );</span><br><span class="line">  41 |</span><br><span class="line">&gt; 42 | Plugin.install &#x3D; function(Vue, options) &#123;</span><br><span class="line">     |                                ^</span><br><span class="line">  43 |   Vue.axios &#x3D; _axios;</span><br><span class="line">  44 |   window.axios &#x3D; _axios;</span><br><span class="line">  45 |   Object.defineProperties(Vue.prototype, &#123;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>原因:该项目安装了<code>eslint</code>规范，<code>ESLint</code> 是在 ECMAScript/JavaScript 代码中识别和报告模式匹配的工具，它的目标是保证代码的一致性和避免错误。但有时也会由于过于严谨,导致错误提醒<br>解决方案:<br>在package.json文件中添加如下代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"rules": &#123;</span><br><span class="line">    "generator-star-spacing": "off",</span><br><span class="line">    "no-tabs":"off",</span><br><span class="line">    "no-unused-vars":"off",</span><br><span class="line">    "no-console":"off",</span><br><span class="line">    "no-irregular-whitespace":"off",</span><br><span class="line">    "no-debugger": "off"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/" rel="tag">vue</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-leetcode-144-二叉树的前序遍历"
   class="article article-type-post"
   itemscope
@@ -631,58 +686,6 @@
 </blockquote>
 <h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, nums: list, target: int)</span> -&gt; int:</span></span><br><span class="line">        left = <span class="number">0</span></span><br><span class="line">        right = len(nums) - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> left &lt;= right:</span><br><span class="line">            mid = (left + right) // <span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> nums[mid] == target:</span><br><span class="line">                <span class="keyword">return</span> mid</span><br><span class="line">            <span class="keyword">elif</span> nums[mid] &lt; target:</span><br><span class="line">                left = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                right = mid - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">nums = [<span class="number">-1</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">12</span>]</span><br><span class="line">target = <span class="number">2</span></span><br><span class="line">print(s.search(nums, target))</span><br></pre></td></tr></table></figure>
  
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-415-字符串相加"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-415-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E5%8A%A0/"
-    >Leetcode --- 415. 字符串相加</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-415-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E5%8A%A0/" class="article-date">
-  <time datetime="2021-03-27T07:08:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/add-strings/" target="_blank" rel="noopener">字符串相加</a></p>
-<p>给定两个字符串形式的非负整数 num1 和num2 ，计算它们的和。</p>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addStrings</span><span class="params">(self, num1: str, num2: str)</span> -&gt; str:</span></span><br><span class="line">        num1 = num1[::<span class="number">-1</span>]</span><br><span class="line">        num2 = num2[::<span class="number">-1</span>]</span><br><span class="line">        length = min(len(num1), len(num2))</span><br><span class="line">        result = <span class="string">""</span></span><br><span class="line">        tmp = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(length):</span><br><span class="line">            r = int(num1[index]) + int(num2[index]) + tmp</span><br><span class="line">            result += str(r % <span class="number">10</span>)</span><br><span class="line">            tmp = r // <span class="number">10</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> length == len(num1):</span><br><span class="line">            num = num2</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            num = num1</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(length, len(num)):</span><br><span class="line">            r = int(num[index]) + tmp</span><br><span class="line">            result += str(r % <span class="number">10</span>)</span><br><span class="line">            tmp = r // <span class="number">10</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> tmp != <span class="number">0</span>:</span><br><span class="line">            result += str(tmp)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result[::<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n1 = <span class="string">"123458888"</span></span><br><span class="line">n2 = <span class="string">"2232342358233289"</span></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.addStrings(n1, n2))</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
     </div>
