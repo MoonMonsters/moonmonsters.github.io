@@ -137,6 +137,233 @@
     
     
     <article
+  id="post-leetcode-199-二叉树的右视图"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/05/leetcode-199-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%8F%B3%E8%A7%86%E5%9B%BE/"
+    >Leetcode --- 199. 二叉树的右视图</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/05/leetcode-199-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%8F%B3%E8%A7%86%E5%9B%BE/" class="article-date">
+  <time datetime="2021-04-05T15:22:00.000Z" itemprop="datePublished">2021-04-05</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/binary-tree-right-side-view" target="_blank" rel="noopener">二叉树的右视图</a></p>
+<p>给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。</p>
+<p>示例</p>
+<blockquote>
+<p>输入: [1,2,3,null,5,null,4] <br/><br>输出: [1, 3, 4] <br/><br>解释:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   1            &lt;---</span><br><span class="line"> &#x2F;   \</span><br><span class="line">2     3         &lt;---</span><br><span class="line"> \     \</span><br><span class="line">  5     4       &lt;---</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val=<span class="number">0</span>, left=None, right=None)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归遍历</span></span><br><span class="line"><span class="comment"># class Solution:</span></span><br><span class="line"><span class="comment">#     def rightSideView(self, root: TreeNode) -&gt; list:</span></span><br><span class="line"><span class="comment">#         if not root:</span></span><br><span class="line"><span class="comment">#             return []</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#         rv = dict()</span></span><br><span class="line"><span class="comment">#         index = -1</span></span><br><span class="line"><span class="comment">#         self._traverse(root, rv, index)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#         keys = sorted(rv.keys())</span></span><br><span class="line"><span class="comment">#         result = [rv[k] for k in keys]</span></span><br><span class="line"><span class="comment">#         return result</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def _traverse(self, node: TreeNode, rv: dict, index: int):</span></span><br><span class="line"><span class="comment">#         """</span></span><br><span class="line"><span class="comment">#         前序, 中序, 后序遍历皆可, 不影响结果</span></span><br><span class="line"><span class="comment">#         只需要保证右子树比左子树后遍历即可</span></span><br><span class="line"><span class="comment">#         """</span></span><br><span class="line"><span class="comment">#         index += 1</span></span><br><span class="line"><span class="comment">#         if node:</span></span><br><span class="line"><span class="comment">#             # 每一层保存更靠右的结果</span></span><br><span class="line"><span class="comment">#             rv[index] = node.val</span></span><br><span class="line"><span class="comment">#             self._traverse(node.left, rv, index + 1)</span></span><br><span class="line"><span class="comment">#             self._traverse(node.right, rv, index + 1)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 层序遍历</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rightSideView</span><span class="params">(self, root: TreeNode)</span> -&gt; list:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        rv = list()</span><br><span class="line">        queue = [root]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> queue:</span><br><span class="line">            tmp = queue[:]</span><br><span class="line">            queue.clear()</span><br><span class="line">            <span class="keyword">for</span> index, t <span class="keyword">in</span> enumerate(tmp):</span><br><span class="line">                <span class="keyword">if</span> t.left:</span><br><span class="line">                    queue.append(t.left)</span><br><span class="line">                <span class="keyword">if</span> t.right:</span><br><span class="line">                    queue.append(t.right)</span><br><span class="line">                <span class="comment"># 保存每一层的最后一个数据</span></span><br><span class="line">                <span class="keyword">if</span> index == len(tmp) - <span class="number">1</span>:</span><br><span class="line">                    rv.append(t.val)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> rv</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n1 = TreeNode(<span class="number">1</span>)</span><br><span class="line">n2 = TreeNode(<span class="number">2</span>)</span><br><span class="line">n3 = TreeNode(<span class="number">3</span>)</span><br><span class="line">n4 = TreeNode(<span class="number">4</span>)</span><br><span class="line">n5 = TreeNode(<span class="number">5</span>)</span><br><span class="line">n1.left = n2</span><br><span class="line">n1.right = n3</span><br><span class="line">n2.right = n5</span><br><span class="line"><span class="comment"># n3.right = n4</span></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.rightSideView(n1))</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-94-二叉树的中序遍历"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/04/05/leetcode-94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/"
+    >Leetcode --- 94. 二叉树的中序遍历</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/04/05/leetcode-94-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/" class="article-date">
+  <time datetime="2021-04-05T14:27:00.000Z" itemprop="datePublished">2021-04-05</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="">二叉树的中序遍历</a></p>
+<p>给定一个二叉树的根节点 root ，返回它的 中序 遍历。</p>
+<p>示例 1：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210405222801.png" alt=""></p>
+<blockquote>
+<p>输入：root = [1,null,2,3]<br/><br>输出：[1,3,2]</p>
+</blockquote>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val=<span class="number">0</span>, left=None, right=None)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归写法</span></span><br><span class="line"><span class="comment"># class Solution:</span></span><br><span class="line"><span class="comment">#     def inorderTraversal(self, root: TreeNode) -&gt; list:</span></span><br><span class="line"><span class="comment">#         if not root:</span></span><br><span class="line"><span class="comment">#             return []</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#         rv = list()</span></span><br><span class="line"><span class="comment">#         self._inorder(root, rv)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#         return rv</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def _inorder(self, node, rv):</span></span><br><span class="line"><span class="comment">#         if node:</span></span><br><span class="line"><span class="comment">#             self._inorder(node.left, rv)</span></span><br><span class="line"><span class="comment">#             rv.append(node.val)</span></span><br><span class="line"><span class="comment">#             self._inorder(node.right, rv)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 非递归</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span><span class="params">(self, root: TreeNode)</span> -&gt; list:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">        rv = list()</span><br><span class="line">        stack = list()</span><br><span class="line">        node = root</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> node <span class="keyword">or</span> stack:</span><br><span class="line">            <span class="comment"># 如果node值存在, 则入栈</span></span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                stack.append(node)</span><br><span class="line">                <span class="comment"># 左子树遍历</span></span><br><span class="line">                node = node.left</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 保存栈顶的值</span></span><br><span class="line">                node = stack.pop(<span class="number">-1</span>)</span><br><span class="line">                rv.append(node.val)</span><br><span class="line">                <span class="comment"># 遍历右子树</span></span><br><span class="line">                node = node.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> rv</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n1 = TreeNode(<span class="number">1</span>)</span><br><span class="line">n2 = TreeNode(<span class="number">2</span>)</span><br><span class="line">n3 = TreeNode(<span class="number">3</span>)</span><br><span class="line">n1.right = n2</span><br><span class="line">n2.left = n3</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.inorderTraversal(n1))</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-912-排序数组"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/27/leetcode-912-%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/"
+    >Leetcode --- 912. 排序数组</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/27/leetcode-912-%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" class="article-date">
+  <time datetime="2021-03-27T07:12:00.000Z" itemprop="datePublished">2021-03-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/sort-an-array/" target="_blank" rel="noopener">排序数组</a></p>
+<p>示例</p>
+<blockquote>
+<p>输入：nums = [5,2,3,1] <br/><br>输出：[1,2,3,5]</p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortArray</span><span class="params">(self, nums: list)</span> -&gt; list:</span></span><br><span class="line">        ns = nums[:]</span><br><span class="line">        <span class="keyword">return</span> self._quick_sort(nums, <span class="number">0</span>, len(ns) - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_quick_sort</span><span class="params">(self, nums, left, right)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> left &gt;= right:</span><br><span class="line">            <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">        base_index = self._sort(left, right, nums)</span><br><span class="line">        self._quick_sort(nums, left, base_index - <span class="number">1</span>)</span><br><span class="line">        self._quick_sort(nums, base_index + <span class="number">1</span>, right)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_sort</span><span class="params">(self, left, right, nums)</span>:</span></span><br><span class="line"></span><br><span class="line">        temp = left</span><br><span class="line">        base = nums[left]</span><br><span class="line">        <span class="keyword">while</span> left != right:</span><br><span class="line">            <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> nums[right] &gt;= base:</span><br><span class="line">                right -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> nums[left] &lt;= base:</span><br><span class="line">                left += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> left &lt; right:</span><br><span class="line">                nums[left], nums[right] = nums[right], nums[left]</span><br><span class="line"></span><br><span class="line">        nums[temp] = nums[left]</span><br><span class="line">        nums[left] = base</span><br><span class="line">        <span class="keyword">return</span> left</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">num = [<span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">s = Solution()</span><br><span class="line">print(s.sortArray(num))</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-leetcode-704-二分查找"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/03/27/leetcode-704-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"
+    >Leetcode --- 704. 二分查找</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/03/27/leetcode-704-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-date">
+  <time datetime="2021-03-27T07:10:00.000Z" itemprop="datePublished">2021-03-27</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/binary-search" target="_blank" rel="noopener">二分查找</a></p>
+<p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</p>
+<p>示例</p>
+<blockquote>
+<p>输入: nums = [-1,0,3,5,9,12], target = 9 <br/><br>输出: 4 <br/><br>解释: 9 出现在 nums 中并且下标为 4 <br/></p>
+</blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, nums: list, target: int)</span> -&gt; int:</span></span><br><span class="line">        left = <span class="number">0</span></span><br><span class="line">        right = len(nums) - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> left &lt;= right:</span><br><span class="line">            mid = (left + right) // <span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> nums[mid] == target:</span><br><span class="line">                <span class="keyword">return</span> mid</span><br><span class="line">            <span class="keyword">elif</span> nums[mid] &lt; target:</span><br><span class="line">                left = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                right = mid - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">nums = [<span class="number">-1</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">12</span>]</span><br><span class="line">target = <span class="number">2</span></span><br><span class="line">print(s.search(nums, target))</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-leetcode-415-字符串相加"
   class="article article-type-post"
   itemscope
@@ -478,259 +705,13 @@
 </article>
 
     
-    <article
-  id="post-leetcode-160-相交链表"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-160-%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8/"
-    >Leetcode --- 160. 相交链表</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-160-%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2021-03-27T06:49:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists" target="_blank" rel="noopener">相交链表</a></p>
-<p>编写一个程序，找到两个单链表相交的起始节点。</p>
-<p>如下面的两个链表：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327144950.png" alt=""><br>在节点 c1 开始相交。</p>
-<p>示例<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327145018.png" alt=""></p>
-<blockquote>
-<p>输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,0,1,8,4,5], skipA = 2, skipB = 3 <br/><br>输出：Reference of the node with value = 8 <br/><br>输入解释：相交节点的值为 8 （注意，如果两个链表相交则不能为 0）。从各自的表头开始算起，链表 A 为 [4,1,8,4,5]，链表 B 为 [5,0,1,8,4,5]。在 A 中，相交节点前有 2 个节点；在 B 中，相交节点前有 3 个节点。<br/></p>
-</blockquote>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        self.val = x</span><br><span class="line">        self.next = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getIntersectionNode</span><span class="params">(self, headA: ListNode, headB: ListNode)</span> -&gt; ListNode:</span></span><br><span class="line">        la = <span class="number">0</span></span><br><span class="line">        na = headA</span><br><span class="line">        <span class="keyword">while</span> na:</span><br><span class="line">            la += <span class="number">1</span></span><br><span class="line">            na = na.next</span><br><span class="line"></span><br><span class="line">        lb = <span class="number">0</span></span><br><span class="line">        nb = headB</span><br><span class="line">        <span class="keyword">while</span> nb:</span><br><span class="line">            lb += <span class="number">1</span></span><br><span class="line">            nb = nb.next</span><br><span class="line"></span><br><span class="line">        length = abs(la - lb)</span><br><span class="line">        <span class="keyword">if</span> la &gt; lb:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(length):</span><br><span class="line">                headA = headA.next</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(length):</span><br><span class="line">                headB = headB.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> headB <span class="keyword">and</span> headA:</span><br><span class="line">            <span class="keyword">if</span> headB == headA:</span><br><span class="line">                <span class="keyword">return</span> headA</span><br><span class="line">            headA = headA.next</span><br><span class="line">            headB = headB.next</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">listA = [<span class="number">4</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">listB = [<span class="number">5</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line">tailA = <span class="literal">None</span></span><br><span class="line">headA = <span class="literal">None</span></span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> listA[::<span class="number">-1</span>]:</span><br><span class="line">    n = ListNode(a)</span><br><span class="line">    n.next = tailA</span><br><span class="line">    tailA = n</span><br><span class="line">    headA = n</span><br><span class="line"></span><br><span class="line">tailB = <span class="literal">None</span></span><br><span class="line">headB = <span class="literal">None</span></span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> listB[::<span class="number">-1</span>]:</span><br><span class="line">    n = ListNode(a)</span><br><span class="line">    n.next = tailB</span><br><span class="line">    tailB = n</span><br><span class="line">    headB = n</span><br><span class="line"></span><br><span class="line"><span class="comment"># while headA:</span></span><br><span class="line"><span class="comment">#     print(headA.val)</span></span><br><span class="line"><span class="comment">#     headA = headA.next</span></span><br><span class="line"><span class="comment"># print('-' * 80)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># while headB:</span></span><br><span class="line"><span class="comment">#     print(headB.val)</span></span><br><span class="line"><span class="comment">#     headB = headB.next</span></span><br><span class="line"><span class="comment"># print('=' * 80)</span></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">node = s.getIntersectionNode(headA, headB)</span><br><span class="line">print(node.val)</span><br></pre></td></tr></table></figure>
-
-
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-146-LRU-缓存机制"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-146-LRU-%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"
-    >Leetcode --- 146. LRU 缓存机制</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-146-LRU-%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="article-date">
-  <time datetime="2021-03-27T06:46:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/lru-cache" target="_blank" rel="noopener">LRU 缓存机制</a></p>
-<p>运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制 。<br>实现 LRUCache 类：</p>
-<p>LRUCache(int capacity) 以正整数作为容量 capacity 初始化 LRU 缓存<br>int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。<br>void put(int key, int value) 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字-值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。</p>
-<p>示例：</p>
-<blockquote>
-<p>输入<br>[“LRUCache”, “put”, “put”, “get”, “put”, “get”, “put”, “get”, “get”, “get”] <br/><br>[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]] <br/><br>输出 <br/><br>[null, null, null, 1, null, -1, null, -1, 3, 4] <br/><br>解释 <br/><br>LRUCache lRUCache = new LRUCache(2);<br/><br>lRUCache.put(1, 1); // 缓存是 {1=1}<br/><br>lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}<br/><br>lRUCache.get(1);    // 返回 1<br/><br>lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}<br/><br>lRUCache.get(2);    // 返回 -1 (未找到)<br/><br>lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}<br/><br>lRUCache.get(1);    // 返回 -1 (未找到)<br/><br>lRUCache.get(3);    // 返回 3<br/><br>lRUCache.get(4);    // 返回 4<br/></p>
-</blockquote>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, capacity: int)</span>:</span></span><br><span class="line">        self._order = OrderedDict()</span><br><span class="line">        self._capacity = capacity</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, key: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self._order.keys():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">        v = self._order.pop(key)</span><br><span class="line">        self._order[key] = v</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, key: int, value: int)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self._order.keys() <span class="keyword">and</span> len(self._order.keys()) &gt;= self._capacity:</span><br><span class="line">            self._order.popitem(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">in</span> self._order.keys():</span><br><span class="line">            self._order.pop(key)</span><br><span class="line">        self._order[key] = value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = LRUCache(<span class="number">2</span>)</span><br><span class="line">s.put(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">s.put(<span class="number">2</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-141-环形链表"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-141-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8/"
-    >Leetcode --- 141. 环形链表</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-141-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2021-03-27T06:42:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/linked-list-cycle" target="_blank" rel="noopener">环形链表</a></p>
-<p>给定一个链表，判断链表中是否有环。</p>
-<p>如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。</p>
-<p>如果链表中存在环，则返回 true 。 否则，返回 false 。</p>
-<p>示例 1：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327144340.png" alt=""></p>
-<blockquote>
-<p>输入：head = [3,2,0,-4], pos = 1 <br/><br>输出：true <br/><br>解释：链表中有一个环，其尾部连接到第二个节点。 <br/></p>
-</blockquote>
-<p>示例 2：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327144416.png" alt=""></p>
-<blockquote>
-<p>输入：head = [1,2], pos = 0 <br/><br>输出：true <br/><br>解释：链表中有一个环，其尾部连接到第一个节点。<br/></p>
-</blockquote>
-<p>示例 3：<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210327144447.png" alt=""></p>
-<blockquote>
-<p>输入：head = [1], pos = -1 <br/><br>输出：false <br/><br>解释：链表中没有环。 <br/></p>
-</blockquote>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        self.val = x</span><br><span class="line">        self.next = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasCycle</span><span class="params">(self, head: ListNode)</span> -&gt; bool:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head.next <span class="keyword">or</span> <span class="keyword">not</span> head.next.next:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        p = head</span><br><span class="line">        q = head.next.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> p == q:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">            p = p.next</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> q.next <span class="keyword">or</span> <span class="keyword">not</span> q.next.next:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            q = q.next.next</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n3 = ListNode(<span class="number">3</span>)</span><br><span class="line">n2 = ListNode(<span class="number">2</span>)</span><br><span class="line">n0 = ListNode(<span class="number">0</span>)</span><br><span class="line">n4 = ListNode(<span class="number">4</span>)</span><br><span class="line">n3.next = n2</span><br><span class="line">n2.next = n0</span><br><span class="line">n0.next = n4</span><br><span class="line">n4.next = n2</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">print(s.hasCycle(n3))</span><br></pre></td></tr></table></figure>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-leetcode-136-只出现一次的数字"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/03/27/leetcode-136-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/"
-    >Leetcode --- 136. 只出现一次的数字</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/03/27/leetcode-136-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/" class="article-date">
-  <time datetime="2021-03-27T06:40:00.000Z" itemprop="datePublished">2021-03-27</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p><a href="https://leetcode-cn.com/problems/single-number" target="_blank" rel="noopener">只出现一次的数字</a></p>
-<p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<p>说明：</p>
-<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<p>示例 1:</p>
-<blockquote>
-<p>输入: [2,2,1] <br/><br>输出: 1</p>
-</blockquote>
-<p>示例 2:</p>
-<blockquote>
-<p>输入: [4,1,2,1,2] <br/><br>输出: 4</p>
-</blockquote>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">singleNumber</span><span class="params">(self, nums: list)</span> -&gt; int:</span></span><br><span class="line">        t = nums[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums[<span class="number">1</span>:]:</span><br><span class="line">            t ^= n</span><br><span class="line">        <span class="keyword">return</span> t</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">ns = [<span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">print(s.singleNumber(ns))</span><br></pre></td></tr></table></figure> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
   </nav>
   
 </section>

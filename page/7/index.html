@@ -137,6 +137,246 @@
     
     
     <article
+  id="post-django-读写锁"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/01/23/django-%E8%AF%BB%E5%86%99%E9%94%81/"
+    >Django --- 读写锁</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/01/23/django-%E8%AF%BB%E5%86%99%E9%94%81/" class="article-date">
+  <time datetime="2021-01-23T05:13:00.000Z" itemprop="datePublished">2021-01-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="代码来源"><a href="#代码来源" class="headerlink" title="代码来源"></a>代码来源</h3><p>django1.11 版本, 完整源码路径<code>from django.utils.synch import RWLock</code></p>
+<p>实现方法主要是<code>RLock+Semaphore</code>结合使用.</p>
+<p>在阅读<code>LocMemCache</code>本地内存缓存代码时, 注意到这一部分功能, 添加解释后以后可以用.</p>
+<p>但在django3或者更之前的版本, 已经不再没有在<code>LocMemCache</code>中用<code>RWLock</code>, 而是直接使用python自带的<code>from threading import Lock</code>了.</p> 
+      <a class="article-more-link" href="/2021/01/23/django-%E8%AF%BB%E5%86%99%E9%94%81/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-golang-解析yaml配置文件"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"
+    >Golang --- 解析yaml配置文件</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="article-date">
+  <time datetime="2020-12-14T13:09:00.000Z" itemprop="datePublished">2020-12-14</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Golang/">Golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="golang-解析yaml配置文件"><a href="#golang-解析yaml配置文件" class="headerlink" title="golang - 解析yaml配置文件"></a>golang - 解析yaml配置文件</h1><h3 id="安装第三方库"><a href="#安装第三方库" class="headerlink" title="安装第三方库"></a>安装第三方库</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get -u <span class="string">"github.com/spf13/viper"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="文件整体结构"><a href="#文件整体结构" class="headerlink" title="文件整体结构"></a>文件整体结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── configs</span><br><span class="line">│   └── stand_alone.yaml</span><br><span class="line">└── pkg</span><br><span class="line">    └── settings</span><br><span class="line">        ├── section.go</span><br><span class="line">        └── setting.go</span><br></pre></td></tr></table></figure>
+
+<h3 id="yaml配置文件"><a href="#yaml配置文件" class="headerlink" title="yaml配置文件"></a>yaml配置文件</h3><p>路径: configs/stand_alone.yaml</p>
+<p>详细格式可以参考:</p>
+<p><a href="http://www.ruanyifeng.com/blog/2016/07/yaml.html" target="_blank" rel="noopener">YAML 语言教程</a></p>
+<p><a href="https://en.wikipedia.org/wiki/YAML" target="_blank" rel="noopener">YAML</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Server:</span></span><br><span class="line">  <span class="attr">StorageRoot:</span> <span class="string">"Storage/upload"</span></span><br><span class="line">  <span class="attr">ListenAddress:</span> <span class="string">":8888"</span></span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/12/14/golang-%E8%A7%A3%E6%9E%90yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-golang-使用令牌桶限制接口访问频率"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/12/12/golang-%E4%BD%BF%E7%94%A8%E4%BB%A4%E7%89%8C%E6%A1%B6%E9%99%90%E5%88%B6%E6%8E%A5%E5%8F%A3%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/"
+    >Golang --- 使用令牌桶限制接口访问频率</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/12/12/golang-%E4%BD%BF%E7%94%A8%E4%BB%A4%E7%89%8C%E6%A1%B6%E9%99%90%E5%88%B6%E6%8E%A5%E5%8F%A3%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/" class="article-date">
+  <time datetime="2020-12-12T11:33:00.000Z" itemprop="datePublished">2020-12-12</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Golang/">Golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="三方库"><a href="#三方库" class="headerlink" title="三方库"></a>三方库</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get -u github.com/juju/ratelimit@v1<span class="number">.0</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="令牌桶结构体"><a href="#令牌桶结构体" class="headerlink" title="令牌桶结构体"></a>令牌桶结构体</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> limiter</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"github.com/gin-gonic/gin"</span></span><br><span class="line">    <span class="string">"github.com/juju/ratelimit"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 令牌桶信息</span></span><br><span class="line"><span class="keyword">type</span> Limiter <span class="keyword">struct</span> &#123;</span><br><span class="line">    limiterBuckets <span class="keyword">map</span>[<span class="keyword">string</span>]*ratelimit.Bucket</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 令牌Bucket</span></span><br><span class="line"><span class="keyword">type</span> LimiterBucketRule <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 自定义键值对名称</span></span><br><span class="line">    Key <span class="keyword">string</span></span><br><span class="line">    <span class="comment">// 间隔多久放N个令牌</span></span><br><span class="line">    FillInterval time.Duration</span><br><span class="line">    <span class="comment">// 令牌桶的容量</span></span><br><span class="line">    Capacity <span class="keyword">int64</span></span><br><span class="line">    <span class="comment">// 每次到达间隔时间后所放的具体令牌数量</span></span><br><span class="line">    Quantum <span class="keyword">int64</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接口</span></span><br><span class="line"><span class="keyword">type</span> LimiterIface <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="comment">// 获取对应的限流器的键值对名称</span></span><br><span class="line">    Key(c *gin.Context) <span class="keyword">string</span></span><br><span class="line">    <span class="comment">// 获取令牌桶</span></span><br><span class="line">    GetBucket(key <span class="keyword">string</span>) (*ratelimit.Bucket, <span class="keyword">bool</span>)</span><br><span class="line">    <span class="comment">// 新增令牌桶</span></span><br><span class="line">    AddBuckets(rules ...LimiterBucketRule) LimiterIface</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/12/12/golang-%E4%BD%BF%E7%94%A8%E4%BB%A4%E7%89%8C%E6%A1%B6%E9%99%90%E5%88%B6%E6%8E%A5%E5%8F%A3%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gin/" rel="tag">gin</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-转-使用PySnooper调试代码"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/11/18/%E8%BD%AC-%E4%BD%BF%E7%94%A8PySnooper%E8%B0%83%E8%AF%95%E4%BB%A3%E7%A0%81/"
+    >[转]Python --- 使用PySnooper调试代码</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/11/18/%E8%BD%AC-%E4%BD%BF%E7%94%A8PySnooper%E8%B0%83%E8%AF%95%E4%BB%A3%E7%A0%81/" class="article-date">
+  <time datetime="2020-11-18T12:01:00.000Z" itemprop="datePublished">2020-11-18</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s/wSmzU4cn0mTwlrtCSENeqg" target="_blank" rel="noopener">求你了，别再用 print 调试代码了</a></p>
+<h3 id="快速安装"><a href="#快速安装" class="headerlink" title="快速安装"></a>快速安装</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python3 -m pip install pysnooper</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> conda install -c conda-forge pysnooper</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> yay -S python-pysnooper</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="简单案例"><a href="#简单案例" class="headerlink" title="简单案例"></a>简单案例</h3><p>下面这段代码，定义了一个 demo_func 的函数，在里面生成一个 profile 的字典变量，然后去更新它，最后返回。</p>
+<p>代码本身没有什么实际意义，但是用来演示 PySnooper 已经足够。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pysnooper</span><br><span class="line"></span><br><span class="line"><span class="meta">@pysnooper.snoop()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">demo_func</span><span class="params">()</span>:</span></span><br><span class="line">    profile = &#123;&#125;</span><br><span class="line">    profile[<span class="string">"name"</span>] = <span class="string">"写代码的明哥"</span></span><br><span class="line">    profile[<span class="string">"age"</span>] = <span class="number">27</span></span><br><span class="line">    profile[<span class="string">"gender"</span>] = <span class="string">"male"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> profile</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    profile = demo_func()</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/11/18/%E8%BD%AC-%E4%BD%BF%E7%94%A8PySnooper%E8%B0%83%E8%AF%95%E4%BB%A3%E7%A0%81/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-友情链接"
   class="article article-type-post"
   itemscope
@@ -549,255 +789,13 @@
 </article>
 
     
-    <article
-  id="post-golang-转-图文结合，白话Go的垃圾回收原理"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E6%96%87%E7%BB%93%E5%90%88%EF%BC%8C%E7%99%BD%E8%AF%9DGo%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%8E%9F%E7%90%86/"
-    >[转]Golang --- 图文结合，白话Go的垃圾回收原理</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/10/12/golang-%E8%BD%AC-%E5%9B%BE%E6%96%87%E7%BB%93%E5%90%88%EF%BC%8C%E7%99%BD%E8%AF%9DGo%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%8E%9F%E7%90%86/" class="article-date">
-  <time datetime="2020-10-12T10:07:00.000Z" itemprop="datePublished">2020-10-12</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Golang/">Golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>转载: <a href="https://zhuanlan.zhihu.com/p/264789260" target="_blank" rel="noopener">图文结合，白话Go的垃圾回收原理</a></p>
-<p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/v2-9515a7f1156f98371a25361572b25f0d_720w.jpg" alt=""></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-hello-world"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/09/21/hello-world/"
-    >Hello World</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/09/21/hello-world/" class="article-date">
-  <time datetime="2020-09-21T11:56:00.000Z" itemprop="datePublished">2020-09-21</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BD%AE%E9%A1%B6/">置顶</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-<h3 id="更换电脑后，如何更新博客"><a href="#更换电脑后，如何更新博客" class="headerlink" title="更换电脑后，如何更新博客"></a>更换电脑后，如何更新博客</h3><p><a href="https://www.zhihu.com/question/21193762/answer/79109280" target="_blank" rel="noopener">使用hexo，如果换了电脑怎么更新博客？</a></p>
-<h4 id="关于日常的改动流程"><a href="#关于日常的改动流程" class="headerlink" title="关于日常的改动流程"></a>关于日常的改动流程</h4><ol>
-<li>依次执行git add .、git commit -m “…”、git push origin hexo指令将改动推送到GitHub（此时当前分支应为hexo）</li>
-<li>然后才执行hexo g -d发布网站到master分支上</li>
-</ol>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-golang-使用函数自定义排序"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
-    >Golang --- 使用函数自定义排序</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time datetime="2020-06-06T08:48:00.000Z" itemprop="datePublished">2020-06-06</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Golang/">Golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h1 id="golang-使用函数自定义排序"><a href="#golang-使用函数自定义排序" class="headerlink" title="golang - 使用函数自定义排序"></a>golang - 使用函数自定义排序</h1><p>有时候我们想使用和集合的自然排序不同的方法对集合进行排序。 例如，我们想按照字母的长度而不是首字母顺序对字符串排序。 </p>
-<p>在golang自带的sort模块中, 可以先阅读下函数的代码:</p>
-<p><code>sort.Sort</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sort</span><span class="params">(data Interface)</span></span> &#123;</span><br><span class="line">    n := data.Len()</span><br><span class="line">    quickSort(data, <span class="number">0</span>, n, maxDepth(n))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>sort.quickSort</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickSort</span><span class="params">(data Interface, a, b, maxDepth <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> b-a &gt; <span class="number">12</span> &#123; <span class="comment">// Use ShellSort for slices &lt;= 12 elements</span></span><br><span class="line">        <span class="keyword">if</span> maxDepth == <span class="number">0</span> &#123;</span><br><span class="line">            heapSort(data, a, b)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        maxDepth--</span><br><span class="line">        mlo, mhi := doPivot(data, a, b)</span><br><span class="line">        <span class="comment">// Avoiding recursion on the larger subproblem guarantees</span></span><br><span class="line">        <span class="comment">// a stack depth of at most lg(b-a).</span></span><br><span class="line">        <span class="keyword">if</span> mlo-a &lt; b-mhi &#123;</span><br><span class="line">            quickSort(data, a, mlo, maxDepth)</span><br><span class="line">            a = mhi <span class="comment">// i.e., quickSort(data, mhi, b)</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            quickSort(data, mhi, b, maxDepth)</span><br><span class="line">            b = mlo <span class="comment">// i.e., quickSort(data, a, mlo)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> b-a &gt; <span class="number">1</span> &#123;</span><br><span class="line">        <span class="comment">// Do ShellSort pass with gap 6</span></span><br><span class="line">        <span class="comment">// It could be written in this simplified form cause b-a &lt;= 12</span></span><br><span class="line">        <span class="keyword">for</span> i := a + <span class="number">6</span>; i &lt; b; i++ &#123;</span><br><span class="line">            <span class="keyword">if</span> data.Less(i, i<span class="number">-6</span>) &#123;</span><br><span class="line">                data.Swap(i, i<span class="number">-6</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        insertionSort(data, a, b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-转-golang-web-中间件介绍"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
-    >[转]Golang --- web - 中间件介绍</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/" class="article-date">
-  <time datetime="2020-06-06T04:13:00.000Z" itemprop="datePublished">2020-06-06</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Golang/">Golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>本章将对现在流行的Web框架中的中间件(middleware)技术原理进行分析，并介绍如何使用中间件技术将业务和非业务代码功能进行解耦。</p>
-<h3 id="代码泥潭"><a href="#代码泥潭" class="headerlink" title="代码泥潭"></a>代码泥潭</h3><p>先来看一段代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// middleware/hello.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(wr http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    wr.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    http.HandleFunc(<span class="string">"/"</span>, hello)</span><br><span class="line">    err := http.ListenAndServe(<span class="string">":8080"</span>, <span class="literal">nil</span>)</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一个典型的Web服务，挂载了一个简单的路由。我们的线上服务一般也是从这样简单的服务开始逐渐拓展开去的。</p>
-<p>现在突然来了一个新的需求，我们想要统计之前写的hello服务的处理耗时，需求很简单，我们对上面的程序进行少量修改：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// middleware/hello_with_time_elapse.go</span></span><br><span class="line"><span class="keyword">var</span> logger = log.New(os.Stdout, <span class="string">""</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(wr http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    timeStart := time.Now()</span><br><span class="line">    wr.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</span><br><span class="line">    timeElapsed := time.Since(timeStart)</span><br><span class="line">    logger.Println(timeElapsed)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样便可以在每次接收到http请求时，打印出当前请求所消耗的时间。</p> 
-      <a class="article-more-link" href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/6/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/8/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/6/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/8/">下一页</a>
   </nav>
   
 </section>
