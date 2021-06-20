@@ -137,6 +137,64 @@
     
     
     <article
+  id="post-网络-vegeta压测工具使用"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/06/20/%E7%BD%91%E7%BB%9C-vegeta%E5%8E%8B%E6%B5%8B%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"
+    >[网络] --- vegeta压测工具使用</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/06/20/%E7%BD%91%E7%BB%9C-vegeta%E5%8E%8B%E6%B5%8B%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2021-06-20T07:05:00.000Z" itemprop="datePublished">2021-06-20</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Vegeta 是一个用 Go 语言编写的多功能的 HTTP 负载测试工具，它提供了命令行工具和一个开发库。</p>
+<p>官方地址：<a href="https://github.com/tsenart/vegeta" target="_blank" rel="noopener">https://github.com/tsenart/vegeta</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>mac版本:<code>brew install vegeta</code><br>其他版本没试过, 去上面的github看</p>
+<h3 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-cpus int:    使用 CPU 的数量 (默认为 4 个)</span><br><span class="line">-profile string:    指定在执行期间启用哪个分析器，支持 cpu 和 heap。</span><br><span class="line">-version:    打印版本并退出。attack command:</span><br><span class="line">-body string:    指定请求主体文件里的内容。</span><br><span class="line">-cert string:    指定用于 HTTPS 请求的 PEM 格式的客户端证书文件。如果 -key 未指定，它会被设置为这个标志的值。</span><br><span class="line">-connections int:    指定每个目标主机打开的空闲连接的最大数目，默认值为 10000。</span><br><span class="line">-duration duration:    指定发送请求到目标主机的时长，用 0 表示永久。</span><br><span class="line">-header value:    指定目标的请求头，可以重复指定多个请求头。</span><br><span class="line">-http2:    指定是否向支持的服务器发送 HTTP&#x2F;2 请求，默认为：true。</span><br><span class="line">-insecure:    指定是否忽略无效的服务器 TLS 证书。</span><br><span class="line">-keepalive:    指定是否使用持久链接，默认值为：true。</span><br><span class="line">-key string:    指定 HTTPS 请求中使用的 PEM 编码的 SSL 客户端证书私钥文件。</span><br><span class="line">-laddr value:    指定要使用的本地 I P地址，默认值为：0.0.0.0。</span><br><span class="line">-lazy:    指定是否使用延迟模式读取目标。</span><br><span class="line">-output string:    指定输出文件的位置，默认为标准输出。</span><br><span class="line">-rate uint:    指定每秒钟对目标发送的请求数，默认值为：50。</span><br><span class="line">-redirects int:    指定每个请求的重定向的最大次数，默认为 10 次。当值为 -1, 不会遵循重定向但响应标记为成功。</span><br><span class="line">-root-certs value:    指定可信的 TLS 根证书文件，多个的情况下使用逗号分隔。如果未指定，使用系统默认的 CA 证书。</span><br><span class="line">-targets string:    指定目标文件，默认为标准输入。</span><br><span class="line">-timeout duration:    指定每个请求的超时时间，默认值为 30s。</span><br><span class="line">-workers uint:    指定初始化进程数量，默认值为 10。</span><br><span class="line">-inputs string:    指定报告输入文件，默认为标准输入。</span><br><span class="line">-output string:    指定报告输出文件，默认为标准输出。</span><br><span class="line">-reporter string:    指定要生成的报告的格式，支持 text，json, plot, hist[buckets]。默认为文本。dump command:</span><br><span class="line">-dumper string:    指定转存文件，支持 json, csv 格式。默认为 json 格式。</span><br><span class="line">-inputs string:    指定要转存的输入文件，默认为标准输入，指定多个用逗号分隔。</span><br><span class="line">-output string:    指定要转存的输出文件，默认为标准输出。</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出介绍"><a href="#输出介绍" class="headerlink" title="输出介绍"></a>输出介绍</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#使用标准输入进行压测并生成报告</span><br><span class="line">[root@localhost1]echo &quot;GET http:&#x2F;&#x2F;10.0.0.141&quot;| vegeta attack -rate&#x3D;500 -connections&#x3D;1 -duration&#x3D;1s | tee results.bin | vegeta report</span><br><span class="line">Requests（请求）      [total（请求总数）, rate（请求速度）]            500, 501.00</span><br><span class="line">Duration（攻击）      [total（总共攻击与等待的时间）, attack（攻击的时间）, wait（等待时间）]    998.571503ms, 997.999647ms, 571.856µs</span><br><span class="line">Latencies（执行时间）     [mean（单个请求的平均值）, 50（50%请求达到的时间）, 95, 99, max（单个最大请求时间）]  1.088556ms, 561.997µs, 2.414125ms, 12.116341ms, 22.107566ms</span><br><span class="line">Bytes In（请求的大小（字节））      [total（请求总大小）, mean（请求平均大小）]            306000, 612.00</span><br><span class="line">Bytes Out（字节输出）     [total（总输出）, mean（平均输出）]            0, 0.00</span><br><span class="line">Success（请求成功率）       [ratio（请求成功率）]                  100.00%</span><br><span class="line">Status Codes  [code（状态码）:count（请求次数）]             200:500 </span><br><span class="line">Error Set:（错误集）</span><br></pre></td></tr></table></figure>
+
+<p>举例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">❯ echo &quot;GET http:&#x2F;&#x2F;127.0.0.1:8888&#x2F;2&quot; | vegeta attack -duration&#x3D;20s  -rate&#x3D;0 -max-workers&#x3D;200 -workers&#x3D;200 | tee results.bin | vegeta report</span><br><span class="line">Requests      [total, rate, throughput]         376, 18.74, 6.51</span><br><span class="line">Duration      [total, attack, wait]             32.885s, 20.064s, 12.821s</span><br><span class="line">Latencies     [min, mean, 50, 90, 95, 99, max]  533.233µs, 13.995s, 16.971s, 24.209s, 30s, 30.003s, 30.003s</span><br><span class="line">Bytes In      [total, mean]                     3638, 9.68</span><br><span class="line">Bytes Out     [total, mean]                     0, 0.00</span><br><span class="line">Success       [ratio]                           56.91%</span><br><span class="line">Status Codes  [code:count]                      0:162  200:214</span><br><span class="line">Error Set:</span><br><span class="line">Get &quot;http:&#x2F;&#x2F;127.0.0.1:8888&#x2F;2&quot;: read tcp 127.0.0.1:50213-&gt;127.0.0.1:8888: read: connection reset by peer</span><br><span class="line">Get &quot;http:&#x2F;&#x2F;127.0.0.1:8888&#x2F;2&quot;: read tcp 127.0.0.1:50217-&gt;127.0.0.1:8888: read: connection reset by peer</span><br><span class="line">Get &quot;http:&#x2F;&#x2F;127.0.0.1:8888&#x2F;2&quot;: read tcp 127.0.0.1:50218-&gt;127.0.0.1:8888: read: connection reset by peer</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-转-网络-一文搞懂CIDR地址块及其子网划分"
   class="article article-type-post"
   itemscope
@@ -643,58 +701,6 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h3 id="互联网协议入门（一）"><a href="#互联网协议入门（一）" class="headerlink" title="互联网协议入门（一）"></a><a href="http://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html" target="_blank" rel="noopener">互联网协议入门（一）</a></h3><h3 id="互联网协议入门（二）"><a href="#互联网协议入门（二）" class="headerlink" title="互联网协议入门（二）"></a><a href="http://www.ruanyifeng.com/blog/2012/06/internet_protocol_suite_part_ii.html" target="_blank" rel="noopener">互联网协议入门（二）</a></h3> 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-转-探究！一个数据包在网络中的心路历程"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/05/29/%E8%BD%AC-%E6%8E%A2%E7%A9%B6%EF%BC%81%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B/"
-    >[转]网络 --- 探究！一个数据包在网络中的心路历程</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/05/29/%E8%BD%AC-%E6%8E%A2%E7%A9%B6%EF%BC%81%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%8C%85%E5%9C%A8%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B/" class="article-date">
-  <time datetime="2021-05-29T06:03:00.000Z" itemprop="datePublished">2021-05-29</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxODAzNDg4NQ==&mid=2247483989&idx=1&sn=7e2ed852770743d3955ef9d5561fcef3&scene=21#wechat_redirect" target="_blank" rel="noopener">探究！一个数据包在网络中的心路历程</a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/hexo/20210529135026.png" alt=""></p>
- 
       <!-- reward -->
       
     </div>
