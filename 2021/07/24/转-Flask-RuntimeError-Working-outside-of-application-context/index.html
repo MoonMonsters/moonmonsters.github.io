@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    [转]Flask --- RuntimeError, Working outside of application context. |  想的太多，做的太少，中间的落差就是烦恼，要么去做，要么别想
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="MoonMonsters" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-转-Flask-RuntimeError-Working-outside-of-application-context"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  [转]Flask --- RuntimeError, Working outside of application context.
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/07/24/%E8%BD%AC-Flask-RuntimeError-Working-outside-of-application-context/" class="article-date">
+  <time datetime="2021-07-24T12:01:00.000Z" itemprop="datePublished">2021-07-24</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">1.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">6 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://blog.csdn.net/weixin_35993084/article/details/80609131" target="_blank" rel="noopener">flask：RuntimeError: Working outside of application context.</a></p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>新建测试文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask,current_app</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">a = current_app</span><br><span class="line">b = current_app.config[<span class="string">'DEBUG'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当运行文件时会报错：<br><code>RuntimeError: Working outside of application context.</code></p>
+<p>查看current_app源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># context locals</span></span><br><span class="line">_request_ctx_stack = LocalStack()</span><br><span class="line">_app_ctx_stack = LocalStack()</span><br><span class="line">current_app = LocalProxy(_find_app)</span><br><span class="line">request = LocalProxy(partial(_lookup_req_object, <span class="string">'request'</span>))</span><br><span class="line">session = LocalProxy(partial(_lookup_req_object, <span class="string">'session'</span>))</span><br><span class="line">g = LocalProxy(partial(_lookup_app_object, <span class="string">'g'</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">current_app,request,session三者都是localProxy对象</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+
+<p>查看localProxy源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@implements_bool</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalProxy</span><span class="params">(object)</span>:</span></span><br><span class="line">    __slots__ = (<span class="string">'__local'</span>, <span class="string">'__dict__'</span>, <span class="string">'__name__'</span>, <span class="string">'__wrapped__'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, local, name=None)</span>:</span></span><br><span class="line">        object.__setattr__(self, <span class="string">'_LocalProxy__local'</span>, local)</span><br><span class="line">        object.__setattr__(self, <span class="string">'__name__'</span>, name)</span><br><span class="line">        <span class="keyword">if</span> callable(local) <span class="keyword">and</span> <span class="keyword">not</span> hasattr(local, <span class="string">'__release_local__'</span>):</span><br><span class="line">            <span class="comment"># "local" is a callable that is not an instance of Local or</span></span><br><span class="line">            <span class="comment"># LocalManager: mark it as a wrapped function.</span></span><br><span class="line">            object.__setattr__(self, <span class="string">'__wrapped__'</span>, local)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_get_current_object</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(self.__local, <span class="string">'__release_local__'</span>):</span><br><span class="line">            <span class="keyword">return</span> self.__local()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> getattr(self.__local, self.__name__)</span><br><span class="line">        <span class="keyword">except</span> AttributeError:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">'no object bound to %s'</span> % self.__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__dict__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> self._get_current_object().__dict__</span><br><span class="line">        <span class="keyword">except</span> RuntimeError:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">'__dict__'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            obj = self._get_current_object()</span><br><span class="line">        <span class="keyword">except</span> RuntimeError:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'&lt;%s unbound&gt;'</span> % self.__class__.__name__</span><br><span class="line">        <span class="keyword">return</span> repr(obj)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__bool__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> bool(self._get_current_object())</span><br><span class="line">        <span class="keyword">except</span> RuntimeError:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> unicode(self._get_current_object())  <span class="comment"># noqa</span></span><br><span class="line">        <span class="keyword">except</span> RuntimeError:</span><br><span class="line">            <span class="keyword">return</span> repr(self)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__dir__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> dir(self._get_current_object())</span><br><span class="line">        <span class="keyword">except</span> RuntimeError:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> name == <span class="string">'__members__'</span>:</span><br><span class="line">            <span class="keyword">return</span> dir(self._get_current_object())</span><br><span class="line">        <span class="keyword">return</span> getattr(self._get_current_object(), name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        self._get_current_object()[key] = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self._get_current_object()[key]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> PY2:</span><br><span class="line">        __getslice__ = <span class="keyword">lambda</span> x, i, j: x._get_current_object()[i:j]</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__setslice__</span><span class="params">(self, i, j, seq)</span>:</span></span><br><span class="line">            self._get_current_object()[i:j] = seq</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__delslice__</span><span class="params">(self, i, j)</span>:</span></span><br><span class="line">            <span class="keyword">del</span> self._get_current_object()[i:j]</span><br><span class="line"></span><br><span class="line">    __setattr__ = <span class="keyword">lambda</span> x, n, v: setattr(x._get_current_object(), n, v)</span><br><span class="line">    __delattr__ = <span class="keyword">lambda</span> x, n: delattr(x._get_current_object(), n)</span><br><span class="line">    __str__ = <span class="keyword">lambda</span> x: str(x._get_current_object())</span><br><span class="line">    __lt__ = <span class="keyword">lambda</span> x, o: x._get_current_object() &lt; o</span><br><span class="line">    __le__ = <span class="keyword">lambda</span> x, o: x._get_current_object() &lt;= o</span><br><span class="line">    __eq__ = <span class="keyword">lambda</span> x, o: x._get_current_object() == o</span><br><span class="line">    __ne__ = <span class="keyword">lambda</span> x, o: x._get_current_object() != o</span><br><span class="line">    __gt__ = <span class="keyword">lambda</span> x, o: x._get_current_object() &gt; o</span><br><span class="line">    __ge__ = <span class="keyword">lambda</span> x, o: x._get_current_object() &gt;= o</span><br><span class="line">    __cmp__ = <span class="keyword">lambda</span> x, o: cmp(x._get_current_object(), o)  <span class="comment"># noqa</span></span><br><span class="line">    __hash__ = <span class="keyword">lambda</span> x: hash(x._get_current_object())</span><br><span class="line">    __call__ = <span class="keyword">lambda</span> x, *a, **kw: x._get_current_object()(*a, **kw)</span><br><span class="line">    __len__ = <span class="keyword">lambda</span> x: len(x._get_current_object())</span><br><span class="line">    __getitem__ = <span class="keyword">lambda</span> x, i: x._get_current_object()[i]</span><br><span class="line">    __iter__ = <span class="keyword">lambda</span> x: iter(x._get_current_object())</span><br><span class="line">    __contains__ = <span class="keyword">lambda</span> x, i: i <span class="keyword">in</span> x._get_current_object()</span><br><span class="line">    __add__ = <span class="keyword">lambda</span> x, o: x._get_current_object() + o</span><br><span class="line">    __sub__ = <span class="keyword">lambda</span> x, o: x._get_current_object() - o</span><br><span class="line">    __mul__ = <span class="keyword">lambda</span> x, o: x._get_current_object() * o</span><br><span class="line">    __floordiv__ = <span class="keyword">lambda</span> x, o: x._get_current_object() // o</span><br><span class="line">    __mod__ = <span class="keyword">lambda</span> x, o: x._get_current_object() % o</span><br><span class="line">    __divmod__ = <span class="keyword">lambda</span> x, o: x._get_current_object().__divmod__(o)</span><br><span class="line">    __pow__ = <span class="keyword">lambda</span> x, o: x._get_current_object() ** o</span><br><span class="line">    __lshift__ = <span class="keyword">lambda</span> x, o: x._get_current_object() &lt;&lt; o</span><br><span class="line">    __rshift__ = <span class="keyword">lambda</span> x, o: x._get_current_object() &gt;&gt; o</span><br><span class="line">    __and__ = <span class="keyword">lambda</span> x, o: x._get_current_object() &amp; o</span><br><span class="line">    __xor__ = <span class="keyword">lambda</span> x, o: x._get_current_object() ^ o</span><br><span class="line">    __or__ = <span class="keyword">lambda</span> x, o: x._get_current_object() | o</span><br><span class="line">    __div__ = <span class="keyword">lambda</span> x, o: x._get_current_object().__div__(o)</span><br><span class="line">    __truediv__ = <span class="keyword">lambda</span> x, o: x._get_current_object().__truediv__(o)</span><br><span class="line">    __neg__ = <span class="keyword">lambda</span> x: -(x._get_current_object())</span><br><span class="line">    __pos__ = <span class="keyword">lambda</span> x: +(x._get_current_object())</span><br><span class="line">    __abs__ = <span class="keyword">lambda</span> x: abs(x._get_current_object())</span><br><span class="line">    __invert__ = <span class="keyword">lambda</span> x: ~(x._get_current_object())</span><br><span class="line">    __complex__ = <span class="keyword">lambda</span> x: complex(x._get_current_object())</span><br><span class="line">    __int__ = <span class="keyword">lambda</span> x: int(x._get_current_object())</span><br><span class="line">    __long__ = <span class="keyword">lambda</span> x: long(x._get_current_object())  <span class="comment"># noqa</span></span><br><span class="line">    __float__ = <span class="keyword">lambda</span> x: float(x._get_current_object())</span><br><span class="line">    __oct__ = <span class="keyword">lambda</span> x: oct(x._get_current_object())</span><br><span class="line">    __hex__ = <span class="keyword">lambda</span> x: hex(x._get_current_object())</span><br><span class="line">    __index__ = <span class="keyword">lambda</span> x: x._get_current_object().__index__()</span><br><span class="line">    __coerce__ = <span class="keyword">lambda</span> x, o: x._get_current_object().__coerce__(x, o)</span><br><span class="line">    __enter__ = <span class="keyword">lambda</span> x: x._get_current_object().__enter__()</span><br><span class="line">    __exit__ = <span class="keyword">lambda</span> x, *a, **kw: x._get_current_object().__exit__(*a, **kw)</span><br><span class="line">    __radd__ = <span class="keyword">lambda</span> x, o: o + x._get_current_object()</span><br><span class="line">    __rsub__ = <span class="keyword">lambda</span> x, o: o - x._get_current_object()</span><br><span class="line">    __rmul__ = <span class="keyword">lambda</span> x, o: o * x._get_current_object()</span><br><span class="line">    __rdiv__ = <span class="keyword">lambda</span> x, o: o / x._get_current_object()</span><br><span class="line">    <span class="keyword">if</span> PY2:</span><br><span class="line">        __rtruediv__ = <span class="keyword">lambda</span> x, o: x._get_current_object().__rtruediv__(o)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        __rtruediv__ = __rdiv__</span><br><span class="line">    __rfloordiv__ = <span class="keyword">lambda</span> x, o: o // x._get_current_object()</span><br><span class="line">    __rmod__ = <span class="keyword">lambda</span> x, o: o % x._get_current_object()</span><br><span class="line">    __rdivmod__ = <span class="keyword">lambda</span> x, o: x._get_current_object().__rdivmod__(o)</span><br><span class="line">    __copy__ = <span class="keyword">lambda</span> x: copy.copy(x._get_current_object())</span><br><span class="line">    __deepcopy__ = <span class="keyword">lambda</span> x, memo: copy.deepcopy(x._get_current_object(), memo)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="探究以下问题"><a href="#探究以下问题" class="headerlink" title="探究以下问题"></a>探究以下问题</h3><p>AppContext、RequestContext、Flask与Request之间的关系</p>
+<p>flask中上下文机制：<br>flask中上下文是一种对象<br>‘’’<br><em>应用上下文： 对象   Flask</em><br><em>请求上下文： 对象   Request</em><br>Flask  –&gt; Appcontext<br>Request –&gt; RequestContext<br>‘’’<br>#Appcontext是对Flask的封装，将Flask的外部操作封装到Appcontext对象中<br>#Request同上</p>
+<p>通过<br><code>from flask import current_app,request</code><br>实际是通过LocalProxy方法找到flask核心对象和Request类</p>
+<p>flask核心机制图解<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210524195007.png" alt=""></p>
+<p>flask实现栈的对象是LocalStack<br>falsk实例化两个栈：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_app_ctx_stack = LocalStack()</span><br><span class="line">_request_ctx_stack = LocalStack()</span><br></pre></td></tr></table></figure>
+<p>当请求进入时，<code>RequestContext</code>先被实例化，实例化后推入<code>_reuqest_ctx_stack</code>栈中，此时flask会检测<code>_app_ctx_stack</code>栈顶是否为空，如果为空flask会将当前应用对象AppContext实例化后推入<code>_app_ctx_stack</code>栈顶</p>
+<p><code>current_app=LoaclProxy(find_app)</code>中find_app源码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_find_app</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#取栈顶对象</span></span><br><span class="line">    top = _app_ctx_stack.top</span><br><span class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(_app_ctx_err_msg)</span><br><span class="line">    <span class="comment">#返回栈顶AppContext中的app对象</span></span><br><span class="line">    <span class="keyword">return</span> top.app</span><br></pre></td></tr></table></figure>
+
+<p>此时current_app返回应用上下文AppContext中app对象</p>
+<p><code>request=LocalProxy(partial(_lookup_req_object,’request’))</code>中<code>_lookup_req_objext</code>源码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_lookup_req_object</span><span class="params">(name)</span>:</span></span><br><span class="line">    <span class="comment">#获取request栈顶对象</span></span><br><span class="line">    top = _request_ctx_stack.top</span><br><span class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> RuntimeError(_request_ctx_err_msg)</span><br><span class="line">    <span class="comment">#返回栈顶对象的name</span></span><br><span class="line">    <span class="keyword">return</span> getattr(top, name)</span><br></pre></td></tr></table></figure>
+
+<p><code>current_app</code>和<code>request</code>永远指向两个栈的栈顶对象<br/><br>以上可看出，当请求通过flask访问时，会先生成Request请求上下文对象的实例化，并通过request代理指向request对象。然后由flask来实例化AppContext 对象，并推入栈中，从而让current_app有指向对象<br/><br>当进行离线应用、单元测试时，因为没有触发request请求，需要自行将应用上下文推入栈中。再手动弹出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> current_app,request</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">ctx = app.app_context()</span><br><span class="line">ctx.push()</span><br><span class="line">a = current_app</span><br><span class="line">curent_app.config[<span class="string">'DEBUG'</span>]</span><br><span class="line">ctx.pop()</span><br></pre></td></tr></table></figure>
+<p>可以优化成</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask,current_app</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> app.app_context():</span><br><span class="line">    a = current_app</span><br><span class="line">    b = current_app.config[<span class="string">'DEBUG'</span>]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">app_context()方法返回一个AppContext应用上下文管理器</span></span><br><span class="line"><span class="string">在AppContext中定义了__enter__和__exit__方法</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>Appcontext中上下文管理器部分源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.push()</span><br><span class="line">    <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exc_type, exc_value, tb)</span>:</span></span><br><span class="line">    self.pop(exc_value)</span><br></pre></td></tr></table></figure>
+<p>因此在with语句中，AppContext中定义了<strong>exit</strong>方法，所以当current_app离开with语句中时，_app_ctx_stack栈顶的AppContext已被弹出，current_app没有任何指向对象。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2021/07/24/%E8%BD%AC-Flask-RuntimeError-Working-outside-of-application-context/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bug/" rel="tag">bug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flask/" rel="tag">flask</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81/" rel="tag">源码</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/07/24/%E8%BD%AC-Flask-Python%E7%9A%84Web%E6%A1%86%E6%9E%B6Flask-Vue-%E7%94%9F%E6%88%90%E6%BC%82%E4%BA%AE%E7%9A%84%E8%AF%8D%E4%BA%91/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">[转]Flask --- Flask + Vue 生成漂亮的词云</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "pDv5HVdNhDdf45DMhskFcRAV-gzGzoHsz",
+    app_key: "fYz9YkPVpuHAUVJB4agGnJua",
+    path: window.location.pathname,
+    avatar: "robohash",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2021
+        <i class="ri-heart-fill heart_icon"></i> _Tao
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="MoonMonsters"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2020/11/15/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5">链接</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+
+<script src="/js/clickBoom2.js"></script>
+
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+<script src="/js/dz.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>

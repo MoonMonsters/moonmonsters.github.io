@@ -137,6 +137,408 @@
     
     
     <article
+  id="post-golang-使用函数自定义排序"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
+    >Golang --- 使用函数自定义排序</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2020-06-06T08:48:00.000Z" itemprop="datePublished">2020-06-06</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Golang/">Golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1 id="golang-使用函数自定义排序"><a href="#golang-使用函数自定义排序" class="headerlink" title="golang - 使用函数自定义排序"></a>golang - 使用函数自定义排序</h1><p>有时候我们想使用和集合的自然排序不同的方法对集合进行排序。 例如，我们想按照字母的长度而不是首字母顺序对字符串排序。 </p>
+<p>在golang自带的sort模块中, 可以先阅读下函数的代码:</p>
+<p><code>sort.Sort</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sort</span><span class="params">(data Interface)</span></span> &#123;</span><br><span class="line">    n := data.Len()</span><br><span class="line">    quickSort(data, <span class="number">0</span>, n, maxDepth(n))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>sort.quickSort</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickSort</span><span class="params">(data Interface, a, b, maxDepth <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> b-a &gt; <span class="number">12</span> &#123; <span class="comment">// Use ShellSort for slices &lt;= 12 elements</span></span><br><span class="line">        <span class="keyword">if</span> maxDepth == <span class="number">0</span> &#123;</span><br><span class="line">            heapSort(data, a, b)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        maxDepth--</span><br><span class="line">        mlo, mhi := doPivot(data, a, b)</span><br><span class="line">        <span class="comment">// Avoiding recursion on the larger subproblem guarantees</span></span><br><span class="line">        <span class="comment">// a stack depth of at most lg(b-a).</span></span><br><span class="line">        <span class="keyword">if</span> mlo-a &lt; b-mhi &#123;</span><br><span class="line">            quickSort(data, a, mlo, maxDepth)</span><br><span class="line">            a = mhi <span class="comment">// i.e., quickSort(data, mhi, b)</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            quickSort(data, mhi, b, maxDepth)</span><br><span class="line">            b = mlo <span class="comment">// i.e., quickSort(data, a, mlo)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> b-a &gt; <span class="number">1</span> &#123;</span><br><span class="line">        <span class="comment">// Do ShellSort pass with gap 6</span></span><br><span class="line">        <span class="comment">// It could be written in this simplified form cause b-a &lt;= 12</span></span><br><span class="line">        <span class="keyword">for</span> i := a + <span class="number">6</span>; i &lt; b; i++ &#123;</span><br><span class="line">            <span class="keyword">if</span> data.Less(i, i<span class="number">-6</span>) &#123;</span><br><span class="line">                data.Swap(i, i<span class="number">-6</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        insertionSort(data, a, b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/06/06/golang-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-转-golang-web-中间件介绍"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
+    >[转]Golang --- web - 中间件介绍</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/" class="article-date">
+  <time datetime="2020-06-06T04:13:00.000Z" itemprop="datePublished">2020-06-06</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Golang/">Golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>本章将对现在流行的Web框架中的中间件(middleware)技术原理进行分析，并介绍如何使用中间件技术将业务和非业务代码功能进行解耦。</p>
+<h3 id="代码泥潭"><a href="#代码泥潭" class="headerlink" title="代码泥潭"></a>代码泥潭</h3><p>先来看一段代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// middleware/hello.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(wr http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    wr.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    http.HandleFunc(<span class="string">"/"</span>, hello)</span><br><span class="line">    err := http.ListenAndServe(<span class="string">":8080"</span>, <span class="literal">nil</span>)</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个典型的Web服务，挂载了一个简单的路由。我们的线上服务一般也是从这样简单的服务开始逐渐拓展开去的。</p>
+<p>现在突然来了一个新的需求，我们想要统计之前写的hello服务的处理耗时，需求很简单，我们对上面的程序进行少量修改：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// middleware/hello_with_time_elapse.go</span></span><br><span class="line"><span class="keyword">var</span> logger = log.New(os.Stdout, <span class="string">""</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(wr http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    timeStart := time.Now()</span><br><span class="line">    wr.Write([]<span class="keyword">byte</span>(<span class="string">"hello"</span>))</span><br><span class="line">    timeElapsed := time.Since(timeStart)</span><br><span class="line">    logger.Println(timeElapsed)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样便可以在每次接收到http请求时，打印出当前请求所消耗的时间。</p> 
+      <a class="article-more-link" href="/2020/06/06/%E8%BD%AC-golang-web-%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BB%8B%E7%BB%8D/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-[转]golang-发布订阅模型"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/04/%5B%E8%BD%AC%5Dgolang-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B/"
+    >[转]Golang --- 发布订阅模型</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/06/04/%5B%E8%BD%AC%5Dgolang-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time datetime="2020-06-04T11:56:00.000Z" itemprop="datePublished">2020-06-04</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Golang/">Golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="发布订阅者"><a href="#发布订阅者" class="headerlink" title="发布订阅者"></a>发布订阅者</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pubsub</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"sync"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> (</span><br><span class="line">    <span class="comment">// 订阅者是一个管道</span></span><br><span class="line">    subscriber <span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">    <span class="comment">// 主题是一个过滤器</span></span><br><span class="line">    topicFunc <span class="function"><span class="keyword">func</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">bool</span></span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发布者对象</span></span><br><span class="line"><span class="keyword">type</span> Publisher <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 读写锁</span></span><br><span class="line">    m sync.RWMutex</span><br><span class="line">    <span class="comment">// 订阅队列的缓存大小</span></span><br><span class="line">    buffer <span class="keyword">int</span></span><br><span class="line">    <span class="comment">// 发布的过期时间</span></span><br><span class="line">    timeout time.Duration</span><br><span class="line">    <span class="comment">// 订阅者信息</span></span><br><span class="line">    subscribers <span class="keyword">map</span>[subscriber]topicFunc</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构建一个发布者, 设置超时时间和缓存队列长度</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewPublisher</span><span class="params">(publishTimeout time.Duration, buffer <span class="keyword">int</span>)</span> *<span class="title">Publisher</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;Publisher&#123;</span><br><span class="line">        buffer:      buffer,</span><br><span class="line">        timeout:     publishTimeout,</span><br><span class="line">        subscribers: <span class="built_in">make</span>(<span class="keyword">map</span>[subscriber]topicFunc),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加一个订阅者, 订阅过滤器筛选后的主题</span></span><br><span class="line"><span class="comment">// 添加订阅主题参数, 返回订阅者</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">SubscribeTopic</span><span class="params">(topic topicFunc)</span> <span class="title">chan</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;, p.buffer)</span><br><span class="line">    p.m.Lock()</span><br><span class="line">    p.subscribers[ch] = topic</span><br><span class="line">    p.m.Unlock()</span><br><span class="line">    <span class="keyword">return</span> ch</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅所有的主题</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Subscribe</span><span class="params">()</span> <span class="title">chan</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">    <span class="keyword">return</span> p.SubscribeTopic(<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//退订</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Evict</span><span class="params">(sub <span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    p.m.Lock()</span><br><span class="line">    <span class="keyword">defer</span> p.m.Unlock()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">delete</span>(p.subscribers, sub)</span><br><span class="line">    <span class="built_in">close</span>(sub)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送一个主题</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Publish</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    p.m.RLock()</span><br><span class="line">    <span class="keyword">defer</span> p.m.RUnlock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">    <span class="comment">// 遍历所有的订阅者, 一个个的发布</span></span><br><span class="line">    <span class="keyword">for</span> sub, topic := <span class="keyword">range</span> p.subscribers &#123;</span><br><span class="line">        wg.Add(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">go</span> p.sendTopic(sub, topic, v, &amp;wg)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实际上的发送函数</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">sub: 订阅者, chan</span></span><br><span class="line"><span class="comment">topic: 订阅主题, 即传进来的函数</span></span><br><span class="line"><span class="comment">v: 函数参数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">sendTopic</span><span class="params">(sub subscriber, topic topicFunc, v <span class="keyword">interface</span>&#123;&#125;, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> wg.Done()</span><br><span class="line">    <span class="comment">// 该代码中, topic会返回true或者false, 如果返回false就表示没有订阅</span></span><br><span class="line">    <span class="comment">// 如果topic是nil, 就表示全订阅</span></span><br><span class="line">    <span class="keyword">if</span> topic != <span class="literal">nil</span> &amp;&amp; !topic(v) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> sub &lt;- v:	<span class="comment">// 将参数传递给了订阅者, 订阅者能打印, 则表示收到发布的内容</span></span><br><span class="line">    <span class="keyword">case</span> &lt;-time.After(p.timeout):	<span class="comment">// 超时时间</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭发布者对象, 同时关闭所有的订阅者管道</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Publisher)</span> <span class="title">Close</span><span class="params">()</span></span> &#123;</span><br><span class="line">    p.m.Lock()</span><br><span class="line">    <span class="keyword">defer</span> p.m.Unlock()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> sub := <span class="keyword">range</span> p.subscribers &#123;</span><br><span class="line">        <span class="built_in">delete</span>(p.subscribers, sub)</span><br><span class="line">        <span class="built_in">close</span>(sub)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/06/04/%5B%E8%BD%AC%5Dgolang-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%9E%8B/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-django-rest-framework-权限"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-rest-framework-%E6%9D%83%E9%99%90/"
+    >Django-rest-framework --- 权限</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-rest-framework-%E6%9D%83%E9%99%90/" class="article-date">
+  <time datetime="2020-05-23T11:34:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> User</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserInfo</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    USER_COMMON = <span class="number">0</span></span><br><span class="line">    USER_VIP = <span class="number">100</span></span><br><span class="line">    USER_SVIP = <span class="number">200</span></span><br><span class="line">    <span class="comment"># 用户类型</span></span><br><span class="line">    USER_TYPE = (</span><br><span class="line">        (USER_COMMON, <span class="string">'普通用户'</span>),</span><br><span class="line">        (USER_VIP, <span class="string">'VIP'</span>),</span><br><span class="line">        (USER_SVIP, <span class="string">'SVIP'</span>)</span><br><span class="line">    )</span><br><span class="line"> </span><br><span class="line">    user_type = models.IntegerField(choices=USER_TYPE, default=USER_COMMON)</span><br><span class="line">    <span class="comment"># 建立1对1关系模型</span></span><br><span class="line">    user = models.OneToOneField(User, on_delete=models.CASCADE,</span><br><span class="line">related_name=<span class="string">'userinfo'</span>)</span><br></pre></td></tr></table></figure> 
+      <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E6%9D%83%E9%99%90/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-python属性描述符和属性查找过程"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/python%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%92%8C%E5%B1%9E%E6%80%A7%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B/"
+    >Python --- 属性描述符和属性查找过程</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/python%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%92%8C%E5%B1%9E%E6%80%A7%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B/" class="article-date">
+  <time datetime="2020-05-23T11:34:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="对象的自省机制"><a href="#对象的自省机制" class="headerlink" title="对象的自省机制"></a>对象的自省机制</h3><p>自省是通过一定的机制查询到对象的内部结构。</p>
+<h4 id="dir-obj"><a href="#dir-obj" class="headerlink" title="dir(obj)"></a><code>dir(obj)</code></h4><p>dir是python提供的一个api函数，会返回一个列表，该列表中包含该对象（实例对象或者类对象）的所有的属性和方法（包括从父类中获取的）</p> 
+      <a class="article-more-link" href="/2020/05/23/python%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%92%8C%E5%B1%9E%E6%80%A7%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-求两个单链表的交叉节点"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/%E6%B1%82%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9A%84%E4%BA%A4%E5%8F%89%E8%8A%82%E7%82%B9/"
+    >数据结构 --- 求两个单链表的交叉节点</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/%E6%B1%82%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9A%84%E4%BA%A4%E5%8F%89%E8%8A%82%E7%82%B9/" class="article-date">
+  <time datetime="2020-05-23T11:33:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>思路:<br>如果两个单链表有交叉节点,那么他们的尾节点一定是相同的,所以可以计算出链表的长度,然后判断长短,将长度较长的链表的头节点移动(长-短)个节点,然后遍历之后的节点.</p> 
+      <a class="article-more-link" href="/2020/05/23/%E6%B1%82%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9A%84%E4%BA%A4%E5%8F%89%E8%8A%82%E7%82%B9/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-django-rest-framework-分页"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/django-rest-framework-%E5%88%86%E9%A1%B5/"
+    >Django-rest-framework --- 分页</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/05/23/django-rest-framework-%E5%88%86%E9%A1%B5/" class="article-date">
+  <time datetime="2020-05-23T11:32:00.000Z" itemprop="datePublished">2020-05-23</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>drf框架的分页主要有三种：</p>
+<ol>
+<li>普通分页，看第n页，每页显示m条数据</li>
+<li>切割分页，在第n个位置，向后查看m条数据</li>
+<li>加密分页，与普通分页一样，不过对url中的请求页码进行加密</li>
+</ol> 
+      <a class="article-more-link" href="/2020/05/23/django-rest-framework-%E5%88%86%E9%A1%B5/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-django-rest-framework-JWTAuthentication"
   class="article article-type-post"
   itemscope
@@ -290,405 +692,6 @@
 <br/>
 很无奈，格式一直调不对，"""文档注释"""总是出现对不齐的情况 
       <a class="article-more-link" href="/2020/05/23/%E6%95%A3%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-django-session源码分析"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
-    >Django --- session源码分析</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-05-23T11:29:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="cookie和seesion的区别"><a href="#cookie和seesion的区别" class="headerlink" title="cookie和seesion的区别"></a>cookie和seesion的区别</h3><p>简单来讲就是都是key-value形式的数据，不同的是，cookie存储在客户端，session存储在服务端。具体的解释可以上网搜，不做叙述。</p> 
-      <a class="article-more-link" href="/2020/05/23/django-session%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%90%E7%A0%81/" rel="tag">源码</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-转-几个redis常用问题"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/%E8%BD%AC-%E5%87%A0%E4%B8%AAredis%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98/"
-    >[转]Redis --- 几个redis常用问题</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/%E8%BD%AC-%E5%87%A0%E4%B8%AAredis%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2020-05-23T11:28:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><h4 id="什么是缓存雪崩？"><a href="#什么是缓存雪崩？" class="headerlink" title="什么是缓存雪崩？"></a>什么是缓存雪崩？</h4><p>如果我们的缓存挂掉了，这意味着我们的全部请求都跑去数据库了。<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/blog/20191215/1.jpg" alt="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/blog/20191215/1.jpg"><br>我们都知道Redis不可能把所有的数据都缓存起来(内存昂贵且有限)，所以Redis需要对数据设置过期时间，并采用的是惰性删除+定期删除两种策略对过期键删除。</p>
-<p>如果缓存数据设置的过期时间是相同的，并且Redis恰好将这部分数据全部删光了。这就会导致在这段时间内，这些缓存同时失效，全部请求到数据库中。</p>
-<p>这就是缓存雪崩：Redis挂掉了，请求全部走数据库。</p>
-<p>缓存雪崩如果发生了，很可能就把我们的数据库搞垮，导致整个服务瘫痪！</p> 
-      <a class="article-more-link" href="/2020/05/23/%E8%BD%AC-%E5%87%A0%E4%B8%AAredis%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-转-Go语言中new-和-make-的区别"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/%E8%BD%AC-Go%E8%AF%AD%E8%A8%80%E4%B8%ADnew-%E5%92%8C-make-%E7%9A%84%E5%8C%BA%E5%88%AB/"
-    >[转]Golang --- Go语言中new()和 make()的区别</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/%E8%BD%AC-Go%E8%AF%AD%E8%A8%80%E4%B8%ADnew-%E5%92%8C-make-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
-  <time datetime="2020-05-23T11:27:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Golang/">Golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Go 语言中的 new 和 make 一直是新手比较容易混淆的东西，咋一看很相似。不过解释两者之间的不同也非常容易。</p>
-<h3 id="new-的主要特性"><a href="#new-的主要特性" class="headerlink" title="new 的主要特性"></a>new 的主要特性</h3><p>首先 new 是内建函数，你可以从 <a href="http://golang.org/pkg/builtin/#new" target="_blank" rel="noopener">http://golang.org/pkg/builtin/#new</a> 这儿看到它，它的定义也很简单：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">new</span><span class="params">(Type)</span> *<span class="title">Type</span></span></span><br></pre></td></tr></table></figure>
-<p>官方文档对于它的描述是：</p>
-<blockquote>
-<p>内建函数 new 用来分配内存，它的第一个参数是一个类型，不是一个值，它的返回值是一个指向新分配类型零值的指针</p>
-</blockquote>
-<p>根据这段描述，我们可以自己实现一个类似 new 的功能：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newInt</span><span class="params">()</span> *<span class="title">int</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> i <span class="keyword">int</span></span><br><span class="line">  <span class="keyword">return</span> &amp;i</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">someInt := newInt()</span><br></pre></td></tr></table></figure>
-<p>我们这个函数的功能跟 someInt := new(int) 一模一样。所以在我们自己定义 new 开头的函数时，出于约定也应该返回类型的指针。</p> 
-      <a class="article-more-link" href="/2020/05/23/%E8%BD%AC-Go%E8%AF%AD%E8%A8%80%E4%B8%ADnew-%E5%92%8C-make-%E7%9A%84%E5%8C%BA%E5%88%AB/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-golang-接口介绍"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/golang-%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D/"
-    >Golang --- 接口介绍</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/golang-%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D/" class="article-date">
-  <time datetime="2020-05-23T11:26:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Golang/">Golang</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>Go语言的主要设计者之一罗布·派克（Rob Pike）曾经说过，如果只能选择一个Go语言的特 性移植到其他语言中，他会选择接口。</p>
-<p>接口在Go语言有着至关重要的地位。如果说goroutine和channel是支撑起Go语言的并发模型 的基石，让Go语言在如今集群化与多核化的时代成为一道极为亮丽的风景，那么接口是Go语言 整个类型系统的基石，让Go语言在基础编程哲学的探索上达到前所未有的高度。</p>
-<p>Go语言在编程哲学上是变革派，而不是改良派。这不是因为Go语言有goroutine和channel， 而更重要的是因为Go语言的类型系统，更是因为Go语言的接口。Go语言的编程哲学因为有接口 而趋近完美。</p> 
-      <a class="article-more-link" href="/2020/05/23/golang-%E6%8E%A5%E5%8F%A3%E4%BB%8B%E7%BB%8D/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-转-DRF中使用缓存drf-extensions"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/%E8%BD%AC-DRF%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98drf-extensions/"
-    >[转]Django-rest-framework --- 使用缓存drf-extensions</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/%E8%BD%AC-DRF%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98drf-extensions/" class="article-date">
-  <time datetime="2020-05-23T11:25:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>(这个库很简单,直接转发别人的了.)<br/></p>
-<p>在开发某些网站的时候，比如有些不经常或者长时间不会变更的数据，但是，用户会经常查询的数据，为了避免多次查询数据库给数据库带来太大的压力，我们可以及将这些经常被查询的数据，在被查询一次之后，可以在存放在redis缓存中，下次再进行查询的时候，可以直接从redis进行获取，而不需要再查询存储数据的（例如mysql）数据库了；</p> 
-      <a class="article-more-link" href="/2020/05/23/%E8%BD%AC-DRF%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98drf-extensions/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django-rest-framework/" rel="tag">django-rest-framework</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-使用faker库随机产生虚拟数据"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/%E4%BD%BF%E7%94%A8faker%E5%BA%93%E9%9A%8F%E6%9C%BA%E4%BA%A7%E7%94%9F%E8%99%9A%E6%8B%9F%E6%95%B0%E6%8D%AE/"
-    >Python --- 使用faker库随机产生虚拟数据</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/%E4%BD%BF%E7%94%A8faker%E5%BA%93%E9%9A%8F%E6%9C%BA%E4%BA%A7%E7%94%9F%E8%99%9A%E6%8B%9F%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time datetime="2020-05-23T11:24:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>安装:<br/><br><code>pip install faker</code></p> 
-      <a class="article-more-link" href="/2020/05/23/%E4%BD%BF%E7%94%A8faker%E5%BA%93%E9%9A%8F%E6%9C%BA%E4%BA%A7%E7%94%9F%E8%99%9A%E6%8B%9F%E6%95%B0%E6%8D%AE/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-转-super没那么简单"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/%E8%BD%AC-super%E6%B2%A1%E9%82%A3%E4%B9%88%E7%AE%80%E5%8D%95/"
-    >[转]Python --- super没那么简单</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/05/23/%E8%BD%AC-super%E6%B2%A1%E9%82%A3%E4%B9%88%E7%AE%80%E5%8D%95/" class="article-date">
-  <time datetime="2020-05-23T11:24:00.000Z" itemprop="datePublished">2020-05-23</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>说到 super， 大家可能觉得很简单呀，不就是用来调用父类方法的嘛。如果真的这么简单的话也就不会有这篇文章了，且听我细细道来。?</p>
-<h3 id="约定"><a href="#约定" class="headerlink" title="约定"></a>约定</h3><p>在开始之前我们来约定一下本文所使用的 Python 版本。默认用的是 Python 3，也就是说：本文所定义的类都是新式类。如果你用到是 Python 2 的话，记得继承 object:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认， Python 3</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Python 2</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure> 
-      <a class="article-more-link" href="/2020/05/23/%E8%BD%AC-super%E6%B2%A1%E9%82%A3%E4%B9%88%E7%AE%80%E5%8D%95/"
         >阅读更多...</a
       >
        
