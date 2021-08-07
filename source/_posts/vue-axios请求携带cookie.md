@@ -35,7 +35,7 @@ false：在跨域请求时，不会携带用户凭证；返回的 response 里�
 def _cors_response(response, status=200):
     resp = make_response(response, status)
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
-    resp.headers['Access-Control-Allow-Origin'] = 'http://key-ui.oa.zego.im:9528'
+    resp.headers['Access-Control-Allow-Origin'] = '*'
 
     return resp
 ```
