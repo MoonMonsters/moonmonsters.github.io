@@ -182,7 +182,7 @@
 <h3 id="探究以下问题"><a href="#探究以下问题" class="headerlink" title="探究以下问题"></a>探究以下问题</h3><p>AppContext、RequestContext、Flask与Request之间的关系</p>
 <p>flask中上下文机制：<br>flask中上下文是一种对象<br>‘’’<br><em>应用上下文： 对象   Flask</em><br><em>请求上下文： 对象   Request</em><br>Flask  –&gt; Appcontext<br>Request –&gt; RequestContext<br>‘’’<br>#Appcontext是对Flask的封装，将Flask的外部操作封装到Appcontext对象中<br>#Request同上</p>
 <p>通过<br><code>from flask import current_app,request</code><br>实际是通过LocalProxy方法找到flask核心对象和Request类</p>
-<p>flask核心机制图解<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210524195007.png" alt=""></p>
+<p>flask核心机制图解<br><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210524195007.png" alt=""></p>
 <p>flask实现栈的对象是LocalStack<br>falsk实例化两个栈：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_app_ctx_stack = LocalStack()</span><br><span class="line">_request_ctx_stack = LocalStack()</span><br></pre></td></tr></table></figure>
 <p>当请求进入时，<code>RequestContext</code>先被实例化，实例化后推入<code>_reuqest_ctx_stack</code>栈中，此时flask会检测<code>_app_ctx_stack</code>栈顶是否为空，如果为空flask会将当前应用对象AppContext实例化后推入<code>_app_ctx_stack</code>栈顶</p>
@@ -463,7 +463,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://www.jianshu.com/p/4016c2f15d90" target="_blank" rel="noopener">lua - ipip地址库</a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210723174008.png" alt=""></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210723174008.png" alt=""></p>
  
       <!-- reward -->
       
@@ -516,7 +516,7 @@
        
   <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://lsqi.github.io/posts/14066.html" target="_blank" rel="noopener">使用homebrew安装OpenResty
 </a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210723173551.png" alt=""></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210723173551.png" alt=""></p>
  
       <!-- reward -->
       
@@ -691,7 +691,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s/iryUdWwfM8icgUvolPGJXw" target="_blank" rel="noopener">一文搞懂CIDR地址块及其子网划分</a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210601185953.png" alt=""></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210601185953.png" alt=""></p>
  
       <!-- reward -->
       
@@ -743,7 +743,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://blog.51cto.com/ganbing/1210952" target="_blank" rel="noopener">几句话让你明白：分析ARP协议、图文拆解交换机/路由器转发原理</a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210602111212.png" alt=""></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210602111212.png" alt=""></p>
  
       <!-- reward -->
       

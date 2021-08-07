@@ -168,7 +168,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="">【干货】万字详解BGP路由技术原理及配置命令！</a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210531142221.png" alt=""></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210531142221.png" alt=""></p>
  
       <!-- reward -->
       
@@ -220,7 +220,7 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://bbs.huaweicloud.com/blogs/154835" target="_blank" rel="noopener">IPv4地址表示法详解</a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/zego/20210601103005.png" alt=""></p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210601103005.png" alt=""></p>
  
       <!-- reward -->
       
@@ -480,7 +480,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ...</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    port: port,</span><br><span class="line">    open: <span class="literal">true</span>,</span><br><span class="line">    overlay: &#123;</span><br><span class="line">      warnings: <span class="literal">false</span>,</span><br><span class="line">      errors: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    proxy: <span class="string">'http://localhost:5000'</span>,</span><br><span class="line">    disableHostCheck: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="封装axios时-加上withCredentials"><a href="#封装axios时-加上withCredentials" class="headerlink" title="封装axios时, 加上withCredentials"></a>封装axios时, 加上withCredentials</h3><p>在封装axios时, 加上<code>withCredentials: true</code><br/><br>跨源请求不提供凭据(cookie、HTTP认证及客户端SSL证明等)。通过将withCredentials属性设置为true，可以指定某个请求应该发送凭据。<br/><br>默认值为false。<br/><br>true：在跨域请求时，会携带用户凭证<br/><br>false：在跨域请求时，不会携带用户凭证；返回的 response 里也会忽略 cookie<br/></p>
-<h3 id="后端返回的数据中-修改请求头"><a href="#后端返回的数据中-修改请求头" class="headerlink" title="后端返回的数据中, 修改请求头"></a>后端返回的数据中, 修改请求头</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_cors_response</span><span class="params">(response, status=<span class="number">200</span>)</span>:</span></span><br><span class="line">    resp = make_response(response, status)</span><br><span class="line">    resp.headers[<span class="string">'Access-Control-Allow-Credentials'</span>] = <span class="string">'true'</span></span><br><span class="line">    resp.headers[<span class="string">'Access-Control-Allow-Origin'</span>] = <span class="string">'http://key-ui.oa.zego.im:9528'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> resp</span><br></pre></td></tr></table></figure>
+<h3 id="后端返回的数据中-修改请求头"><a href="#后端返回的数据中-修改请求头" class="headerlink" title="后端返回的数据中, 修改请求头"></a>后端返回的数据中, 修改请求头</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_cors_response</span><span class="params">(response, status=<span class="number">200</span>)</span>:</span></span><br><span class="line">    resp = make_response(response, status)</span><br><span class="line">    resp.headers[<span class="string">'Access-Control-Allow-Credentials'</span>] = <span class="string">'true'</span></span><br><span class="line">    resp.headers[<span class="string">'Access-Control-Allow-Origin'</span>] = <span class="string">'*'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> resp</span><br></pre></td></tr></table></figure>
 <p>需要注意的是:</p>
 <ol>
 <li>传入的是<code>true</code>字符串, 不是<code>True</code>布尔类型</li>
