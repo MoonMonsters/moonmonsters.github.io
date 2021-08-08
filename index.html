@@ -137,6 +137,56 @@
     
     
     <article
+  id="post-Golang-生成二维码图片"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/08/08/Golang-%E7%94%9F%E6%88%90%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%9B%BE%E7%89%87/"
+    >Golang --- 生成二维码图片</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/08/08/Golang-%E7%94%9F%E6%88%90%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%9B%BE%E7%89%87/" class="article-date">
+  <time datetime="2021-08-08T06:28:00.000Z" itemprop="datePublished">2021-08-08</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Golang/">Golang</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"github.com/boombuler/barcode"</span></span><br><span class="line">    <span class="string">"github.com/boombuler/barcode/qr"</span></span><br><span class="line">    <span class="string">"github.com/tuotoo/qrcode"</span></span><br><span class="line">    <span class="string">"image/png"</span></span><br><span class="line">    <span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成二维码图片</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">encode</span><span class="params">(filename, content <span class="keyword">string</span>, w, h <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    qrCode, err := qr.Encode(content, qr.M, qr.Auto)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置图片大小</span></span><br><span class="line">    qrCode, err = barcode.Scale(qrCode, w, h)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建文件</span></span><br><span class="line">    file, err := os.Create(filename)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> file.Close()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 写入内容</span></span><br><span class="line">    png.Encode(file, qrCode)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解析二维码内容</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">decode</span><span class="params">(filename <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    file, err := os.Open(filename)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> file.Close()</span><br><span class="line"></span><br><span class="line">    rv, err := qrcode.Decode(file)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fmt.Println(rv.Content)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    content := <span class="string">"http://qxinhai.cn"</span></span><br><span class="line">    w := <span class="number">256</span></span><br><span class="line">    h := <span class="number">256</span></span><br><span class="line">    filename := <span class="string">"qrcode.png"</span></span><br><span class="line"></span><br><span class="line">    encode(filename, content, w, h)</span><br><span class="line">    decode(filename)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-转-Flask-RuntimeError-Working-outside-of-application-context"
   class="article article-type-post"
   itemscope
@@ -692,58 +742,6 @@
        
   <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://mp.weixin.qq.com/s/iryUdWwfM8icgUvolPGJXw" target="_blank" rel="noopener">一文搞懂CIDR地址块及其子网划分</a></p>
 <h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210601185953.png" alt=""></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-转-网络-分析ARP协议、图文拆解交换机、路由器转发原理"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2021/06/05/%E8%BD%AC-%E7%BD%91%E7%BB%9C-%E5%88%86%E6%9E%90ARP%E5%8D%8F%E8%AE%AE%E3%80%81%E5%9B%BE%E6%96%87%E6%8B%86%E8%A7%A3%E4%BA%A4%E6%8D%A2%E6%9C%BA%E3%80%81%E8%B7%AF%E7%94%B1%E5%99%A8%E8%BD%AC%E5%8F%91%E5%8E%9F%E7%90%86/"
-    >[转]网络 --- 分析ARP协议、图文拆解交换机、路由器转发原理</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2021/06/05/%E8%BD%AC-%E7%BD%91%E7%BB%9C-%E5%88%86%E6%9E%90ARP%E5%8D%8F%E8%AE%AE%E3%80%81%E5%9B%BE%E6%96%87%E6%8B%86%E8%A7%A3%E4%BA%A4%E6%8D%A2%E6%9C%BA%E3%80%81%E8%B7%AF%E7%94%B1%E5%99%A8%E8%BD%AC%E5%8F%91%E5%8E%9F%E7%90%86/" class="article-date">
-  <time datetime="2021-06-05T13:10:00.000Z" itemprop="datePublished">2021-06-05</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="转载"><a href="#转载" class="headerlink" title="转载"></a>转载</h3><p><a href="https://blog.51cto.com/ganbing/1210952" target="_blank" rel="noopener">几句话让你明白：分析ARP协议、图文拆解交换机/路由器转发原理</a></p>
-<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p><img src="https://qxinhai.oss-cn-shenzhen.aliyuncs.com/feenlyn/20210602111212.png" alt=""></p>
  
       <!-- reward -->
       
